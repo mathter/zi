@@ -1,4 +1,4 @@
-package io.github.mathter.zi.mem
+package io.github.mathter.zi.data
 
 import io.github.mathter.zi.path.Path
 

@@ -1,5 +1,9 @@
 package io.github.mathter.zi.eval
 
-trait Context {
+import io.github.mathter.zi.data.PathMap
 
+trait Context {
+  def origin: PathMap
+
+  def destination(tag: Any): PathMap
 }

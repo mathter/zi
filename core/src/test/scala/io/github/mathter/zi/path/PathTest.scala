@@ -78,7 +78,7 @@ class PathTest {
     val p0: Path = "seqment"
     val p1: Path = "seqment"
 
-    Assertions.assertTrue(p0 equals p1)
+    Assertions.assertTrue(p0.equals(p1))
     Assertions.assertTrue(p0 eq p1)
   }
 

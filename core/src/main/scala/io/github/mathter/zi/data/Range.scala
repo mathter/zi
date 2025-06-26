@@ -1,4 +1,4 @@
-package io.github.mathter.zi.mem
+package io.github.mathter.zi.data
 
 import java.lang.Comparable
 

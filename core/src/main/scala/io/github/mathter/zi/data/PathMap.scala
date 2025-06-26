@@ -1,4 +1,4 @@
-package io.github.mathter.zi.mem
+package io.github.mathter.zi.data
 
 import io.github.mathter.zi.path.Path
 
@@ -13,7 +13,7 @@ trait PathMap {
 }
 
 object PathMap {
-  def apply(): PathMap = {
+  def empty: PathMap = {
     EPathMap()
   }
 }

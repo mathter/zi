@@ -1,7 +1,5 @@
-package io.github.mathter.zi.exec
+package io.github.mathter.zi.eval
 
-import io.github.mathter.zi.dsl.Destination
-
-trait Eval {
-  def eval(destination: Destination)(implicit context: Context): Unit
+trait Eval[T] {
+  def eval(implicit context: Context): T
 }

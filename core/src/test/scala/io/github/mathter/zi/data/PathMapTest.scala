@@ -1,6 +1,6 @@
-package io.github.mathter.zi.mem
+package io.github.mathter.zi.data
 
-import io.github.mathter.zi.mem.PathMapTest.randomStrings
+import io.github.mathter.zi.data.PathMapTest.randomStrings
 import io.github.mathter.zi.path.Path
 import org.apache.commons.lang3.RandomStringUtils
 import org.junit.jupiter.api.{Assertions, Test}
@@ -31,15 +31,15 @@ class PathMapTest {
     val year: Path = "year"
     val yearValue = 2024
 
-    val bookPathMap = PathMap()
+    val bookPathMap = PathMap.empty
     bookPathMap(title) = titleValue
 
-    val author0PathMap = PathMap()
+    val author0PathMap = PathMap.empty
     author0PathMap(authorName) = authorName0
     author0PathMap(authorLastName) = authorLastName0
     bookPathMap(authors) = author0PathMap
 
-    val author1PathMap = PathMap()
+    val author1PathMap = PathMap.empty
     author1PathMap(authorName) = authorName1
     author1PathMap(authorLastName) = authorLastName1
     bookPathMap(authors) = author1PathMap

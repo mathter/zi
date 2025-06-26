@@ -1,5 +1,4 @@
 package io.github.mathter.zi.dsl
 
-trait Accessor {
-
+trait Accessor[T] {
 }
