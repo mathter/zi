@@ -5,7 +5,7 @@ import io.github.mathter.zi.path.Path
 import scala.collection.mutable
 
 private class EPathMap(private val map: InnerMap = new InnerMap) extends PathMap {
-  override def apply[T](path: Path): T = {
+  override def apply[T](path: Path): Opt[T] = {
     val paths = path.expand.map(_.local)
     val valuesMapList: List[InnerMap] = if (paths.length > 1) {
       paths
@@ -19,9 +19,9 @@ private class EPathMap(private val map: InnerMap = new InnerMap) extends PathMap
       .map(reverseTranslate)
 
     values.length match {
-      case 0 => Option.empty.asInstanceOf[T]
-      case 1 => values.head.asInstanceOf[T]
-      case _ => values.asInstanceOf[T]
+      case 0 => Opt.empty[T]
+      case 1 => Opt(values.head.asInstanceOf[T])
+      case _ => Opt(values.asInstanceOf[T])
     }
   }
 

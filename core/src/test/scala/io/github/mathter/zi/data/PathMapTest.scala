@@ -47,24 +47,24 @@ class PathMapTest {
     bookPathMap(isbn) = isbnValue
     bookPathMap(year) = yearValue
 
-    Assertions.assertEquals(titleValue, bookPathMap(title))
+    Assertions.assertEquals(Opt(titleValue), bookPathMap(title))
 
-    val authorsResultPathList = bookPathMap[List[?]](authors)
+    val authorsResultPathList = bookPathMap[List[?]](authors).get
     Assertions.assertNotNull(authorsResultPathList)
     Assertions.assertTrue(authorsResultPathList.isInstanceOf[List[?]])
 
     val authorResult0: PathMap = authorsResultPathList(0).asInstanceOf[PathMap]
     Assertions.assertNotNull(authorResult0)
-    Assertions.assertEquals(authorName0, authorResult0(authorName))
-    Assertions.assertEquals(authorLastName0, authorResult0(authorLastName))
+    Assertions.assertEquals(Opt(authorName0), authorResult0(authorName))
+    Assertions.assertEquals(Opt(authorLastName0), authorResult0(authorLastName))
 
     val authorResult1: PathMap = authorsResultPathList(1).asInstanceOf[PathMap]
     Assertions.assertNotNull(authorResult1)
-    Assertions.assertEquals(authorName1, authorResult1(authorName))
-    Assertions.assertEquals(authorLastName1, authorResult1(authorLastName))
+    Assertions.assertEquals(Opt(authorName1), authorResult1(authorName))
+    Assertions.assertEquals(Opt(authorLastName1), authorResult1(authorLastName))
 
-    Assertions.assertEquals(isbnValue, bookPathMap(isbn))
-    Assertions.assertEquals(yearValue.asInstanceOf[Any], bookPathMap(year))
+    Assertions.assertEquals(Opt(isbnValue), bookPathMap(isbn))
+    Assertions.assertEquals(Opt(yearValue), bookPathMap(year))
   }
 }
 

@@ -17,6 +17,8 @@ trait Dsl {
 
   def nothing[T]: Source[T]
 
+  def nil[T]: Source[T]
+
   def first[T](source: Source[List[T]]): Source[T]
 
   def last[T](source: Source[List[T]]): Source[T]
@@ -30,10 +32,6 @@ trait Dsl {
 
 object Dsl {
   private val dsl = new BaseDsl
-
-  given [T]: Conversion[T, Source[T]] with {
-    override def apply(x: T): Source[T] = dsl.literal(x)
-  }
 
   extension [T](x: Source[List[T]]) {
     def first: Source[T] = x.map(dsl.first)

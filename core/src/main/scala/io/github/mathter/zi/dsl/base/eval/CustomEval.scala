@@ -1,15 +1,12 @@
 package io.github.mathter.zi.dsl.base.eval
 
+import io.github.mathter.zi.data.Opt
 import io.github.mathter.zi.eval.{Context, Eval}
 
-class CustomEval[T, D](val eval: Eval[T], f: T => D) extends AbstractEval[D] {
-  override def evalI(using context: Context): D = {
-    val value = this.eval.eval
+class CustomEval[T, D](val eval: Eval[T], f: Opt[T] => Opt[D]) extends AbstractEval[D] {
+  override def evalI(using context: Context): Opt[D] = {
+    val option = this.eval.eval
 
-    if (this.isNothing(value)) {
-      Option.empty.asInstanceOf[D]
-    } else {
-      f.apply(value)
-    }
+    this.f.apply(option)
   }
 }

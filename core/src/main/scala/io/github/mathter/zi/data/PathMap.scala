@@ -3,9 +3,9 @@ package io.github.mathter.zi.data
 import io.github.mathter.zi.path.Path
 
 trait PathMap {
-  def apply[T](path: Path): T
+  def apply[T](path: Path): Opt[T]
 
-  def get[T](path: Path): T = this.apply(path)
+  def get[T](path: Path): Opt[T] = this.apply(path)
 
   def put[T](path: Path, value: T): Unit = update(path, value)
 

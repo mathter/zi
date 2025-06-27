@@ -1,6 +1,5 @@
 package io.github.mathter.zi.dsl.base.eval
 
-import io.github.mathter.zi.data.PathMap
 import io.github.mathter.zi.dsl.Accessor
 import io.github.mathter.zi.path.Path
 
