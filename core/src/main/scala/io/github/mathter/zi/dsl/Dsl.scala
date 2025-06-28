@@ -12,23 +12,23 @@ trait Dsl {
 
   def destination(source: Source[?]): Destination
 
-  def literal[T](x: T)(implicit ctag: ClassTag[T]): Source[T]
+  def literal[T](x: T): Source[T]
 
-  def literal[T](f: () => T)(implicit ctag: ClassTag[T]): Source[T]
+  def literal[T](f: () => T): Source[T]
 
-  def nothing[T](implicit ctag: ClassTag[T]): Source[T]
+  def nothing[T]: Source[T]
 
-  def nil[T](implicit ctag: ClassTag[T]): Source[T]
+  def nil[T]: Source[T]
 
-  def first[T](source: Source[List[T]])(implicit ctag: ClassTag[T]): Source[T]
+  def first[T](source: Source[List[T]]): Source[T]
 
-  def last[T](source: Source[List[T]])(implicit ctag: ClassTag[T]): Source[T]
+  def last[T](source: Source[List[T]]): Source[T]
 
-  def asList[T](source: Source[T])(implicit classTag: ClassTag[T]): Source[List[T]]
+  def list[T](source: Source[T]): Source[List[T]]
 
-  def unit[T](source: Source[T])(implicit ctag: ClassTag[T]): Source[T] = source
+  def unit[T](source: Source[T]): Source[T] = source
 
-  def by[T](source: Source[PathMap], path: Path)(implicit ctag: ClassTag[T]): Source[T]
+  def by[T](source: Source[PathMap], path: Path): Source[T]
 
   def mapElem[T, D](source: Source[List[T]], f: Source[T] => Source[D]): Source[List[D]]
 }

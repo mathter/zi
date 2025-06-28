@@ -9,13 +9,13 @@ trait Source[T] {
 
   def map[D](using classTagT: ClassTag[T])(using classTagD: ClassTag[D]): Source[D]
 
-  def map[D, DS <: Source[D]](f: Source[T] => Source[D])(implicit ctag: ClassTag[D]): DS
+  def map[D, DS <: Source[D]](f: Source[T] => Source[D]): DS
 
-  def customOpt[D](f: Opt[T] => Opt[D])(implicit ctag: ClassTag[D]): Source[D]
+  def customOpt[D](f: Opt[T] => Opt[D]): Source[D]
 
-  def custom[D](f: T => D)(implicit ctag: ClassTag[D]): Source[D]
+  def custom[D](f: T => D): Source[D]
 
   def composite[T0](source: Source[T0]): Composite[T, T0]
 
-  def list(implicit ops: Dsl, classTag: ClassTag[T]): Source[List[T]] = this.map(ops.asList)
+  def list(implicit ops: Dsl): Source[List[T]] = this.map(ops.list)
 }
