@@ -43,6 +43,8 @@ class BaseDsl extends Dsl {
 
   override def by[T](source: Source[PathMap], path: Path)(implicit ctag: ClassTag[T]): Source[T] =
     new ByEval[T](source.asInstanceOf[Eval[PathMap]], path)
+
+  override def mapElem[T, D](f: Source[T] => Source[D]): Source[List[D]] = ???
 }
 
 object BaseDsl {
