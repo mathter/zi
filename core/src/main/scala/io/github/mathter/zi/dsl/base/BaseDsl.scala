@@ -6,28 +6,43 @@ import io.github.mathter.zi.dsl.base.eval.*
 import io.github.mathter.zi.eval.Eval
 import io.github.mathter.zi.path.Path
 
+import scala.reflect.ClassTag
+
 class BaseDsl extends Dsl {
-  override def origin: Source[PathMap] = new OriginSourceEval()
+  implicit val dsl: Dsl = this
 
-  override def destination: Destination = this.destination(this.literal(BaseDsl.DEFAULT_DESTINATION_TAG))
+  override def origin: Source[PathMap] =
+    new OriginSourceEval()
 
-  override def destination(source: Source[?]): Destination = new DestinationEval(source.asInstanceOf[Eval[Any]])
+  override def destination: Destination =
+    this.destination(this.literal(BaseDsl.DEFAULT_DESTINATION_TAG))
 
-  override def literal[T](x: T): Source[T] = new CalculatedLiteralEval[T](() => x)
+  override def destination(source: Source[?]): Destination =
+    new DestinationEval(source.asInstanceOf[Eval[Any]])
 
-  override def literal[T](f: () => T): Source[T] = new CalculatedLiteralEval[T](f)
+  override def literal[T](x: T)(implicit ctag: ClassTag[T]): Source[T] =
+    new CalculatedLiteralEval[T](() => x)
 
-  override def nothing[T]: Source[T] = new NothingEval[T]
+  override def literal[T](f: () => T)(implicit ctag: ClassTag[T]): Source[T] =
+    new CalculatedLiteralEval[T](f)
 
-  override def nil[T]: Source[T] = new CalculatedLiteralEval[T](() => null.asInstanceOf[T])
+  override def nothing[T](implicit ctag: ClassTag[T]): Source[T] =
+    new NothingEval[T]
 
-  override def first[T](source: Source[List[T]]): Source[T] = new ListElementByIndexEval[T](source.asInstanceOf[Eval[List[T]]], list => 0)
+  override def nil[T](implicit ctag: ClassTag[T]): Source[T] = new CalculatedLiteralEval[T](() =>
+    null.asInstanceOf[T])
 
-  override def last[T](source: Source[List[T]]): Source[T] = new ListElementByIndexEval[T](source.asInstanceOf[Eval[List[T]]], list => list.length - 1)
+  override def first[T](source: Source[List[T]])(implicit ctag: ClassTag[T]): Source[T] =
+    new ListElementByIndexEval[T](source.asInstanceOf[Eval[List[T]]], list => 0)
 
-  override def asList[T](source: Source[T]): Source[List[T]] = new AsListEval[T](source.asInstanceOf[Eval[T]])
+  override def last[T](source: Source[List[T]])(implicit ctag: ClassTag[T]): Source[T] =
+    new ListElementByIndexEval[T](source.asInstanceOf[Eval[List[T]]], list => list.length - 1)
 
-  override def by[T](source: Source[PathMap], path: Path): Source[T] = new ByEval[T](source.asInstanceOf[Eval[PathMap]], path)
+  override def asList[T](source: Source[T])(implicit classTag: ClassTag[T]): ListSource[T] =
+    new AsListSourceEval[T](source.asInstanceOf[Eval[T]])
+
+  override def by[T](source: Source[PathMap], path: Path)(implicit ctag: ClassTag[T]): Source[T] =
+    new ByEval[T](source.asInstanceOf[Eval[PathMap]], path)
 }
 
 object BaseDsl {
