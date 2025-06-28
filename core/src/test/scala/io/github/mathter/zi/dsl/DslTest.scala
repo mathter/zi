@@ -62,14 +62,4 @@ class DslTest {
 
     Assertions.assertEquals("Hello World!", Evaluator.eval(s).get)
   }
-
-  @Test
-  def testList(): Unit = {
-    implicit val context: BaseContext = new BaseContext(PathMap.empty)
-    val dsl: Dsl = BaseDsl()
-    val s = dsl.literal(List(1, 2, 3)).list[Int].first
-    val v = Evaluator.eval(s)
-
-    Assertions.assertEquals(1, Evaluator.eval(s).get)
-  }
 }

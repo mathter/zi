@@ -38,13 +38,14 @@ class BaseDsl extends Dsl {
   override def last[T](source: Source[List[T]])(implicit ctag: ClassTag[T]): Source[T] =
     new ListElementByIndexEval[T](source.asInstanceOf[Eval[List[T]]], list => list.length - 1)
 
-  override def asList[T](source: Source[T])(implicit classTag: ClassTag[T]): ListSource[T] =
+  override def asList[T](source: Source[T])(implicit classTag: ClassTag[T]): Source[List[T]] =
     new AsListSourceEval[T](source.asInstanceOf[Eval[T]])
 
   override def by[T](source: Source[PathMap], path: Path)(implicit ctag: ClassTag[T]): Source[T] =
     new ByEval[T](source.asInstanceOf[Eval[PathMap]], path)
 
-  override def mapElem[T, D](f: Source[T] => Source[D]): Source[List[D]] = ???
+  override def mapElem[T, D](source: Source[List[T]], f: Source[T] => Source[D]): Source[List[D]] =
+    new MapElemEval[T, D](source.asInstanceOf[Eval[List[T]]], f)
 }
 
 object BaseDsl {

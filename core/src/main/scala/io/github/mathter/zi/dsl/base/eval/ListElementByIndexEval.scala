@@ -4,9 +4,7 @@ import io.github.mathter.zi.data.Opt
 import io.github.mathter.zi.dsl.Dsl
 import io.github.mathter.zi.eval.{Context, Eval}
 
-import scala.reflect.ClassTag
-
-class ListElementByIndexEval[T](val listEval: Eval[List[T]], indexFunction: List[T] => Int)(implicit dsl: Dsl, ctag: ClassTag[T]) extends AbstractEval[T] {
+class ListElementByIndexEval[T](val listEval: Eval[List[T]], indexFunction: List[T] => Int)(implicit dsl: Dsl) extends AbstractEval[T] {
   override def evalI(using context: Context): Opt[T] = {
     this.listEval.eval
       .map(list => {

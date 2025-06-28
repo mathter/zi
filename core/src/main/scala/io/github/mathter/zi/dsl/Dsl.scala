@@ -24,13 +24,13 @@ trait Dsl {
 
   def last[T](source: Source[List[T]])(implicit ctag: ClassTag[T]): Source[T]
 
-  def asList[T](source: Source[T])(implicit classTag: ClassTag[T]): ListSource[T]
+  def asList[T](source: Source[T])(implicit classTag: ClassTag[T]): Source[List[T]]
 
   def unit[T](source: Source[T])(implicit ctag: ClassTag[T]): Source[T] = source
 
   def by[T](source: Source[PathMap], path: Path)(implicit ctag: ClassTag[T]): Source[T]
 
-  def mapElem[T, D](f: Source[T] => Source[D]): Source[List[D]]
+  def mapElem[T, D](source: Source[List[T]], f: Source[T] => Source[D]): Source[List[D]]
 }
 
 object Dsl {

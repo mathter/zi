@@ -7,5 +7,5 @@ implicit class ListSourceOps[E](val x: Source[List[E]]) {
 
   def last(implicit ctag: ClassTag[E]): Source[E] = x.map(x.dsl.last)
 
-  def mapElem[D](f: Source[E] => Source[D])(implicit ctag: ClassTag[E]): Source[List[D]] = x.dsl.mapElem(f)
+  def mapElem[D](f: Source[E] => Source[D])(implicit ctag: ClassTag[E]): Source[List[D]] = x.dsl.mapElem(x, f)
 }
