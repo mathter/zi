@@ -1,4 +1,4 @@
-package io.github.mathter.zi.data
+package io.github.mathter.zi.`type`
 
 import java.lang.Comparable
 
