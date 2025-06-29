@@ -1,13 +1,13 @@
 package io.github.mathter.zi.dsl.base
 
 import io.github.mathter.zi.data.{Opt, PathMap}
-import io.github.mathter.zi.dsl.{base, *}
 import io.github.mathter.zi.dsl.base.eval.*
+import io.github.mathter.zi.dsl.{base, *}
 import io.github.mathter.zi.eval.{Context, Eval}
 import io.github.mathter.zi.path.Path
 
 class BaseDsl extends Dsl {
-  implicit val dsl: Dsl = this
+  implicit private val dsl: Dsl = this
 
   override def origin: Source[PathMap] =
     new OriginSourceEval()
@@ -17,6 +17,9 @@ class BaseDsl extends Dsl {
 
   override def destination(source: Source[?]): Destination =
     new DestinationEval(source.asInstanceOf[Eval[Any]])
+
+  override def obj: Destination =
+    new ObjDestinationEval()
 
   override def literal[T](x: T): Source[T] =
     new CalculatedLiteralEval[T](() => x)
@@ -49,8 +52,11 @@ class BaseDsl extends Dsl {
   override def by[T](source: Source[PathMap], path: Path): Source[T] =
     new ByEval[T](source.asInstanceOf[Eval[PathMap]], path)
 
-  override def mapElem[T, D](source: Source[List[T]], f: Source[T] => Source[D]): Source[List[D]] =
+  override def mapElem[T, D](source: Source[List[T]], f: Source[T] => Source[D]): Source[List[D]] = {
     new MapElemEval[T, D](source.asInstanceOf[Eval[List[T]]], f)
+  }
+
+  def terminals: Terminals = Terminals()
 }
 
 object BaseDsl {

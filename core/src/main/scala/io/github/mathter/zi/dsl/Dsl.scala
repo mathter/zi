@@ -12,6 +12,8 @@ trait Dsl {
 
   def destination(source: Source[?]): Destination
 
+  def obj: Destination
+
   def literal[T](x: T): Source[T]
 
   def literal[T](f: () => T): Source[T]

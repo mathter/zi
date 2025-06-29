@@ -8,7 +8,12 @@ import io.github.mathter.zi.path.Path
 import scala.reflect.ClassTag
 
 class FromEval[T](val f: Context => Opt[PathMap], val path: Path)(implicit dsl: Dsl, ctag: ClassTag[T]) extends From[T] {
-  override def from(source: Source[T]): Source[T] & Terminal = new Terminal(source.asInstanceOf[Eval[T]])
+
+  import io.github.mathter.zi.dsl.base.*
+
+  override def from(source: Source[T]): Source[T] & Terminal = {
+    new Terminal(source.asInstanceOf[Eval[T]]).reg()
+  }
 
   class Terminal(val from: Eval[T]) extends AbstractEval[T], io.github.mathter.zi.eval.Terminal {
     override def evalI(using context: Context): Opt[T] = {
@@ -16,7 +21,6 @@ class FromEval[T](val f: Context => Opt[PathMap], val path: Path)(implicit dsl: 
       val option = this.from.eval
 
       option.foreach(map.get(path) = _)
-
       option
     }
   }

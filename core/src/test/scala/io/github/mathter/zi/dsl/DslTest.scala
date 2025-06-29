@@ -96,4 +96,26 @@ class DslTest {
     Assertions.assertEquals(1, result.get.size)
     Assertions.assertEquals(10, result.get.head)
   }
+
+  @Test
+  def testObj0(): Unit = {
+    implicit val context: BaseContext = new BaseContext(PathMap.empty)
+    val dsl: Dsl = BaseDsl()
+    val s = dsl.obj
+
+    Assertions.assertNotNull(Evaluator.eval(s))
+  }
+
+  @Test
+  def testObj1(): Unit = {
+    implicit val context: BaseContext = new BaseContext(PathMap.empty)
+    val dsl: Dsl = BaseDsl()
+    val s = dsl.obj
+    val s0 = s.by[String]("level0/level1").from(dsl.literal("Hello World!"))
+
+    Evaluator.eval(s0.asInstanceOf[Source[String]])
+    val result = Evaluator.eval(s).get
+    Assertions.assertNotNull(result)
+    Assertions.assertEquals("Hello World!", result("level0/level1").get)
+  }
 }

@@ -7,5 +7,5 @@ trait Context {
 
   def destination(tag: Any): PathMap
 
-  def destination(tag:Any, pathMap: PathMap):Unit
+  def destination(tag: Any, pathMap: PathMap): Unit
 }
