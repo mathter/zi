@@ -3,7 +3,7 @@ package io.github.mathter.zi.dsl
 import io.github.mathter.zi.data.*
 import io.github.mathter.zi.dsl.base.BaseDsl
 import io.github.mathter.zi.dsl.base.eval.BaseContext
-import io.github.mathter.zi.eval.{Context, Evaluator}
+import io.github.mathter.zi.eval.{Evaluator, Terminal}
 import org.junit.jupiter.api.{Assertions, Test}
 
 class DslTest {
@@ -70,5 +70,19 @@ class DslTest {
     val s: Source[String] = dsl.literal("Hello").composite(dsl.literal(" World!")).fun(_ + _)
 
     Assertions.assertEquals("Hello World!", Evaluator.eval(s).get)
+  }
+
+  @Test
+  def testDestinationFromPathMap(): Unit = {
+    implicit val context: BaseContext = new BaseContext(PathMap.empty)
+    val dsl: Dsl = BaseDsl()
+    val pm = PathMap.empty
+    val s = dsl.literal(pm)
+
+    val terminal = dsl.destination.from(s)
+    Evaluator.eval(terminal.asInstanceOf[Terminal])
+
+    Assertions.assertEquals(1, context.destinations.size)
+    Assertions.assertEquals(pm, context.destinations.values.head)
   }
 }

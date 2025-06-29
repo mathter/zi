@@ -6,4 +6,6 @@ trait Context {
   def origin: PathMap
 
   def destination(tag: Any): PathMap
+
+  def destination(tag:Any, pathMap: PathMap):Unit
 }
