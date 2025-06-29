@@ -17,5 +17,5 @@ trait Source[T] {
 
   def composite[T0](source: Source[T0]): Composite[T, T0]
 
-  def list(implicit ops: Dsl): Source[List[T]] = this.map(ops.list)
+  def list: Source[List[T]] = this.dsl.list(this)
 }

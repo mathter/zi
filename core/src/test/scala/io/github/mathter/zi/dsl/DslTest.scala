@@ -85,4 +85,15 @@ class DslTest {
     Assertions.assertEquals(1, context.destinations.size)
     Assertions.assertEquals(pm, context.destinations.values.head)
   }
+
+  @Test
+  def testList(): Unit = {
+    implicit val context: BaseContext = new BaseContext(PathMap.empty)
+    val dsl: Dsl = BaseDsl()
+    val s = dsl.literal(10).list
+    val result = Evaluator.eval(s)
+
+    Assertions.assertEquals(1, result.get.size)
+    Assertions.assertEquals(10, result.get.head)
+  }
 }
