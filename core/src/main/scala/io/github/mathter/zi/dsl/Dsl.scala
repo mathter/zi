@@ -28,6 +28,3 @@ trait Dsl {
 
   def mapElem[T, D](source: Source[List[T]], f: Source[T] => Source[D]): Source[List[D]]
 }
-
-object Dsl {
-}

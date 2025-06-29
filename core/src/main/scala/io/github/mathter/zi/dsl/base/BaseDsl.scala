@@ -6,8 +6,6 @@ import io.github.mathter.zi.dsl.base.eval.*
 import io.github.mathter.zi.eval.{Context, Eval}
 import io.github.mathter.zi.path.Path
 
-inline implicit def stringSourceOps(x: Source[String]): StringSourceOps = new StringSourceOps(x)
-
 class BaseDsl extends Dsl {
   implicit val dsl: Dsl = this
 

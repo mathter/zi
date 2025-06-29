@@ -1,10 +1,10 @@
 package io.github.mathter.zi.dsl
 
 import io.github.mathter.zi.data.PathMap
-import io.github.mathter.zi.dsl.base.*
+import io.github.mathter.zi.dsl.*
+import io.github.mathter.zi.dsl.base.BaseDsl
 import io.github.mathter.zi.dsl.base.eval.BaseContext
 import io.github.mathter.zi.eval.Evaluator
-
 import org.junit.jupiter.api.{Assertions, Test}
 
 class StringSourceOpsTest {
