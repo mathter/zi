@@ -1,9 +1,9 @@
 package io.github.mathter.zi.dsl
 
-import io.github.mathter.zi.data.{Opt, PathMap}
+import io.github.mathter.zi.data.PathMap
 import io.github.mathter.zi.path.Path
 
-import scala.reflect.ClassTag
+import scala.language.implicitConversions
 
 trait Dsl {
   def origin: Source[PathMap]
@@ -19,10 +19,6 @@ trait Dsl {
   def nothing[T]: Source[T]
 
   def nil[T]: Source[T]
-
-  def first[T](source: Source[List[T]]): Source[T]
-
-  def last[T](source: Source[List[T]]): Source[T]
 
   def list[T](source: Source[T]): Source[List[T]]
 

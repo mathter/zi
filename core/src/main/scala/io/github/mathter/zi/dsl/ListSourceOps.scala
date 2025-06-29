@@ -1,11 +1,13 @@
 package io.github.mathter.zi.dsl
 
-import scala.reflect.ClassTag
+import io.github.mathter.zi.dsl.Source
 
-implicit class ListSourceOps[E](val x: Source[List[E]]) {
-  def first(implicit ctag: ClassTag[E]): Source[E] = x.map(x.dsl.first)
+trait ListSourceOps[E] {
+  def first: Source[E]
 
-  def last(implicit ctag: ClassTag[E]): Source[E] = x.map(x.dsl.last)
+  def last: Source[E]
 
-  def mapElem[D](f: Source[E] => Source[D])(implicit ctag: ClassTag[E]): Source[List[D]] = x.dsl.mapElem(x, f)
+  def index(source: Source[Int]): Source[E]
+
+  def mapElem[D](f: Source[E] => Source[D]): Source[List[D]]
 }

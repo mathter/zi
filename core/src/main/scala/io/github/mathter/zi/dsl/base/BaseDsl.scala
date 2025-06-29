@@ -1,10 +1,12 @@
 package io.github.mathter.zi.dsl.base
 
-import io.github.mathter.zi.data.PathMap
-import io.github.mathter.zi.dsl.*
+import io.github.mathter.zi.data.{Opt, PathMap}
+import io.github.mathter.zi.dsl.{base, *}
 import io.github.mathter.zi.dsl.base.eval.*
-import io.github.mathter.zi.eval.Eval
+import io.github.mathter.zi.eval.{Context, Eval}
 import io.github.mathter.zi.path.Path
+
+inline implicit def stringSourceOps(x: Source[String]): StringSourceOps = new StringSourceOps(x)
 
 class BaseDsl extends Dsl {
   implicit val dsl: Dsl = this
@@ -30,11 +32,18 @@ class BaseDsl extends Dsl {
   override def nil[T]: Source[T] = new CalculatedLiteralEval[T](() =>
     null.asInstanceOf[T])
 
-  override def first[T](source: Source[List[T]]): Source[T] =
-    new ListElementByIndexEval[T](source.asInstanceOf[Eval[List[T]]], list => 0)
+  def first[T](source: Source[List[T]]): Source[T] =
+    new ListElementByIndexEval[T](source.asInstanceOf[Eval[List[T]]], new AbstractEval[Int]() {
+      override def evalI(context: Context): Opt[Int] = Opt(0)
+    })
 
-  override def last[T](source: Source[List[T]]): Source[T] =
-    new ListElementByIndexEval[T](source.asInstanceOf[Eval[List[T]]], list => list.length - 1)
+  def last[T](source: Source[List[T]]): Source[T] =
+    new ListElementByIndexEval[T](source.asInstanceOf[Eval[List[T]]], new AbstractEval[Int]() {
+      override def evalI(implicit context: Context): Opt[Int] = source.asInstanceOf[Eval[List[T]]].eval.map(_.length - 1)
+    })
+
+  def index[T](source: Source[List[T]], index: Source[Int]): Source[T] =
+    new ListElementByIndexEval[T](source.asInstanceOf[Eval[List[T]]], index.asInstanceOf[Eval[Int]])
 
   override def list[T](source: Source[T]): Source[List[T]] =
     new AsListSourceEval[T](source.asInstanceOf[Eval[T]])
@@ -48,4 +57,6 @@ class BaseDsl extends Dsl {
 
 object BaseDsl {
   private val DEFAULT_DESTINATION_TAG: String = "<<default>>"
+
+  implicit def baseDsl: BaseDsl = new BaseDsl
 }

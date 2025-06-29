@@ -26,6 +26,15 @@ class DslTest {
   }
 
   @Test
+  def testNil(): Unit = {
+    implicit val context: BaseContext = new BaseContext(PathMap.empty)
+    val dsl: Dsl = BaseDsl()
+    val s = dsl.nil[String]
+
+    Assertions.assertEquals(Opt(null), Evaluator.eval(s))
+  }
+
+  @Test
   def testCustomOptArgInt(): Unit = {
     implicit val context: BaseContext = new BaseContext(PathMap.empty)
     val dsl: Dsl = BaseDsl()
