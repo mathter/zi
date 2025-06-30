@@ -136,4 +136,13 @@ class DslTest {
     val v = Evaluator.eval(s)
     Assertions.assertFalse(v.get)
   }
+
+  @Test
+  def testAs(): Unit = {
+    implicit val context: BaseContext = new BaseContext(PathMap.empty)
+    val dsl: Dsl = BaseDsl()
+    val s = dsl.literal(10).as[AnyVal]
+
+    Assertions.assertEquals(10, Evaluator.eval(s).get)
+  }
 }

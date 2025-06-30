@@ -17,6 +17,10 @@ abstract class AbstractEval[T](implicit val dsl: Dsl) extends Eval[T] with Sourc
 
   override def composite[T0](source: Source[T0]): Composite[T, T0] = new CompositeEval[T, T0](this, source.asInstanceOf[Eval[T0]])
 
+  override def as[D]: Source[D] = new AbstractEval[D]() {
+    override def evalI(implicit context: Context): Opt[D] = AbstractEval.this.eval.asInstanceOf[Opt[D]]
+  }
+
   override def eval(implicit context: Context): Opt[T] = {
     this.getCache(context.asInstanceOf[BaseContext])
       .getOrElse({

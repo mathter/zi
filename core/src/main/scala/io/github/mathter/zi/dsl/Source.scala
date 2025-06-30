@@ -18,4 +18,6 @@ trait Source[T] {
   def composite[T0](source: Source[T0]): Composite[T, T0]
 
   def list: Source[List[T]] = this.dsl.list(this)
+
+  def as[D]: Source[D]
 }
