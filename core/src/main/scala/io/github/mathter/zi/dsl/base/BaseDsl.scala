@@ -33,6 +33,10 @@ class BaseDsl extends Dsl {
   override def nil[T]: Source[T] = new CalculatedLiteralEval[T](() =>
     null.asInstanceOf[T])
 
+  override def fls: Source[Boolean] = this.literal(false)
+
+  override def tr: Source[Boolean] = this.literal(true)
+
   def first[T](source: Source[List[T]]): Source[T] =
     new ListElementByIndexEval[T](source.asInstanceOf[Eval[List[T]]], new AbstractEval[Int]() {
       override def evalI(context: Context): Opt[Int] = Opt(0)

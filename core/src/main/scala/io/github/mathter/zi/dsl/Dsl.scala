@@ -22,6 +22,10 @@ trait Dsl {
 
   def nil[T]: Source[T]
 
+  def fls: Source[Boolean]
+
+  def tr: Source[Boolean]
+
   def list[T](source: Source[T]): Source[List[T]]
 
   def unit[T](source: Source[T]): Source[T] = source

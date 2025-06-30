@@ -118,4 +118,22 @@ class DslTest {
     Assertions.assertNotNull(result)
     Assertions.assertEquals("Hello World!", result("level0/level1").get)
   }
+
+  @Test
+  def testFalse(): Unit = {
+    implicit val context: BaseContext = new BaseContext(PathMap.empty)
+    val dsl: Dsl = BaseDsl()
+    val s = dsl.fls
+    val v = Evaluator.eval(s)
+    Assertions.assertFalse(v.get)
+  }
+
+  @Test
+  def testTrue(): Unit = {
+    implicit val context: BaseContext = new BaseContext(PathMap.empty)
+    val dsl: Dsl = BaseDsl()
+    val s = dsl.tr
+    val v = Evaluator.eval(s)
+    Assertions.assertFalse(v.get)
+  }
 }
