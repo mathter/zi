@@ -26,6 +26,12 @@ trait Dsl {
 
   def tr: Source[Boolean]
 
+  def first[T](source: Source[List[T]]): Source[T]
+
+  def last[T](source: Source[List[T]]): Source[T]
+
+  def index[T](source: Source[List[T]], index: Source[Int]): Source[T]
+
   def list[T](source: Source[T]): Source[List[T]]
 
   def unit[T](source: Source[T]): Source[T] = source
@@ -35,4 +41,6 @@ trait Dsl {
   def mapElem[T, D](source: Source[List[T]], f: Source[T] => Source[D]): Source[List[D]]
 
   def If[T](condition: Source[Boolean]): If[T]
+
+  def group[K, E](source: Source[List[E]], key: Source[E] => Source[K]): Group[K, E]
 }

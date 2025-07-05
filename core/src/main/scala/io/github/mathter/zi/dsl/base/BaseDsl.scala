@@ -63,6 +63,9 @@ class BaseDsl extends Dsl {
   override def If[T](condition: Source[Boolean]): If[T] =
     new IfEval[T](condition.asInstanceOf[Eval[Boolean]])
 
+  override def group[K, E](source: Source[List[E]], key: Source[E] => Source[K]): Group[K, E] =
+    new GroupEval[K, E](source.asInstanceOf[Eval[List[E]]], key)
+
   def terminals: Terminals = Terminals()
 }
 
