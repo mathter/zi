@@ -7,6 +7,8 @@ trait PathMap {
 
   def get[T](path: Path): Opt[T] = this.apply(path)
 
+  def iget[T](path: Path): Opt[T]
+
   def put[T](path: Path, value: T): Unit = update(path, value)
 
   def update[T](path: Path, value: T): Unit

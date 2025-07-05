@@ -25,6 +25,22 @@ private class EPathMap(private val map: InnerMap = new InnerMap) extends PathMap
     }
   }
 
+  override def iget[T](path: Path): Opt[T] = {
+    val paths = path.expand.map(_.local)
+    val list: List[InnerMap] = if (paths.length > 1) {
+      paths
+        .foldLeft(List(this.map))((l: List[InnerMap], r) => getSubMaps(l, r))
+    } else {
+      List(this.map)
+    }
+
+    list.length match {
+      case 0 => Opt.empty[T]
+      case 1 => Opt(list.flatMap(_.values.flatten).asInstanceOf[T])
+      case x => throw MoreThenOneItemException("There are %s item by path '%s'!".formatted(x, path))
+    }
+  }
+
   def getSubMaps(list: List[InnerMap], path: Path): List[InnerMap] = {
     list.flatMap(innerMap => innerMap.get(path)
       .map(e => e.filter(e => e != null && e.isInstanceOf[InnerMap])

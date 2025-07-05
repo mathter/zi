@@ -5,8 +5,6 @@ import io.github.mathter.zi.path.Path
 import org.apache.commons.lang3.RandomStringUtils
 import org.junit.jupiter.api.{Assertions, Test}
 
-import scala.collection.mutable
-
 class PathMapTest {
   @Test
   def testGet(): Unit = {
@@ -65,6 +63,36 @@ class PathMapTest {
 
     Assertions.assertEquals(Opt(isbnValue), bookPathMap(isbn))
     Assertions.assertEquals(Opt(yearValue), bookPathMap(year))
+  }
+
+  @Test
+  def igetTest(): Unit = {
+    val pm00 = PathMap.empty
+    pm00("v0") = "v00"
+    pm00("v1") = "v01"
+    pm00("v2") = "v02"
+    pm00("v3") = "v03"
+    pm00("v4/v0") = "v040"
+
+    val pm01 = PathMap.empty
+    pm01("v0") = "v10"
+    pm01("v1") = "v11"
+    pm01("v2") = "v12"
+    pm01("v3") = "v13"
+    pm01("v4/v0") = "v140"
+
+    val pm = PathMap.empty
+    pm("p0/p1/pm0") = pm00
+    pm("p0/p1/pm1") = pm01
+    pm("p0/p1/pm0") = "Some text"
+    pm("p0/p1/pm2") = "Some text2"
+    pm("p0/p1") = "Some text3"
+    pm("p0/p1") = "Some text4"
+
+    val list = pm.iget[List[String]]("p0/p1")
+    Assertions.assertNotNull(list)
+    Assertions.assertTrue(list.isDefined)
+    Assertions.assertEquals(4, list.get.length)
   }
 }
 
