@@ -15,7 +15,7 @@ private class EPathMap(private val map: InnerMap = new InnerMap) extends PathMap
       List(this.map)
     }
     val values = valuesMapList
-      .flatMap(innerMap => innerMap.getOrElse(paths.last, null))
+      .flatMap(innerMap => innerMap.getOrElse(paths.last, Opt.empty))
       .map(reverseTranslate)
 
     values.length match {
