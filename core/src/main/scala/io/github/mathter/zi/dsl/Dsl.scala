@@ -33,4 +33,6 @@ trait Dsl {
   def by[T](source: Source[PathMap], path: Path): Source[T]
 
   def mapElem[T, D](source: Source[List[T]], f: Source[T] => Source[D]): Source[List[D]]
+
+  def If[T](condition: Source[Boolean]): If[T]
 }

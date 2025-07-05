@@ -60,6 +60,9 @@ class BaseDsl extends Dsl {
     new MapElemEval[T, D](source.asInstanceOf[Eval[List[T]]], f)
   }
 
+  override def If[T](condition: Source[Boolean]): If[T] =
+    new IfEval[T](condition.asInstanceOf[Eval[Boolean]])
+
   def terminals: Terminals = Terminals()
 }
 

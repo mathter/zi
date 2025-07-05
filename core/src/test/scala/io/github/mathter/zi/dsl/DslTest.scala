@@ -134,7 +134,7 @@ class DslTest {
     val dsl: Dsl = BaseDsl()
     val s = dsl.tr
     val v = Evaluator.eval(s)
-    Assertions.assertFalse(v.get)
+    Assertions.assertTrue(v.get)
   }
 
   @Test
@@ -144,5 +144,52 @@ class DslTest {
     val s = dsl.literal(10).as[AnyVal]
 
     Assertions.assertEquals(10, Evaluator.eval(s).get)
+  }
+
+  @Test
+  def testIf0(): Unit = {
+    implicit val context: BaseContext = new BaseContext(PathMap.empty)
+    val dsl: Dsl = BaseDsl()
+    val s = dsl.If(dsl.tr).Then(dsl.literal("Then"))
+
+    Assertions.assertEquals("Then", Evaluator.eval(s).get)
+  }
+
+  @Test
+  def testIf1(): Unit = {
+    implicit val context: BaseContext = new BaseContext(PathMap.empty)
+    val dsl: Dsl = BaseDsl()
+    val s = dsl.If(dsl.tr).Then(dsl.literal("Then")).Else(dsl.literal("Else"))
+
+    Assertions.assertEquals("Then", Evaluator.eval(s).get)
+  }
+
+  @Test
+  def testIf2(): Unit = {
+    implicit val context: BaseContext = new BaseContext(PathMap.empty)
+    val dsl: Dsl = BaseDsl()
+    val s = dsl.If(dsl.fls).Then(dsl.literal("Then")).Else(dsl.literal("Else"))
+
+    Assertions.assertEquals("Else", Evaluator.eval(s).get)
+  }
+
+  @Test
+  def testIf3(): Unit = {
+    implicit val context: BaseContext = new BaseContext(PathMap.empty)
+    val dsl: Dsl = BaseDsl()
+    val s = dsl.If(dsl.fls).Then(dsl.literal("Then")).Else(dsl.literal("Else"))
+      .If(dsl.tr).Then(dsl.literal("Then2"))
+
+    Assertions.assertEquals("Then2", Evaluator.eval(s).get)
+  }
+
+  @Test
+  def testIf4(): Unit = {
+    implicit val context: BaseContext = new BaseContext(PathMap.empty)
+    val dsl: Dsl = BaseDsl()
+    val s = dsl.If(dsl.fls).Then(dsl.literal("Then")).Else(dsl.literal("Else"))
+      .If(dsl.fls).Then(dsl.literal("Then2")).Else(dsl.literal("Else2"))
+
+    Assertions.assertEquals("Else2", Evaluator.eval(s).get)
   }
 }
