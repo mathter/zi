@@ -44,4 +44,12 @@ trait Dsl {
   def If[T](condition: Source[Boolean]): If[T]
 
   def group[K, E](source: Source[List[E]], key: Source[E] => Source[K]): Group[K, E]
+
+  def filter[T](source: Source[List[T]], p: Source[T] => Source[Boolean]): Source[List[T]]
+
+  def distinct[T](source: Source[List[T]]): Source[List[T]]
+}
+
+given [T](using dsl: Dsl): Conversion[T, Source[T]] with {
+  override def apply(x: T): Source[T] = dsl.literal(x)
 }

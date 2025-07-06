@@ -12,4 +12,8 @@ implicit class ListSourceOps[T](val x: Source[List[T]]) {
   def mapElem[D](f: Source[T] => Source[D]): Source[List[D]] = x.dsl.mapElem(x, f)
 
   def group[K](key: Source[T] => Source[K]): Group[K, T] = x.dsl.group(x, key)
+
+  def filter(p: Source[T] => Source[Boolean]): Source[List[T]] = x.dsl.filter(x, p)
+
+  def distinct: Source[List[T]] = x.dsl.distinct(x)
 }

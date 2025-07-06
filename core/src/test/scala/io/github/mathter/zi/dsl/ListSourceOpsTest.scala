@@ -77,4 +77,28 @@ class ListSourceOpsTest {
     Assertions.assertEquals(12, result.get(0))
     Assertions.assertEquals(16, result.get(1))
   }
+
+  @Test
+  def testFilter(): Unit = {
+    implicit val context: BaseContext = new BaseContext(PathMap.empty)
+    implicit val dsl: Dsl = BaseDsl()
+    val s = dsl.literal(List(0, 1, 2, 3, 4, 5, 6, 7)).filter(s => (s % 2) equalsTo 0)
+
+    val result = Evaluator.eval(s)
+    Assertions.assertNotNull(result)
+    Assertions.assertTrue(result.isDefined)
+    Assertions.assertEquals(List(0, 2, 4, 6), result.get)
+  }
+
+  @Test
+  def testDistinct(): Unit = {
+    implicit val context: BaseContext = new BaseContext(PathMap.empty)
+    implicit val dsl: Dsl = BaseDsl()
+    val s: Source[List[Int]] = List(0, 1, 2, 1, 3, 3, 4, 2, 5, 6, 7).distinct
+
+    val result = Evaluator.eval(s)
+    Assertions.assertNotNull(result)
+    Assertions.assertTrue(result.isDefined)
+    Assertions.assertEquals(List(0, 1, 2, 3, 4, 5, 6, 7), result.get)
+  }
 }

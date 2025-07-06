@@ -21,6 +21,12 @@ abstract class AbstractEval[T](implicit val dsl: Dsl) extends Eval[T] with Sourc
     override def evalI(implicit context: Context): Opt[D] = AbstractEval.this.eval.asInstanceOf[Opt[D]]
   }
 
+  override def equalsTo(another: Source[T]): Source[Boolean] = new AbstractEval[Boolean]() {
+    override def evalI(using context: Context): Opt[Boolean] = {
+      AbstractEval.this.eval.flatMap(l => another.asInstanceOf[Eval[T]].eval.map(r => l == r))
+    }
+  }
+
   override def eval(implicit context: Context): Opt[T] = {
     this.getCache(context.asInstanceOf[BaseContext])
       .getOrElse({

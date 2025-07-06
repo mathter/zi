@@ -11,13 +11,17 @@ trait Source[T] {
 
   def map[D, DS <: Source[D]](f: Source[T] => Source[D]): DS
 
-  def customOpt[D](f: Opt[T] => Opt[D]): Source[D]
+  infix def customOpt[D](f: Opt[T] => Opt[D]): Source[D]
 
-  def custom[D](f: T => D): Source[D]
+  infix def custom[D](f: T => D): Source[D]
 
-  def composite[T0](source: Source[T0]): Composite[T, T0]
+  infix def composite[T0](source: Source[T0]): Composite[T, T0]
 
   def list: Source[List[T]] = this.dsl.list(this)
 
   def as[D]: Source[D]
+
+  infix def equalsTo(another: Source[T]): Source[Boolean]
+
+  def ==(another: Source[T]): Source[Boolean] = this.equalsTo(another)
 }
