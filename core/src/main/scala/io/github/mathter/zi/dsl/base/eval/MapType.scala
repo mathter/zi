@@ -1,6 +1,6 @@
 package io.github.mathter.zi.dsl.base.eval
 
-import io.github.mathter.zi.`type`.Conversions
+import io.github.mathter.zi.conversions.{Conversions, DefaultConversions}
 import io.github.mathter.zi.data.Opt
 import io.github.mathter.zi.dsl.Dsl
 import io.github.mathter.zi.eval.{Context, Eval}
@@ -14,7 +14,7 @@ class MapType[T, D](val ctagT: ClassTag[T], implicit val ctagD: ClassTag[D], val
         implicit val tagT: ClassTag[T] = ctagT
         implicit val tagD: ClassTag[D] = ctagD
 
-        Conversions.default.map(value)
+        DefaultConversions.default.map(value)
       })
   }
 }
