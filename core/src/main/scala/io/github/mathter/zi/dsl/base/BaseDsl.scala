@@ -1,12 +1,13 @@
 package io.github.mathter.zi.dsl.base
 
+import io.github.mathter.zi.conversions.{Conversions, DefaultConversions}
 import io.github.mathter.zi.data.{Opt, PathMap}
 import io.github.mathter.zi.dsl.base.eval.*
 import io.github.mathter.zi.dsl.{base, *}
 import io.github.mathter.zi.eval.{Context, Eval}
 import io.github.mathter.zi.path.Path
 
-class BaseDsl extends Dsl {
+class BaseDsl(val conversions: Conversions = DefaultConversions.default) extends Dsl {
   implicit private val dsl: Dsl = this
 
   override def origin: Source[PathMap] =

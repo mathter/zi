@@ -7,7 +7,7 @@ import scala.reflect.ClassTag
 trait Source[T] {
   def dsl: Dsl
 
-  def map[D](using classTagT: ClassTag[T])(using classTagD: ClassTag[D]): Source[D]
+  def map[D](using classTagD: ClassTag[D]): Source[D]
 
   def map[D, DS <: Source[D]](f: Source[T] => Source[D]): DS
 

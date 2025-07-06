@@ -1,11 +1,12 @@
 package io.github.mathter.zi.dsl
 
+import io.github.mathter.zi.conversions.Conversions
 import io.github.mathter.zi.data.PathMap
 import io.github.mathter.zi.path.Path
 
-import scala.language.implicitConversions
-
 trait Dsl {
+  def conversions: Conversions
+
   def origin: Source[PathMap]
 
   def destination: Destination
