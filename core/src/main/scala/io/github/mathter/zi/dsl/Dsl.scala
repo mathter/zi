@@ -47,7 +47,7 @@ trait Dsl {
 
   def filter[T](source: Source[List[T]], p: Source[T] => Source[Boolean]): Source[List[T]]
 
-  def distinct[T](source: Source[List[T]]): Source[List[T]]
+  def distinctBy[K, T](source: Source[List[T]], key: Source[T] => Source[K]): Source[List[T]]
 }
 
 given [T](using dsl: Dsl): Conversion[T, Source[T]] with {

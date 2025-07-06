@@ -101,4 +101,16 @@ class ListSourceOpsTest {
     Assertions.assertTrue(result.isDefined)
     Assertions.assertEquals(List(0, 1, 2, 3, 4, 5, 6, 7), result.get)
   }
+
+  @Test
+  def testDistinctBy(): Unit = {
+    implicit val context: BaseContext = new BaseContext(PathMap.empty)
+    implicit val dsl: Dsl = BaseDsl()
+    val s: Source[List[Int]] = List(0, 1, 2, 1, 3, 3, 4, 2, 5, 6, 7).distinctBy(s => s % 2)
+
+    val result = Evaluator.eval(s)
+    Assertions.assertNotNull(result)
+    Assertions.assertTrue(result.isDefined)
+    Assertions.assertEquals(List(0, 1), result.get)
+  }
 }

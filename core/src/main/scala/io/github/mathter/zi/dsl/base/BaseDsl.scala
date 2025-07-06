@@ -70,8 +70,8 @@ class BaseDsl(val conversions: Conversions = DefaultConversions.default) extends
   override def filter[T](source: Source[List[T]], p: Source[T] => Source[Boolean]): Source[List[T]] =
     new FilterEval[T](source.asInstanceOf[Eval[List[T]]], p)
 
-  override def distinct[T](source: Source[List[T]]): Source[List[T]] =
-    new DistinctEval[T](source.asInstanceOf[Eval[List[T]]])
+  override def distinctBy[K, T](source: Source[List[T]], key: Source[T] => Source[K]): Source[List[T]] =
+    new DistinctEval[K, T](source.asInstanceOf[Eval[List[T]]], key)
 
   def terminals: Terminals = Terminals()
 }
