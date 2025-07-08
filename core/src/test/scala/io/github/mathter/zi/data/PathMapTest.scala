@@ -94,6 +94,41 @@ class PathMapTest {
     Assertions.assertTrue(list.isDefined)
     Assertions.assertEquals(4, list.get.length)
   }
+
+  @Test
+  def testKeys(): Unit = {
+    val pm = PathMap.empty
+
+    pm("p0/p01") = "p01"
+    pm("p0/p02") = "p02"
+    pm("p1") = "p1"
+    pm("p2") = "p2"
+
+    val keys = pm.keys
+    Assertions.assertNotNull(keys)
+    Assertions.assertEquals(3, keys.size)
+    Assertions.assertEquals(Set("p0", "p1", "p2").toString(), keys.toString())
+  }
+
+  @Test
+  def testEntries(): Unit = {
+    val pm = PathMap.empty
+
+    pm("p0/p01") = "p01"
+    pm("p0/p02") = "p02"
+    pm("p1") = "p1"
+    pm("p1") = "p1.2"
+    pm("p2") = "p2"
+
+    val entries = pm.entries
+    Assertions.assertNotNull(entries)
+    Assertions.assertEquals(3, entries.size)
+    Assertions.assertEquals(List("p0", "p1", "p2").toString(), entries.map(_._1).toString())
+    Assertions.assertEquals("p01", entries(0)._2.asInstanceOf[PathMap]("p01").get)
+    Assertions.assertEquals("p02", entries(0)._2.asInstanceOf[PathMap]("p02").get)
+    Assertions.assertEquals(List("p1", "p1.2").fold("")(_ + _), entries(1)._2.asInstanceOf[List[String]].fold("")(_ + _))
+    Assertions.assertEquals("p2", entries(2)._2)
+  }
 }
 
 object PathMapTest {

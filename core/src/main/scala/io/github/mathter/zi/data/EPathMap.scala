@@ -70,6 +70,25 @@ private class EPathMap(private val map: InnerMap = new InnerMap) extends PathMap
     tmp.getOrElseUpdate(paths.last, EPathMap.newQueue).addOne(this.translate(value))
   }
 
+  override def keys: Set[Path] = this.map.keySet.toSet
+
+  override def entries: List[(Path, ?)] = {
+    this.map.keySet
+      .map(key =>
+        (
+          key, {
+          val values = this.map(key).map(value => this.reverseTranslate(value))
+          values.length match {
+            case 0 =>
+            case 1 => values.head
+            case _ => values.toList
+          }
+        }
+        )
+      )
+      .toList
+  }
+
   private def reverseTranslate(value: Any): Any = {
     value match {
       case map: InnerMap => new EPathMap(map)

@@ -12,6 +12,10 @@ trait PathMap {
   def put[T](path: Path, value: T): Unit = update(path, value)
 
   def update[T](path: Path, value: T): Unit
+
+  def keys: Set[Path]
+
+  def entries: List[(Path, ?)]
 }
 
 object PathMap {
