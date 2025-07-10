@@ -1,6 +1,6 @@
 package io.github.mathter.zi.conversions
 
-import java.time.{LocalDate, LocalDateTime, LocalTime, OffsetDateTime, ZonedDateTime}
+import java.time.*
 import java.time.format.DateTimeFormatter
 import java.util.UUID
 import scala.reflect.ClassTag

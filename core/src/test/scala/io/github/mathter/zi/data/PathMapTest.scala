@@ -5,6 +5,8 @@ import io.github.mathter.zi.path.Path
 import org.apache.commons.lang3.RandomStringUtils
 import org.junit.jupiter.api.{Assertions, Test}
 
+import java.io.{ByteArrayInputStream, ByteArrayOutputStream, ObjectInputStream, ObjectOutputStream}
+
 class PathMapTest {
   @Test
   def testGet(): Unit = {
@@ -128,6 +130,24 @@ class PathMapTest {
     Assertions.assertEquals("p02", entries(0)._2.asInstanceOf[PathMap]("p02").get)
     Assertions.assertEquals(List("p1", "p1.2").fold("")(_ + _), entries(1)._2.asInstanceOf[List[String]].fold("")(_ + _))
     Assertions.assertEquals("p2", entries(2)._2)
+  }
+
+  @Test
+  def testSerializable(): Unit = {
+    val pm = PathMap.empty
+    pm("p0/p1") = 10
+
+    val baos = new ByteArrayOutputStream()
+    val os = new ObjectOutputStream(baos)
+
+    os.writeObject(pm)
+    os.close()
+
+    val io = new ObjectInputStream(new ByteArrayInputStream(baos.toByteArray))
+
+    val result = io.readObject().asInstanceOf[PathMap]
+    Assertions.assertNotNull(result)
+    Assertions.assertEquals(10, result("p0/p1").get.asInstanceOf[Int])
   }
 }
 

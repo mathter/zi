@@ -2,9 +2,10 @@ package io.github.mathter.zi.data
 
 import io.github.mathter.zi.path.Path
 
-import scala.collection.mutable
+import scala.collection.generic.DefaultSerializationProxy
+import scala.collection.{Factory, mutable}
 
-private class EPathMap(private val map: InnerMap = new InnerMap) extends PathMap {
+private class EPathMap(private val map: InnerMap = new InnerMap) extends PathMap with Serializable {
   override def apply[T](path: Path): Opt[T] = {
     val paths = path.expand.map(_.local)
     val valuesMapList: List[InnerMap] = if (paths.length > 1) {
@@ -108,5 +109,13 @@ private object EPathMap {
   private def newQueue: mutable.Queue[Any] = mutable.Queue.empty
 }
 
-private class InnerMap extends mutable.HashMap[Path, mutable.Queue[Any]] {
+class InnerMap extends mutable.HashMap[Path, mutable.Queue[Any]] with Serializable {
+  protected override def writeReplace(): AnyRef = new DefaultSerializationProxy(new DeserializationFactory, this)
+
+  private class DeserializationFactory extends Factory[(Path, mutable.Queue[Any]), InnerMap] with Serializable {
+    override def fromSpecific(it: IterableOnce[(Path, mutable.Queue[Any])]): InnerMap = new InnerMap().addAll(it)
+
+    override def newBuilder: mutable.Builder[(Path, mutable.Queue[Any]), InnerMap] =
+      new mutable.GrowableBuilder(new InnerMap())
+  }
 }
