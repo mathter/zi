@@ -1,0 +1,81 @@
+<book>
+    <title>Clean Code: A Handbook of Agile Software Craftsmanship</title>
+    <authors>
+        <author>Robert C. Martin</author>
+    </authors>
+    <isbn>978-0-13-235088-4</isbn>
+    <content>
+        <chapter>
+            <title>Chapter 1: Clean Code</title>
+            <page>
+                <number>1</number>
+            </page>
+        </chapter>
+        <chapter>
+            <title>Chapter 2: Meaningful Names ...</title>
+            <page>
+                <number>17</number>
+            </page>
+        </chapter>
+        <chapter>
+            <title>Chapter 3: Functions</title>
+            <page>
+                <number>31</number>
+            </page>
+        </chapter>
+        <chapter>
+            <title>Chapter 4: Comments</title>
+            <page>
+                <number>53</number>
+            </page>
+        </chapter>
+        <chapter>
+            <title>Chapter 5: Formatting</title>
+            <page>
+                <number>75</number>
+            </page>
+        </chapter>
+        <chapter>
+            <title>Chapter 6: Objects and Data Structures</title>
+            <page>
+                <number>93</number>
+            </page>
+        </chapter>
+        <chapter>
+            <title>Chapter 7: Error Handling</title>
+            <page>
+                <number>103</number>
+            </page>
+        </chapter>
+        <chapter>
+            <title>Chapter 8: Boundaries</title>
+            <page>
+                <number>113</number>
+            </page>
+        </chapter>
+        <chapter>
+            <title>Chapter 9: Unit Tests</title>
+            <page>
+                <number>121</number>
+            </page>
+        </chapter>
+        <chapter>
+            <title>Chapter 10: Classes</title>
+            <page>
+                <number>135</number>
+            </page>
+        </chapter>
+        <chapter>
+            <title>Chapter 11: Systems</title>
+            <page>
+                <number>153</number>
+            </page>
+        </chapter>
+        <chapter>
+            <title>Chapter 12: Emergence</title>
+            <page>
+                <number>171</number>
+            </page>
+        </chapter>
+    </content>
+</book>
