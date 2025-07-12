@@ -1,4 +1,4 @@
-package io.github.mathter.zi
+package io.github.mathter.zi.data
 
 package object xml {
   extension (x: String) {

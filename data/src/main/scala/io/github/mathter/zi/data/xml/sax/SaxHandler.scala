@@ -1,8 +1,8 @@
-package io.github.mathter.zi.xml.sax
+package io.github.mathter.zi.data.xml.sax
 
 import io.github.mathter.zi.data.PathMap
 import io.github.mathter.zi.path.Path
-import io.github.mathter.zi.xml.*
+import io.github.mathter.zi.data.xml.*
 import org.xml.sax.Attributes
 import org.xml.sax.ext.DefaultHandler2
 
@@ -10,15 +10,15 @@ import scala.collection.mutable
 
 class SaxHandler extends DefaultHandler2 {
 
-  private var level = -1
+  protected var level = -1
 
-  private val pathByLavel: mutable.Map[Int, mutable.Map[(String, String), Path]] = mutable.Map.empty
+  protected val pathByLavel: mutable.Map[Int, mutable.Map[(String, String), Path]] = mutable.Map.empty
 
-  private val pathStack: mutable.Stack[Path] = mutable.Stack.empty
+  protected val pathStack: mutable.Stack[Path] = mutable.Stack.empty
 
-  private val pathMapStack: mutable.Stack[PathMap] = mutable.Stack.empty
+  protected val pathMapStack: mutable.Stack[PathMap] = mutable.Stack.empty
 
-  private var content: String = null
+  protected var content: String = null
 
   def result: PathMap = this.pathMapStack.head
 

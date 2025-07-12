@@ -2,6 +2,8 @@ package io.github.mathter.zi.data
 
 import io.github.mathter.zi.path.Path
 
+import java.util
+import scala.collection
 import scala.collection.generic.DefaultSerializationProxy
 import scala.collection.{Factory, mutable}
 
@@ -88,6 +90,54 @@ private class EPathMap(private val map: InnerMap = new InnerMap) extends PathMap
         )
       )
       .toList
+  }
+
+  override def toMap[K](f: Path => K = p => p.segment): collection.Map[K, Any] = this.flat(this)(using f)
+
+  override def toJavaMap[K](f: Path => K): util.Map[K, Object] = this.flatAsJava(this)(using f)
+
+  protected def flat[K](pathMap: PathMap)(using f: Path => K): collection.Map[K, Any] = {
+    pathMap.entries
+      .map(t => {
+        (
+          f(t._1),
+          t._2 match {
+            case pm: PathMap => this.flat(pm)
+            case list: List[?] => list.map {
+              case pm: PathMap => this.flat(pm)
+              case e => e
+            }
+            case _ => t._2
+          }
+        )
+      })
+      .foldLeft(mutable.Map.empty)((m, t) => {
+        m.put(t._1, t._2.asInstanceOf[Object])
+        m
+      })
+  }
+
+  protected def flatAsJava[K](pathMap: PathMap)(using f: Path => K): util.Map[K, Object] = {
+    import scala.jdk.CollectionConverters.*
+
+    pathMap.entries
+      .map(t => {
+        (
+          f(t._1),
+          t._2 match {
+            case pm: PathMap => this.flatAsJava(pm)
+            case list: List[?] => list.map {
+              case pm: PathMap => this.flatAsJava(pm)
+              case e => e
+            }.asJavaCollection.asInstanceOf[Object]
+            case _ => t._2
+          }
+        )
+      })
+      .foldLeft(new util.HashMap)((m, t) => {
+        m.put(t._1, t._2.asInstanceOf[Object])
+        m
+      })
   }
 
   private def reverseTranslate(value: Any): Any = {

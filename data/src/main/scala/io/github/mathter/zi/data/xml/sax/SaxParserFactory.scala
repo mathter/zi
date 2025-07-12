@@ -1,6 +1,6 @@
-package io.github.mathter.zi.xml.sax
+package io.github.mathter.zi.data.xml.sax
 
-import io.github.mathter.zi.xml.{XmlParser, XmlParserFactory}
+import io.github.mathter.zi.data.xml.{XmlParser, XmlParserFactory}
 
 import javax.xml.parsers.SAXParserFactory
 

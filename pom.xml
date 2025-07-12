@@ -27,6 +27,16 @@
                 <version>1.0.0-SNAPSHOT</version>
             </dependency>
             <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>2.19.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>2.19.1</version>
+            </dependency>
+            <dependency>
                 <groupId>org.scala-lang</groupId>
                 <artifactId>scala3-library_3</artifactId>
                 <version>${scala.version}</version>
@@ -58,6 +68,12 @@
                 <version>5.13.1</version>
                 <scope>test</scope>
             </dependency>
+            <dependency>
+                <groupId>net.javacrumbs.json-unit</groupId>
+                <artifactId>json-unit-assertj</artifactId>
+                <version>4.1.1</version>
+                <scope>test</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -69,7 +85,7 @@
                     <artifactId>scala-maven-plugin</artifactId>
                     <version>4.8.1</version>
                     <configuration>
-                        <recompileMode>incremental</recompileMode>
+                        <!--                        <recompileMode>incremental</recompileMode>-->
                         <scalaVersion>${scala.version}</scalaVersion>
                     </configuration>
                     <executions>

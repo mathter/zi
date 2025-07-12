@@ -2,6 +2,8 @@ package io.github.mathter.zi.data
 
 import io.github.mathter.zi.path.Path
 
+import java.util
+
 trait PathMap {
   def apply[T](path: Path): Opt[T]
 
@@ -16,6 +18,10 @@ trait PathMap {
   def keys: Set[Path]
 
   def entries: List[(Path, ?)]
+
+  def toMap[K](f: Path => K): collection.Map[K, Any]
+
+  def toJavaMap[K](f: Path => K): util.Map[K, Object]
 }
 
 object PathMap {
