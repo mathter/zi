@@ -159,7 +159,7 @@ private object EPathMap {
   private def newQueue: mutable.Queue[Any] = mutable.Queue.empty
 }
 
-class InnerMap extends mutable.HashMap[Path, mutable.Queue[Any]] with Serializable {
+class InnerMap extends mutable.LinkedHashMap[Path, mutable.Queue[Any]] with Serializable {
   protected override def writeReplace(): AnyRef = new DefaultSerializationProxy(new DeserializationFactory, this)
 
   private class DeserializationFactory extends Factory[(Path, mutable.Queue[Any]), InnerMap] with Serializable {
