@@ -6,7 +6,7 @@ import io.github.mathter.zi.eval.{Context, Eval}
 
 class ResultEval[T](val tag: Eval[Any])(implicit dsl: Dsl) extends AbstractAcceptorEval[T](
   (opt, context) => {
-    tag.eval(context).flatMap(e => context.target(e, opt))
+    tag.eval(using context).flatMap(e => context.target(e, opt))
   }
 ) {
   override def evalI(implicit context: Context): Opt[T] = {
