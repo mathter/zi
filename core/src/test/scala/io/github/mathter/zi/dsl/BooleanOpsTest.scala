@@ -2,8 +2,7 @@ package io.github.mathter.zi.dsl
 
 import io.github.mathter.zi.data.PathMap
 import io.github.mathter.zi.dsl.base.BaseDsl
-import io.github.mathter.zi.dsl.base.eval.BaseContext
-import io.github.mathter.zi.eval.Evaluator
+import io.github.mathter.zi.dsl.base.eval.{BaseContext, Evaluator}
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.{Arguments, MethodSource}
@@ -18,7 +17,7 @@ class BooleanOpsTest {
     val dsl: Dsl = BaseDsl()
     val s = dsl.literal(x) and dsl.literal(y)
 
-    Assertions.assertEquals(r, Evaluator.eval(s).get)
+    Assertions.assertEquals(r, Evaluator.evalSource(s).get)
   }
 
   @ParameterizedTest
@@ -28,7 +27,7 @@ class BooleanOpsTest {
     val dsl: Dsl = BaseDsl()
     val s = dsl.literal(x) && dsl.literal(y)
 
-    Assertions.assertEquals(r, Evaluator.eval(s).get)
+    Assertions.assertEquals(r, Evaluator.evalSource(s).get)
   }
 
   @ParameterizedTest
@@ -38,7 +37,7 @@ class BooleanOpsTest {
     val dsl: Dsl = BaseDsl()
     val s = dsl.literal(x) or dsl.literal(y)
 
-    Assertions.assertEquals(r, Evaluator.eval(s).get)
+    Assertions.assertEquals(r, Evaluator.evalSource(s).get)
   }
 
   @ParameterizedTest
@@ -48,7 +47,7 @@ class BooleanOpsTest {
     val dsl: Dsl = BaseDsl()
     val s = dsl.literal(x) || dsl.literal(y)
 
-    Assertions.assertEquals(r, Evaluator.eval(s).get)
+    Assertions.assertEquals(r, Evaluator.evalSource(s).get)
   }
 
   @ParameterizedTest
@@ -58,7 +57,7 @@ class BooleanOpsTest {
     val dsl: Dsl = BaseDsl()
     val s = dsl.literal(x) xor dsl.literal(y)
 
-    Assertions.assertEquals(r, Evaluator.eval(s).get)
+    Assertions.assertEquals(r, Evaluator.evalSource(s).get)
   }
 
   @ParameterizedTest
@@ -68,7 +67,7 @@ class BooleanOpsTest {
     val dsl: Dsl = BaseDsl()
     val s = dsl.literal(x) ^ dsl.literal(y)
 
-    Assertions.assertEquals(r, Evaluator.eval(s).get)
+    Assertions.assertEquals(r, Evaluator.evalSource(s).get)
   }
 
   @ParameterizedTest
@@ -78,7 +77,7 @@ class BooleanOpsTest {
     val dsl: Dsl = BaseDsl()
     val s = dsl.literal(x).not
 
-    Assertions.assertEquals(r, Evaluator.eval(s).get)
+    Assertions.assertEquals(r, Evaluator.evalSource(s).get)
   }
 
   @ParameterizedTest
@@ -88,7 +87,7 @@ class BooleanOpsTest {
     val dsl: Dsl = BaseDsl()
     val s = !dsl.literal(x)
 
-    Assertions.assertEquals(r, Evaluator.eval(s).get)
+    Assertions.assertEquals(r, Evaluator.evalSource(s).get)
   }
 }
 

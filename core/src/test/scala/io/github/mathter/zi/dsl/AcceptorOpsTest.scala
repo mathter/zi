@@ -1,0 +1,45 @@
+package io.github.mathter.zi.dsl
+
+import io.github.mathter.zi.data.PathMap
+import io.github.mathter.zi.dsl.base.BaseDsl
+import io.github.mathter.zi.dsl.base.eval.{BaseContext, Evaluator}
+import io.github.mathter.zi.eval.Terminal
+import org.junit.jupiter.api.{Assertions, Test}
+
+class AcceptorOpsTest {
+  @Test
+  def test(): Unit = {
+    implicit val context: BaseContext = new BaseContext(PathMap.empty)
+    implicit val dsl: Dsl = BaseDsl()
+
+    val a = dsl.result;
+    Assertions.assertNotNull(a)
+    val a0 = dsl.result[PathMap].by[String]("p0")
+    Assertions.assertNotNull(a0)
+
+    var r = Evaluator.evalSource(a0)
+    Assertions.assertNotNull(r)
+    Assertions.assertTrue(r.isEmpty)
+
+    Evaluator.eval(dsl.result.from(PathMap.empty).asInstanceOf[Terminal])
+    val s0 = a0.from(dsl.literal("Hello"))
+    Assertions.assertNotNull(s0)
+    r = Evaluator.eval(s0)
+    Assertions.assertNotNull(r)
+    Assertions.assertEquals("Hello", r.get)
+
+    r = Evaluator.evalSource(a0)
+    Assertions.assertNotNull(r)
+    Assertions.assertEquals("Hello", r.get)
+  }
+
+  @Test
+  def testUpdate(): Unit = {
+    implicit val context: BaseContext = new BaseContext(PathMap.empty)
+    implicit val dsl: Dsl = BaseDsl()
+
+    Evaluator.eval(dsl.result.from(dsl.literal(PathMap.empty)))
+    Evaluator.evalSource(dsl.result("p0") = "Hello")
+    println(dsl.result)
+  }
+}

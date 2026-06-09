@@ -16,6 +16,6 @@ class JsonSerializerLoadTest {
     for (i <- 0 to 1_000_000) {
       serializer.serialize(pm)
     }
-    println((System.nanoTime() - start) / 1_000_000_000.0)
+    println((System.nanoTime() - start) / 1_000_000_000.0 / 1_000_000)
   }
 }

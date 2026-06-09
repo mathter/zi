@@ -2,8 +2,7 @@ package io.github.mathter.zi.dsl
 
 import io.github.mathter.zi.data.PathMap
 import io.github.mathter.zi.dsl.base.*
-import io.github.mathter.zi.dsl.base.eval.BaseContext
-import io.github.mathter.zi.eval.Evaluator
+import io.github.mathter.zi.dsl.base.eval.{BaseContext, Evaluator}
 import org.junit.jupiter.api.{Assertions, Test}
 
 class ListSourceOpsTest {
@@ -12,9 +11,9 @@ class ListSourceOpsTest {
     implicit val context: BaseContext = new BaseContext(PathMap.empty)
     val dsl: Dsl = BaseDsl()
     val s = dsl.literal(List(1, 2, 3)).first
-    val v = Evaluator.eval(s)
+    val v = Evaluator.evalSource(s)
 
-    Assertions.assertEquals(1, Evaluator.eval(s).get)
+    Assertions.assertEquals(1, Evaluator.evalSource(s).get)
   }
 
   @Test
@@ -22,9 +21,9 @@ class ListSourceOpsTest {
     implicit val context: BaseContext = new BaseContext(PathMap.empty)
     val dsl: Dsl = BaseDsl()
     val s = dsl.literal(List(1, 2, 3)).last
-    val v = Evaluator.eval(s)
+    val v = Evaluator.evalSource(s)
 
-    Assertions.assertEquals(3, Evaluator.eval(s).get)
+    Assertions.assertEquals(3, Evaluator.evalSource(s).get)
   }
 
   @Test
@@ -33,7 +32,7 @@ class ListSourceOpsTest {
     val dsl: Dsl = BaseDsl()
     val s = dsl.literal(List(1, 2, 3, 4, 5)).index(dsl.literal(2))
 
-    Assertions.assertEquals(3, Evaluator.eval(s).get)
+    Assertions.assertEquals(3, Evaluator.evalSource(s).get)
   }
 
   @Test
@@ -42,7 +41,7 @@ class ListSourceOpsTest {
     val dsl: Dsl = BaseDsl()
     val s = dsl.literal(List(1, 2, 3)).mapElem(e => e + dsl.literal(1))
 
-    Assertions.assertEquals(List(2, 3, 4), Evaluator.eval(s).get)
+    Assertions.assertEquals(List(2, 3, 4), Evaluator.evalSource(s).get)
   }
 
   @Test
@@ -52,7 +51,7 @@ class ListSourceOpsTest {
     val s = dsl.literal(List(0, 1, 2, 3, 4, 5, 6, 7))
       .group(s => s % dsl.literal(2))
 
-    val result = Evaluator.eval(s)
+    val result = Evaluator.evalSource(s)
     Assertions.assertNotNull(result)
     Assertions.assertTrue(result.isDefined)
     Assertions.assertEquals(2, result.get.size)
@@ -70,7 +69,7 @@ class ListSourceOpsTest {
       .group(s => s % dsl.literal(2))
       .apply((l: Source[Int], r: Source[List[Int]]) => r.custom(_.sum))
 
-    val result = Evaluator.eval(s)
+    val result = Evaluator.evalSource(s)
     Assertions.assertNotNull(result)
     Assertions.assertTrue(result.isDefined)
     Assertions.assertEquals(2, result.get.size)
@@ -84,7 +83,7 @@ class ListSourceOpsTest {
     implicit val dsl: Dsl = BaseDsl()
     val s = dsl.literal(List(0, 1, 2, 3, 4, 5, 6, 7)).filter(s => (s % 2) equalsTo 0)
 
-    val result = Evaluator.eval(s)
+    val result = Evaluator.evalSource(s)
     Assertions.assertNotNull(result)
     Assertions.assertTrue(result.isDefined)
     Assertions.assertEquals(List(0, 2, 4, 6), result.get)
@@ -96,7 +95,7 @@ class ListSourceOpsTest {
     implicit val dsl: Dsl = BaseDsl()
     val s: Source[List[Int]] = List(0, 1, 2, 1, 3, 3, 4, 2, 5, 6, 7).distinct
 
-    val result = Evaluator.eval(s)
+    val result = Evaluator.evalSource(s)
     Assertions.assertNotNull(result)
     Assertions.assertTrue(result.isDefined)
     Assertions.assertEquals(List(0, 1, 2, 3, 4, 5, 6, 7), result.get)
@@ -108,7 +107,7 @@ class ListSourceOpsTest {
     implicit val dsl: Dsl = BaseDsl()
     val s: Source[List[Int]] = List(0, 1, 2, 1, 3, 3, 4, 2, 5, 6, 7).distinctBy(s => s % 2)
 
-    val result = Evaluator.eval(s)
+    val result = Evaluator.evalSource(s)
     Assertions.assertNotNull(result)
     Assertions.assertTrue(result.isDefined)
     Assertions.assertEquals(List(0, 1), result.get)

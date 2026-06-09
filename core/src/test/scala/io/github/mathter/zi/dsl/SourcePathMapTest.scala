@@ -2,8 +2,7 @@ package io.github.mathter.zi.dsl
 
 import io.github.mathter.zi.data.PathMap
 import io.github.mathter.zi.dsl.base.BaseDsl
-import io.github.mathter.zi.dsl.base.eval.BaseContext
-import io.github.mathter.zi.eval.Evaluator
+import io.github.mathter.zi.dsl.base.eval.{BaseContext, Evaluator}
 import org.junit.jupiter.api.{Assertions, Test}
 
 class SourcePathMapTest {
@@ -18,7 +17,7 @@ class SourcePathMapTest {
 
     val s = dsl.literal(pm)
 
-    val result = Evaluator.eval(s)
+    val result = Evaluator.evalSource(s)
     Assertions.assertTrue(result.isDefined)
     Assertions.assertEquals("value1", result.get("path0/path1").get)
     Assertions.assertEquals(2, result.flatMap(_[List[Any]]("path0").map(_.length)).get)

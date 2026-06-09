@@ -28,12 +28,13 @@ abstract class AbstractEval[T](implicit val dsl: Dsl) extends Eval[T] with Sourc
   }
 
   override def eval(implicit context: Context): Opt[T] = {
-    this.getCache(context.asInstanceOf[BaseContext])
-      .getOrElse({
-        val option = this.evalI(context)
-        this.putCache(option, context.asInstanceOf[BaseContext])
-        option
-      })
+    //    this.getCache(context.asInstanceOf[BaseContext])
+    //      .getOrElse({
+    //        val option = this.evalI(context)
+    //        this.putCache(option, context.asInstanceOf[BaseContext])
+    //        option
+    //      })
+    this.evalI(context)
   }
 
   def isNothing[X](value: X): Boolean = {
