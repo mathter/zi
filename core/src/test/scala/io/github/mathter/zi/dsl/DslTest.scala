@@ -26,6 +26,30 @@ class DslTest {
   }
 
   @Test
+  def testObj(): Unit = {
+    implicit val context: BaseContext = new BaseContext(PathMap.empty)
+    implicit val dsl: Dsl = BaseDsl()
+
+    val a = dsl.obj
+    Assertions.assertNotNull(a)
+    val v = Evaluator.evalSource(a)
+    Assertions.assertNotNull(v)
+    Assertions.assertTrue(v.isDefined)
+
+    val f: Acceptor[String] = a.by("p0")
+    Assertions.assertNotNull(f)
+    val fv = Evaluator.evalSource(f)
+    Assertions.assertNotNull(fv)
+    Assertions.assertTrue(fv.isEmpty)
+
+    val t = f.from("Hello")
+    Assertions.assertNotNull(t)
+    val fv2 = Evaluator.eval(t)
+    Assertions.assertNotNull(fv2)
+    Assertions.assertEquals("Hello", fv2.get)
+  }
+
+  @Test
   def literalTest(): Unit = {
     implicit val context: BaseContext = new BaseContext(PathMap.empty)
     val dsl: Dsl = BaseDsl()
