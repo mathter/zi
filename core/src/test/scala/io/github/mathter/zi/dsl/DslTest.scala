@@ -2,18 +2,37 @@ package io.github.mathter.zi.dsl
 
 import io.github.mathter.zi.data.*
 import io.github.mathter.zi.dsl.base.BaseDsl
-import io.github.mathter.zi.dsl.base.eval.BaseContext
-import io.github.mathter.zi.eval.{Evaluator, Terminal}
+import io.github.mathter.zi.dsl.base.eval.{BaseContext, Evaluator}
+import org.apache.commons.lang3.RandomStringUtils
 import org.junit.jupiter.api.{Assertions, Test}
 
 class DslTest {
   @Test
+  def testResult(): Unit = {
+    implicit val context: BaseContext = new BaseContext(PathMap.empty)
+    implicit val dsl: Dsl = BaseDsl()
+
+    val a: Acceptor[String] = dsl.result
+    Assertions.assertNotNull(a)
+
+    var o = Evaluator.evalSource(a)
+    Assertions.assertNotNull(o)
+    Assertions.assertTrue(o.isEmpty)
+
+    val s = a.from("hello")
+    o = Evaluator.eval(s)
+    Assertions.assertNotNull(o)
+    Assertions.assertEquals("hello", o.get)
+  }
+
+  @Test
   def literalTest(): Unit = {
     implicit val context: BaseContext = new BaseContext(PathMap.empty)
     val dsl: Dsl = BaseDsl()
-    val s = dsl.literal("Hello")
+    val value = RandomStringUtils.insecure().nextAlphabetic(10)
+    val s = dsl.literal(value)
 
-    Assertions.assertEquals(Opt("Hello"), Evaluator.eval(s))
+    Assertions.assertEquals(Opt(value), Evaluator.evalSource(s))
   }
 
   @Test
@@ -22,7 +41,7 @@ class DslTest {
     val dsl: Dsl = BaseDsl()
     val s = dsl.nothing[String]
 
-    Assertions.assertEquals(Opt.empty, Evaluator.eval(s))
+    Assertions.assertEquals(Opt.empty, Evaluator.evalSource(s))
   }
 
   @Test
@@ -31,7 +50,7 @@ class DslTest {
     val dsl: Dsl = BaseDsl()
     val s = dsl.nil[String]
 
-    Assertions.assertEquals(Opt(null), Evaluator.eval(s))
+    Assertions.assertEquals(Opt(null), Evaluator.evalSource(s))
   }
 
   @Test
@@ -41,7 +60,7 @@ class DslTest {
     val s0 = dsl.literal(1)
     val s1 = s0.customOpt(option => option.map(_ + 1))
 
-    Assertions.assertEquals(Opt(2), Evaluator.eval(s1))
+    Assertions.assertEquals(Opt(2), Evaluator.evalSource(s1))
   }
 
   @Test
@@ -51,39 +70,28 @@ class DslTest {
     val s0: Source[Int] = dsl.nothing
     val s1 = s0.customOpt(option => option.map(_ + 1))
 
-    Assertions.assertEquals(Opt.empty, Evaluator.eval(s1))
+    Assertions.assertEquals(Opt.empty, Evaluator.evalSource(s1))
   }
 
   @Test
   def testCustom(): Unit = {
     implicit val context: BaseContext = new BaseContext(PathMap.empty)
     val dsl: Dsl = BaseDsl()
-    val s: Source[String] = dsl.literal("Hello").custom(s => s.toUpperCase)
+    val value = RandomStringUtils.insecure().nextAlphabetic(10)
+    val s: Source[String] = dsl.literal(value).custom(s => s.toUpperCase)
 
-    Assertions.assertEquals("HELLO", Evaluator.eval(s).get)
+    Assertions.assertEquals(value.toUpperCase, Evaluator.evalSource(s).get)
   }
 
   @Test
   def testComposite(): Unit = {
     implicit val context: BaseContext = new BaseContext(PathMap.empty)
     val dsl: Dsl = BaseDsl()
-    val s: Source[String] = dsl.literal("Hello").composite(dsl.literal(" World!")).fun(_ + _)
+    val value0 = RandomStringUtils.insecure().nextAlphabetic(10)
+    val value1 = RandomStringUtils.insecure().nextAlphabetic(10)
+    val s: Source[String] = dsl.literal(value0).composite(dsl.literal(value1)).fun(_ + _)
 
-    Assertions.assertEquals("Hello World!", Evaluator.eval(s).get)
-  }
-
-  @Test
-  def testDestinationFromPathMap(): Unit = {
-    implicit val context: BaseContext = new BaseContext(PathMap.empty)
-    val dsl: Dsl = BaseDsl()
-    val pm = PathMap.empty
-    val s = dsl.literal(pm)
-
-    val terminal = dsl.destination.from(s)
-    Evaluator.eval(terminal.asInstanceOf[Terminal])
-
-    Assertions.assertEquals(1, context.destinations.size)
-    Assertions.assertEquals(pm, context.destinations.values.head)
+    Assertions.assertEquals(value0 + value1, Evaluator.evalSource(s).get)
   }
 
   @Test
@@ -91,32 +99,10 @@ class DslTest {
     implicit val context: BaseContext = new BaseContext(PathMap.empty)
     val dsl: Dsl = BaseDsl()
     val s = dsl.literal(10).list
-    val result = Evaluator.eval(s)
+    val result = Evaluator.evalSource(s)
 
     Assertions.assertEquals(1, result.get.size)
     Assertions.assertEquals(10, result.get.head)
-  }
-
-  @Test
-  def testObj0(): Unit = {
-    implicit val context: BaseContext = new BaseContext(PathMap.empty)
-    val dsl: Dsl = BaseDsl()
-    val s = dsl.obj
-
-    Assertions.assertNotNull(Evaluator.eval(s))
-  }
-
-  @Test
-  def testObj1(): Unit = {
-    implicit val context: BaseContext = new BaseContext(PathMap.empty)
-    val dsl: Dsl = BaseDsl()
-    val s = dsl.obj
-    val s0 = s.by[String]("level0/level1").from(dsl.literal("Hello World!"))
-
-    Evaluator.eval(s0.asInstanceOf[Source[String]])
-    val result = Evaluator.eval(s).get
-    Assertions.assertNotNull(result)
-    Assertions.assertEquals("Hello World!", result("level0/level1").get)
   }
 
   @Test
@@ -124,7 +110,7 @@ class DslTest {
     implicit val context: BaseContext = new BaseContext(PathMap.empty)
     val dsl: Dsl = BaseDsl()
     val s = dsl.fls
-    val v = Evaluator.eval(s)
+    val v = Evaluator.evalSource(s)
     Assertions.assertFalse(v.get)
   }
 
@@ -133,7 +119,7 @@ class DslTest {
     implicit val context: BaseContext = new BaseContext(PathMap.empty)
     val dsl: Dsl = BaseDsl()
     val s = dsl.tr
-    val v = Evaluator.eval(s)
+    val v = Evaluator.evalSource(s)
     Assertions.assertTrue(v.get)
   }
 
@@ -143,7 +129,7 @@ class DslTest {
     val dsl: Dsl = BaseDsl()
     val s = dsl.literal(10).as[AnyVal]
 
-    Assertions.assertEquals(10, Evaluator.eval(s).get)
+    Assertions.assertEquals(10, Evaluator.evalSource(s).get)
   }
 
   @Test
@@ -152,7 +138,7 @@ class DslTest {
     val dsl: Dsl = BaseDsl()
     val s = dsl.If(dsl.tr).Then(dsl.literal("Then"))
 
-    Assertions.assertEquals("Then", Evaluator.eval(s).get)
+    Assertions.assertEquals("Then", Evaluator.evalSource(s).get)
   }
 
   @Test
@@ -161,7 +147,7 @@ class DslTest {
     val dsl: Dsl = BaseDsl()
     val s = dsl.If(dsl.tr).Then(dsl.literal("Then")).Else(dsl.literal("Else"))
 
-    Assertions.assertEquals("Then", Evaluator.eval(s).get)
+    Assertions.assertEquals("Then", Evaluator.evalSource(s).get)
   }
 
   @Test
@@ -170,7 +156,7 @@ class DslTest {
     val dsl: Dsl = BaseDsl()
     val s = dsl.If(dsl.fls).Then(dsl.literal("Then")).Else(dsl.literal("Else"))
 
-    Assertions.assertEquals("Else", Evaluator.eval(s).get)
+    Assertions.assertEquals("Else", Evaluator.evalSource(s).get)
   }
 
   @Test
@@ -180,7 +166,7 @@ class DslTest {
     val s = dsl.If(dsl.fls).Then(dsl.literal("Then")).Else(dsl.literal("Else"))
       .If(dsl.tr).Then(dsl.literal("Then2"))
 
-    Assertions.assertEquals("Then2", Evaluator.eval(s).get)
+    Assertions.assertEquals("Then2", Evaluator.evalSource(s).get)
   }
 
   @Test
@@ -190,6 +176,6 @@ class DslTest {
     val s = dsl.If(dsl.fls).Then(dsl.literal("Then")).Else(dsl.literal("Else"))
       .If(dsl.fls).Then(dsl.literal("Then2")).Else(dsl.literal("Else2"))
 
-    Assertions.assertEquals("Else2", Evaluator.eval(s).get)
+    Assertions.assertEquals("Else2", Evaluator.evalSource(s).get)
   }
 }

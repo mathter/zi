@@ -2,25 +2,20 @@ package io.github.mathter.zi.dsl.base
 
 import io.github.mathter.zi.conversions.{Conversions, DefaultConversions}
 import io.github.mathter.zi.data.{Opt, PathMap}
+import io.github.mathter.zi.dsl.base.BaseDsl.DEFAULT_DESTINATION_TAG
 import io.github.mathter.zi.dsl.base.eval.*
-import io.github.mathter.zi.dsl.{base, *}
+import io.github.mathter.zi.dsl.{Acceptor, Dsl, Group, If, Source}
 import io.github.mathter.zi.eval.{Context, Eval}
 import io.github.mathter.zi.path.Path
 
 class BaseDsl(val conversions: Conversions = DefaultConversions.default) extends Dsl {
   implicit private val dsl: Dsl = this
 
-  override def origin: Source[PathMap] =
-    new OriginSourceEval()
+  override def origin: Source[PathMap] = new OriginSourceEval()
 
-  override def destination: Destination =
-    this.destination(this.literal(BaseDsl.DEFAULT_DESTINATION_TAG))
+  override def result[T]: Acceptor[T] = this.result(this.literal(DEFAULT_DESTINATION_TAG))
 
-  override def destination(source: Source[?]): Destination =
-    new DestinationEval(source.asInstanceOf[Eval[Any]])
-
-  override def obj: Destination =
-    new ObjDestinationEval()
+  override def result[T](tag: Source[Any]): Acceptor[T] = new ResultEval[T](tag.asInstanceOf[Eval[Any]])
 
   override def literal[T](x: T): Source[T] =
     new CalculatedLiteralEval[T](() => x)
@@ -57,6 +52,10 @@ class BaseDsl(val conversions: Conversions = DefaultConversions.default) extends
   override def by[T](source: Source[PathMap], path: Path): Source[T] =
     new ByEval[T](source.asInstanceOf[Eval[PathMap]], path)
 
+  override def by[T](source: Acceptor[PathMap], path: Path): Acceptor[T] =
+    new PathMapByPathAcceptor[T](source.asInstanceOf[Eval[PathMap]], path)
+
+
   override def mapElem[T, D](source: Source[List[T]], f: Source[T] => Source[D]): Source[List[D]] = {
     new MapElemEval[T, D](source.asInstanceOf[Eval[List[T]]], f)
   }
@@ -72,8 +71,6 @@ class BaseDsl(val conversions: Conversions = DefaultConversions.default) extends
 
   override def distinctBy[K, T](source: Source[List[T]], key: Source[T] => Source[K]): Source[List[T]] =
     new DistinctEval[K, T](source.asInstanceOf[Eval[List[T]]], key)
-
-  def terminals: Terminals = Terminals()
 }
 
 object BaseDsl {

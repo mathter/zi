@@ -3,8 +3,7 @@ package io.github.mathter.zi.dsl
 import io.github.mathter.zi.data.PathMap
 import io.github.mathter.zi.dsl.*
 import io.github.mathter.zi.dsl.base.BaseDsl
-import io.github.mathter.zi.dsl.base.eval.BaseContext
-import io.github.mathter.zi.eval.Evaluator
+import io.github.mathter.zi.dsl.base.eval.{BaseContext, Evaluator}
 import org.junit.jupiter.api.{Assertions, Test}
 
 class StringSourceOpsTest {
@@ -14,7 +13,7 @@ class StringSourceOpsTest {
     val dsl: Dsl = BaseDsl()
     val s = dsl.literal("Hello").toUpperCase
 
-    Assertions.assertEquals("HELLO", Evaluator.eval(s).get)
+    Assertions.assertEquals("HELLO", Evaluator.evalSource(s).get)
   }
 
   @Test
@@ -23,7 +22,7 @@ class StringSourceOpsTest {
     val dsl: Dsl = BaseDsl()
     val s = dsl.literal("Hello").toLowerCase
 
-    Assertions.assertEquals("hello", Evaluator.eval(s).get)
+    Assertions.assertEquals("hello", Evaluator.evalSource(s).get)
   }
 
   @Test
@@ -32,11 +31,11 @@ class StringSourceOpsTest {
     val dsl: Dsl = BaseDsl()
     val s = dsl.literal("Hello").replace("^.*(ll).*$", "$1")
 
-    Assertions.assertEquals("ll", Evaluator.eval(s).get)
+    Assertions.assertEquals("ll", Evaluator.evalSource(s).get)
 
     val a: String => String = s => s.replaceAll("^.*(ll).*$", "$1")
     val s0 = dsl.literal("Hello").custom(a)
 
-    Assertions.assertEquals("ll", Evaluator.eval(s0).get)
+    Assertions.assertEquals("ll", Evaluator.evalSource(s0).get)
   }
 }

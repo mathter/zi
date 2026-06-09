@@ -1,11 +1,11 @@
 package io.github.mathter.zi.eval
 
-import io.github.mathter.zi.data.PathMap
+import io.github.mathter.zi.data.{Opt, PathMap}
 
 trait Context {
   def origin: PathMap
 
-  def destination(tag: Any): PathMap
+  def target[T](tag: Any): Opt[T]
 
-  def destination(tag: Any, pathMap: PathMap): Unit
+  def target[T](tag: Any, opt: Opt[T]): Opt[T]
 }

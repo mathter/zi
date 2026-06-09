@@ -9,11 +9,9 @@ trait Dsl {
 
   def origin: Source[PathMap]
 
-  def destination: Destination
+  def result[T]: Acceptor[T]
 
-  def destination(source: Source[?]): Destination
-
-  def obj: Destination
+  def result[T](tag: Source[Any]): Acceptor[T]
 
   def literal[T](x: T): Source[T]
 
@@ -38,6 +36,8 @@ trait Dsl {
   def unit[T](source: Source[T]): Source[T] = source
 
   def by[T](source: Source[PathMap], path: Path): Source[T]
+
+  def by[T](source: Acceptor[PathMap], path: Path): Acceptor[T]
 
   def mapElem[T, D](source: Source[List[T]], f: Source[T] => Source[D]): Source[List[D]]
 
