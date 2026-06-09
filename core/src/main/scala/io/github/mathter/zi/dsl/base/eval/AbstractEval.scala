@@ -37,17 +37,18 @@ abstract class AbstractEval[T](implicit val dsl: Dsl) extends Eval[T] with Sourc
     this.evalI(context)
   }
 
-  def isNothing[X](value: X): Boolean = {
-    value.isInstanceOf[Option[?]] && value.asInstanceOf[Option[?]].isEmpty
-  }
-
-  def putCache(opt: Opt[T], context: BaseContext): Unit = {
-    context.cache.put(this, opt)
-  }
-
-  def getCache(context: BaseContext): Option[Opt[T]] = {
-    context.cache.get(this).asInstanceOf[Option[Opt[T]]]
-  }
-
   def evalI(context: Context): Opt[T]
+}
+
+object AbstractEval {
+  def cachePut[T](opt: Opt[T], context: Context): Unit = {
+    context.asInstanceOf[BaseContext].cache.put(this, opt)
+  }
+
+  def cacheGet[T](context: Context): Opt[T] = {
+    context.asInstanceOf[BaseContext].cache.get(this).map(e => Opt(e.asInstanceOf[T])).getOrElse(Opt.empty)
+  }
+
+  def cacheGetOrElseUpdate[T](opt: Opt[T], context: Context): Opt[T] =
+    context.asInstanceOf[BaseContext].cache.getOrElseUpdate(this, opt).asInstanceOf[Opt[T]]
 }

@@ -13,6 +13,8 @@ trait Dsl {
 
   def result[T](tag: Source[Any]): Acceptor[T]
 
+  def obj: Acceptor[PathMap]
+
   def literal[T](x: T): Source[T]
 
   def literal[T](f: () => T): Source[T]

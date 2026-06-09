@@ -17,6 +17,8 @@ class BaseDsl(val conversions: Conversions = DefaultConversions.default) extends
 
   override def result[T](tag: Source[Any]): Acceptor[T] = new ResultEval[T](tag.asInstanceOf[Eval[Any]])
 
+  override def obj: Acceptor[PathMap] = new PathMapAcceptor
+
   override def literal[T](x: T): Source[T] =
     new CalculatedLiteralEval[T](() => x)
 
