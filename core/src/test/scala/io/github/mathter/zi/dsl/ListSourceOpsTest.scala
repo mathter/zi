@@ -93,7 +93,7 @@ class ListSourceOpsTest {
   def testDistinct(): Unit = {
     implicit val context: BaseContext = new BaseContext(PathMap.empty)
     implicit val dsl: Dsl = BaseDsl()
-    val s: Source[List[Int]] = List(0, 1, 2, 1, 3, 3, 4, 2, 5, 6, 7).distinct
+    val s: Source[List[Int]] = dsl.literal(List(0, 1, 2, 1, 3, 3, 4, 2, 5, 6, 7)).distinct
 
     val result = Evaluator.evalSource(s)
     Assertions.assertNotNull(result)
@@ -105,11 +105,23 @@ class ListSourceOpsTest {
   def testDistinctBy(): Unit = {
     implicit val context: BaseContext = new BaseContext(PathMap.empty)
     implicit val dsl: Dsl = BaseDsl()
-    val s: Source[List[Int]] = List(0, 1, 2, 1, 3, 3, 4, 2, 5, 6, 7).distinctBy(s => s % 2)
+    val s: Source[List[Int]] = dsl.literal(List(0, 1, 2, 1, 3, 3, 4, 2, 5, 6, 7)).distinctBy(s => s % 2)
 
     val result = Evaluator.evalSource(s)
     Assertions.assertNotNull(result)
     Assertions.assertTrue(result.isDefined)
     Assertions.assertEquals(List(0, 1), result.get)
+  }
+
+  @Test
+  def testDistinctByEmpty(): Unit = {
+    implicit val context: BaseContext = new BaseContext(PathMap.empty)
+    implicit val dsl: Dsl = BaseDsl()
+    val s: Source[List[Int]] = dsl.literal(List(0, 1, 2, 1, 3, 3, 4, 2, 5, 6, 7)).distinctBy(s => dsl.nothing)
+
+    val result = Evaluator.evalSource(s)
+    Assertions.assertNotNull(result)
+    Assertions.assertTrue(result.isDefined)
+    Assertions.assertEquals(List(0), result.get)
   }
 }
