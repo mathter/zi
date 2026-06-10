@@ -5,7 +5,7 @@ import io.github.mathter.zi.dsl.base.eval.{AbstractEval, Evaluator}
 import io.github.mathter.zi.dsl.{Dsl, NumericSourceOps, Source}
 import io.github.mathter.zi.eval.Context
 
-implicit class ShortSourceOps(x: Source[Short]) extends NumericSourceOps[Short] {
+private class ShortSourceOps(x: Source[Short]) extends NumericSourceOps[Short] {
   implicit private val dsl: Dsl = x.dsl
 
   override def +(y: Source[Short]): Source[Short] = new AbstractEval[Short] {

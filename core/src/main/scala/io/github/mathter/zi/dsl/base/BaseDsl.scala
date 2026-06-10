@@ -4,7 +4,7 @@ import io.github.mathter.zi.conversions.{Conversions, DefaultConversions}
 import io.github.mathter.zi.data.{Opt, PathMap}
 import io.github.mathter.zi.dsl.base.BaseDsl.DEFAULT_DESTINATION_TAG
 import io.github.mathter.zi.dsl.base.eval.*
-import io.github.mathter.zi.dsl.{Acceptor, Dsl, Group, If, Source}
+import io.github.mathter.zi.dsl.{Acceptor, Dsl, Group, If, NumericSourceOps, Source}
 import io.github.mathter.zi.eval.{Context, Eval}
 import io.github.mathter.zi.path.Path
 
@@ -73,6 +73,27 @@ class BaseDsl(val conversions: Conversions = DefaultConversions.default) extends
 
   override def distinctBy[K, T](source: Source[List[T]], key: Source[T] => Source[K]): Source[List[T]] =
     new DistinctEval[K, T](source.asInstanceOf[Eval[List[T]]], key)
+
+  override def shortSourceOps(x: Source[Short]): NumericSourceOps[Short] =
+    new ShortSourceOps(x)
+
+  override def intSourceOps(x: Source[Int]): NumericSourceOps[Int] =
+    new IntSourceOps(x)
+
+  override def longSourceOps(x: Source[Long]): NumericSourceOps[Long] =
+    new LongSourceOps(x)
+
+  def floatSourceOps(x: Source[Float]): NumericSourceOps[Float] =
+    new FloatSourceOps(x)
+
+  override def doubleSourceOps(x: Source[Double]): NumericSourceOps[Double] =
+    new DoubleSourceOps(x)
+
+  override def bigIntSourceOps(x: Source[BigInt]): NumericSourceOps[BigInt] =
+    new BigIntSourceOps(x)
+
+  override def bigDecimalSourceOps(x: Source[BigDecimal]): NumericSourceOps[BigDecimal] =
+    new BigDecimalSourceOps(x)
 }
 
 object BaseDsl {

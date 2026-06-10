@@ -50,6 +50,20 @@ trait Dsl {
   def filter[T](source: Source[List[T]], p: Source[T] => Source[Boolean]): Source[List[T]]
 
   def distinctBy[K, T](source: Source[List[T]], key: Source[T] => Source[K]): Source[List[T]]
+
+  def shortSourceOps(x: Source[Short]): NumericSourceOps[Short]
+
+  def intSourceOps(x: Source[Int]): NumericSourceOps[Int]
+
+  def longSourceOps(x: Source[Long]): NumericSourceOps[Long]
+
+  def floatSourceOps(x: Source[Float]): NumericSourceOps[Float]
+
+  def doubleSourceOps(x: Source[Double]): NumericSourceOps[Double]
+
+  def bigIntSourceOps(x: Source[BigInt]): NumericSourceOps[BigInt]
+
+  def bigDecimalSourceOps(x: Source[BigDecimal]): NumericSourceOps[BigDecimal]
 }
 
 given [T](using dsl: Dsl): Conversion[T, Source[T]] with {

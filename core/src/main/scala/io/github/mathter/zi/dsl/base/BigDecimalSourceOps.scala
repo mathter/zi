@@ -5,7 +5,7 @@ import io.github.mathter.zi.dsl.base.eval.{AbstractEval, Evaluator}
 import io.github.mathter.zi.dsl.{Dsl, NumericSourceOps, Source}
 import io.github.mathter.zi.eval.Context
 
-implicit class BigDecimalSourceOps(x: Source[BigDecimal]) extends NumericSourceOps[BigDecimal] {
+private class BigDecimalSourceOps(x: Source[BigDecimal]) extends NumericSourceOps[BigDecimal] {
   implicit private val dsl: Dsl = x.dsl
 
   override def +(y: Source[BigDecimal]): Source[BigDecimal] = new AbstractEval[BigDecimal] {
