@@ -39,7 +39,11 @@ class AcceptorOpsTest {
     implicit val dsl: Dsl = BaseDsl()
 
     Evaluator.eval(dsl.result.from(dsl.literal(PathMap.empty)))
-    Evaluator.evalSource(dsl.result("p0") = "Hello")
-    println(dsl.result)
+    val s: Source[String] = dsl.result("p0") = "Hello"
+    Assertions.assertNotNull(s)
+
+    val r = Evaluator.evalSource(s)
+    Assertions.assertNotNull(r)
+    Assertions.assertEquals("Hello", r.get)
   }
 }
