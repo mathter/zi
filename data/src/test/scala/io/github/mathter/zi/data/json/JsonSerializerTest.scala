@@ -16,7 +16,7 @@ class JsonSerializerTest {
     pm("p0/02") = 30
     pm("p0") = 40
 
-    JsonAssertions.assertThatJson(jsonSerializer.serialize(pm))
+    JsonAssertions.assertThatJson(jsonSerializer.serialize(pm).stripMargin)
       .when(core.Option.IGNORING_ARRAY_ORDER)
       .isEqualTo(JsonAssertions.json(
         """{
