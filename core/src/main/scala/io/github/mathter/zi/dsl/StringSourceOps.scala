@@ -7,7 +7,14 @@ implicit class StringSourceOps(private val x: Source[String]) extends AnyVal {
 
   def toLowerCase: Source[String] = x.custom(s => s.toLowerCase)
 
-  def replace(regexpr: String, replacement: String): Source[String] = {
+  def replace(regexpr: String, replacement: String): Source[String] =
     x.custom(s => s.replaceAll(regexpr, replacement))
-  }
+
+  def length: Source[Int] = x.custom(_.length)
+
+  def isEmpty: Source[Boolean] = x.custom(_.isEmpty)
+
+  def matches(regexpr: String): Source[Boolean] = x.custom(_.matches(regexpr))
+
+  def trim: Source[String] = x.custom(_.trim)
 }
