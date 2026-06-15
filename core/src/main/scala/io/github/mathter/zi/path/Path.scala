@@ -26,6 +26,12 @@ trait Path {
   def /(x: (String, String)): Path = this.path(x._1, x._2)
 
   def expand: List[Path]
+
+  def length: Int
+
+  def isParentOf(path: Path): Boolean
+
+  def relativize(path: Path): Path
 }
 
 object Path {

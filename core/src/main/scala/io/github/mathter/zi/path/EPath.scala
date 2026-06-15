@@ -27,6 +27,31 @@ private case class EPath(val segment: String, val segmentQ: String, val parent: 
     this.expandedCache
   }
 
+  override def length: Int = this.expand.length
+
+  override def isParentOf(path: Path): Boolean = {
+    val expanded = path.expand
+
+    if (this.length <= expanded.length) {
+      this equals expanded(this.length - 1)
+    } else {
+      false
+    }
+  }
+
+  override def relativize(path: Path): Path = {
+    val expanded = path.expand
+
+    if (this.length <= expanded.length && (this equals expanded(this.length - 1))) {
+      expanded.drop(this.length)
+        .fold(null)((left, right) => {
+          if (left == null) right.local else left.local + (right.segment, right.segmentQ)
+        })
+    } else {
+      null
+    }
+  }
+
   override def hashCode(): Int = this.hc
 
   override def equals(obj: Any): Boolean = this.asInstanceOf[AnyRef] eq obj.asInstanceOf[AnyRef]

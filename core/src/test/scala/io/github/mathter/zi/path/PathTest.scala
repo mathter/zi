@@ -1,8 +1,14 @@
 package io.github.mathter.zi.path
 
+import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.api.{Assertions, Test}
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.{Arguments, ArgumentsProvider, ArgumentsSource, MethodSource}
+import org.junit.jupiter.params.support.ParameterDeclarations
 
-class PathTest {
+import java.util.stream
+
+class PathTest extends ArgumentsProvider {
   @Test
   def testSegment(): Unit = {
     val path: Path = "segment";
@@ -75,8 +81,18 @@ class PathTest {
 
   @Test
   def testEquals(): Unit = {
-    val p0: Path = "seqment"
-    val p1: Path = "seqment"
+    val p0: Path = ("seqment", "q")
+    val p1: Path = ("seqment", "q")
+
+    Assertions.assertTrue(p0.equals(p1))
+    Assertions.assertTrue(p0 eq p1)
+  }
+
+  @Test
+  def testEquals2(): Unit = {
+    val p: Path = "parent"
+    val p0: Path = p / ("seqment", "q")
+    val p1: Path = p / ("seqment", "q")
 
     Assertions.assertTrue(p0.equals(p1))
     Assertions.assertTrue(p0 eq p1)
@@ -114,5 +130,46 @@ class PathTest {
     Assertions.assertEquals("segment2", segment)
     Assertions.assertNull(segmentQ)
     Assertions.assertNull(parent)
+  }
+
+  @Test
+  def testLenght(): Unit = {
+    val path: Path = ("/segment0/segment1/segment2")
+    Assertions.assertNotNull(path)
+    Assertions.assertEquals(3, path.length)
+  }
+
+  @Test
+  def testIsParentOf(): Unit = {
+    val path0: Path = ("/segment0/segment1/segment2")
+    val path1: Path = ("/segment0/segment1")
+    Assertions.assertTrue(path1.isParentOf(path0))
+  }
+
+  @ArgumentsSource(classOf[PathTest])
+  @ParameterizedTest
+  def testRelativize(left: Path, right: Path, result: Path): Unit = {
+    val rel = left.relativize(right)
+    Assertions.assertEquals(result, rel)
+  }
+
+  override def provideArguments(parameters: ParameterDeclarations, context: ExtensionContext): stream.Stream[_ <: Arguments] = {
+    stream.Stream.of(
+      Arguments.of(
+        "/segment0/segment1",
+        "/segment0/segment1/segment2/segmnt3",
+        "/segment2/segmnt3"
+      ),
+      Arguments.of(
+        "segment0",
+        "segment1",
+        null
+      ),
+      Arguments.of(
+        "segment0/segment1",
+        "segment0",
+        null
+      )
+    )
   }
 }
