@@ -27,19 +27,19 @@ class IfEval[T](val conditionEval: Eval[Boolean])(implicit dsl: Dsl, tracer: Tra
     )
 
   override def Then(source: Source[T]): Then[T] = {
-    Tracer.trace()
+    Tracer.trace3()
     this.thenEval = source.asInstanceOf[Eval[T]]
     this
   }
 
   override def Else(source: Source[T]): Else[T] = {
-    Tracer.trace()
+    Tracer.trace3()
     this.elseEval = source.asInstanceOf[Eval[T]]
     this
   }
 
   override def If[T](condition: Source[Boolean]): If[T] = {
-    Tracer.trace()
+    Tracer.trace3()
     new IfEval[T](condition.asInstanceOf[Eval[Boolean]])
   }
 }

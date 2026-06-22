@@ -5,7 +5,9 @@ import io.github.mathter.zi.dsl.Dsl
 import io.github.mathter.zi.eval.{Context, Tracer}
 
 class LiteralEval[T](val literal: T)(implicit dsl: Dsl, tracer: Tracer) extends AbstractEval[T] {
-  override def evalI(context: Context): Opt[T] = Opt(this.literal)
+  override def evalI(context: Context): Opt[T] = {
+    Opt(this.literal)
+  }
 
   override def pure: Boolean = true
 }
