@@ -2,11 +2,11 @@ package io.github.mathter.zi.dsl.base.eval
 
 import io.github.mathter.zi.data.Opt
 import io.github.mathter.zi.dsl.{Composite, Dsl, Source}
-import io.github.mathter.zi.eval.{Context, Eval}
+import io.github.mathter.zi.eval.{Context, Eval, Tracer}
 
 import scala.reflect.{ClassTag, classTag}
 
-abstract class AbstractEval[T](implicit val dsl: Dsl) extends Eval[T] with Source[T] {
+abstract class AbstractEval[T](implicit val dsl: Dsl, tracer: Tracer) extends Eval[T] with Source[T] {
   override def map[D](implicit classTagD: ClassTag[D]): Source[D] = new MapType[T, D](this)
 
   override def map[D, DS <: Source[D]](f: Source[T] => Source[D]): DS = new MapEval[T, D](this, f).asInstanceOf[DS]

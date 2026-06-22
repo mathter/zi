@@ -2,11 +2,11 @@ package io.github.mathter.zi.dsl.base.eval
 
 import io.github.mathter.zi.data.Opt
 import io.github.mathter.zi.dsl.{Composite2, Composite3, Dsl, Source}
-import io.github.mathter.zi.eval.{Context, Eval}
+import io.github.mathter.zi.eval.{Context, Eval, Tracer}
 
 import scala.reflect.ClassTag
 
-private class Composite2Eval[T, T0, T1, T2](val t: Eval[T], val t0: Eval[T0], val t1: Eval[T1], val t2: Eval[T2])(implicit dsl: Dsl) extends Composite2[T, T0, T1, T2] {
+private class Composite2Eval[T, T0, T1, T2](val t: Eval[T], val t0: Eval[T0], val t1: Eval[T1], val t2: Eval[T2])(implicit dsl: Dsl, tracer: Tracer) extends Composite2[T, T0, T1, T2] {
   override def fun[D](f: (T, T0, T1, T2) => D)(implicit ctag: ClassTag[D]): Source[D] = new AbstractEval[D] {
     override def evalI(implicit context: Context): Opt[D] =
       t.eval.flatMap(t => t0.eval.flatMap(t0 => t1.eval.flatMap(t1 => t2.eval.map(t2 => f.apply(t, t0, t1, t2)))))

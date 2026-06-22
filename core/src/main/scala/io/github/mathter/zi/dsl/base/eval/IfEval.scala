@@ -2,9 +2,9 @@ package io.github.mathter.zi.dsl.base.eval
 
 import io.github.mathter.zi.data.Opt
 import io.github.mathter.zi.dsl.{Dsl, Else, If, Source, Then}
-import io.github.mathter.zi.eval.{Context, Eval}
+import io.github.mathter.zi.eval.{Context, Eval, Tracer}
 
-class IfEval[T](val conditionEval: Eval[Boolean])(implicit dsl: Dsl) extends AbstractEval[T], If[T], Then[T], Else[T] {
+class IfEval[T](val conditionEval: Eval[Boolean])(implicit dsl: Dsl, tracer: Tracer) extends AbstractEval[T], If[T], Then[T], Else[T] {
   private var thenEval: Eval[T] = null;
 
   private var elseEval: Eval[T] = null;
@@ -27,15 +27,19 @@ class IfEval[T](val conditionEval: Eval[Boolean])(implicit dsl: Dsl) extends Abs
     )
 
   override def Then(source: Source[T]): Then[T] = {
+    Tracer.trace()
     this.thenEval = source.asInstanceOf[Eval[T]]
     this
   }
 
   override def Else(source: Source[T]): Else[T] = {
+    Tracer.trace()
     this.elseEval = source.asInstanceOf[Eval[T]]
     this
   }
 
-  override def If[T](condition: Source[Boolean]): If[T] =
+  override def If[T](condition: Source[Boolean]): If[T] = {
+    Tracer.trace()
     new IfEval[T](condition.asInstanceOf[Eval[Boolean]])
+  }
 }

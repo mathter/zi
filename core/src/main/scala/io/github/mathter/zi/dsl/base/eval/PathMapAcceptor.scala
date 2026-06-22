@@ -2,9 +2,9 @@ package io.github.mathter.zi.dsl.base.eval
 
 import io.github.mathter.zi.data.{Opt, PathMap}
 import io.github.mathter.zi.dsl.Dsl
-import io.github.mathter.zi.eval.Context
+import io.github.mathter.zi.eval.{Context, Tracer}
 
-class PathMapAcceptor(implicit dsl: Dsl) extends AbstractAcceptorEval[PathMap](
+class PathMapAcceptor(implicit dsl: Dsl, tracer: Tracer) extends AbstractAcceptorEval[PathMap](
   (opt, context) => opt.map(e => {
     AbstractEval.cachePut(opt, context)
     e
