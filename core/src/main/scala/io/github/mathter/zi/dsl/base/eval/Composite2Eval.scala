@@ -12,6 +12,8 @@ private class Composite2Eval[T, T0, T1, T2](val t: Eval[T], val t0: Eval[T0], va
       t.eval.flatMap(t => t0.eval.flatMap(t0 => t1.eval.flatMap(t1 => t2.eval.map(t2 => f.apply(t, t0, t1, t2)))))
   }
 
-  override def composite[T3](source: Source[T3]): Composite3[T, T0, T1, T2, T3] =
+  override def composite[T3](source: Source[T3]): Composite3[T, T0, T1, T2, T3] = {
+    implicit val tracer: Tracer = Tracer.trace3()
     new Composite3Eval(this.t, this.t0, this.t1, this.t2, source.asInstanceOf[Eval[T3]])
+  }
 }
