@@ -2,9 +2,9 @@ package io.github.mathter.zi.dsl.base.eval
 
 import io.github.mathter.zi.data.Opt
 import io.github.mathter.zi.dsl.{Dsl, Group, Source}
-import io.github.mathter.zi.eval.{Context, Eval}
+import io.github.mathter.zi.eval.{Context, Eval, Tracer}
 
-class GroupEval[K, E](val listEval: Eval[List[E]], val key: Source[E] => Source[K])(implicit dsl: Dsl) extends AbstractEval[List[(K, List[E])]], Group[K, E] {
+class GroupEval[K, E](val listEval: Eval[List[E]], val key: Source[E] => Source[K])(implicit dsl: Dsl, tracer: Tracer) extends AbstractEval[List[(K, List[E])]], Group[K, E] {
   override def evalI(using context: Context): Opt[List[(K, List[E])]] = {
     this.listEval.eval.map(_.groupBy(e => {
         val literal = new LiteralEval(e)

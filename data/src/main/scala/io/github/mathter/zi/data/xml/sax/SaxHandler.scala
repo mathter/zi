@@ -2,7 +2,7 @@ package io.github.mathter.zi.data.xml.sax
 
 import io.github.mathter.zi.data.PathMap
 import io.github.mathter.zi.path.Path
-import io.github.mathter.zi.data.xml.*
+import io.github.mathter.zi.data.xml.trimToNull
 import org.xml.sax.Attributes
 import org.xml.sax.ext.DefaultHandler2
 

@@ -24,4 +24,8 @@ trait Source[T] {
   infix def equalsTo(another: Source[T]): Source[Boolean]
 
   def ==(another: Source[T]): Source[Boolean] = this.equalsTo(another)
+
+  def pure: Boolean
+
+  def pure(pure: Boolean): Source[T]
 }

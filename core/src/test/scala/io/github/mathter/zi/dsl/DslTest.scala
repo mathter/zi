@@ -1,10 +1,12 @@
 package io.github.mathter.zi.dsl
 
-import io.github.mathter.zi.data.*
+import io.github.mathter.zi.data.{Opt, PathMap}
 import io.github.mathter.zi.dsl.base.BaseDsl
 import io.github.mathter.zi.dsl.base.eval.{BaseContext, Evaluator}
 import org.apache.commons.lang3.RandomStringUtils
 import org.junit.jupiter.api.{Assertions, Test}
+
+import java.time.Instant
 
 class DslTest {
   @Test
@@ -119,6 +121,59 @@ class DslTest {
   }
 
   @Test
+  def testComposite1(): Unit = {
+    implicit val context: BaseContext = new BaseContext(PathMap.empty)
+    val dsl: Dsl = BaseDsl()
+    val value0 = RandomStringUtils.insecure().nextAlphabetic(10)
+    val value1 = RandomStringUtils.insecure().nextAlphabetic(20)
+    val value2 = RandomStringUtils.insecure().nextAlphabetic(30)
+    val s: Source[String] = dsl
+      .literal(value0)
+      .composite(dsl.literal(value1))
+      .composite(dsl.literal(value2)).fun(_ + _ + _)
+
+    Assertions.assertEquals(value0 + value1 + value2, Evaluator.evalSource(s).get)
+  }
+
+  @Test
+  def testComposite2(): Unit = {
+    implicit val context: BaseContext = new BaseContext(PathMap.empty)
+    val dsl: Dsl = BaseDsl()
+    val value0 = RandomStringUtils.insecure().nextAlphabetic(10)
+    val value1 = RandomStringUtils.insecure().nextAlphabetic(20)
+    val value2 = RandomStringUtils.insecure().nextAlphabetic(30)
+    val value3 = RandomStringUtils.insecure().nextAlphabetic(40)
+    val s: Source[String] = dsl
+      .literal(value0)
+      .composite(dsl.literal(value1))
+      .composite(dsl.literal(value2))
+      .composite(dsl.literal(value3))
+      .fun(_ + _ + _ + _)
+
+    Assertions.assertEquals(value0 + value1 + value2 + value3, Evaluator.evalSource(s).get)
+  }
+
+  @Test
+  def testComposite3(): Unit = {
+    implicit val context: BaseContext = new BaseContext(PathMap.empty)
+    val dsl: Dsl = BaseDsl()
+    val value0 = RandomStringUtils.insecure().nextAlphabetic(10)
+    val value1 = RandomStringUtils.insecure().nextAlphabetic(20)
+    val value2 = RandomStringUtils.insecure().nextAlphabetic(30)
+    val value3 = RandomStringUtils.insecure().nextAlphabetic(40)
+    val value4 = RandomStringUtils.insecure().nextAlphabetic(40)
+    val s: Source[String] = dsl
+      .literal(value0)
+      .composite(dsl.literal(value1))
+      .composite(dsl.literal(value2))
+      .composite(dsl.literal(value3))
+      .composite(dsl.literal(value4))
+      .fun(_ + _ + _ + _ + _)
+
+    Assertions.assertEquals(value0 + value1 + value2 + value3 + value4, Evaluator.evalSource(s).get)
+  }
+
+  @Test
   def testList(): Unit = {
     implicit val context: BaseContext = new BaseContext(PathMap.empty)
     val dsl: Dsl = BaseDsl()
@@ -201,5 +256,16 @@ class DslTest {
       .If(dsl.fls).Then(dsl.literal("Then2")).Else(dsl.literal("Else2"))
 
     Assertions.assertEquals("Else2", Evaluator.evalSource(s).get)
+  }
+
+  @Test
+  def testPure(): Unit = {
+    implicit val context: BaseContext = new BaseContext(PathMap.empty)
+    implicit val dsl: Dsl = BaseDsl()
+    val value = Instant.now()
+    val s = dsl.literal(() => value).pure(true)
+
+    Assertions.assertNotNull(s)
+    Assertions.assertEquals(value, Evaluator.evalSource(s).get)
   }
 }

@@ -18,30 +18,51 @@ implicit class OrderedSource1Ops[T <: Ordered[T]](x: Source[T]) extends OrderedS
   override def compare(that: Source[T]): Source[Int] = x.composite(that).fun(_ compare _)
 }
 
-implicit class OrderedSourceShortOps(x: Source[Int]) extends OrderedSourceOps[Short] {
+class OrderedSourceShortShadow(x: Source[Short]) extends OrderedSourceOps[Short] {
   override def compare(that: Source[Short]): Source[Int] = x.composite(that).fun(_ compare _)
 }
 
-implicit class OrderedSourceIntOps(x: Source[Int]) extends OrderedSourceOps[Int] {
+implicit class OrderedSourceShortOps(x: Source[Short]) extends OrderedSourceShortShadow(x) {
+}
+
+class OrderedSourceIntShadow(x: Source[Int]) extends OrderedSourceOps[Int] {
   override def compare(that: Source[Int]): Source[Int] = x.composite(that).fun(_ compare _)
 }
 
-implicit class OrderedSourceLongOps(x: Source[Long]) extends OrderedSourceOps[Long] {
+implicit class OrderedSourceIntOps(x: Source[Int]) extends OrderedSourceIntShadow(x) {
+}
+
+class OrderedSourceLongShadow(x: Source[Long]) extends OrderedSourceOps[Long] {
   override def compare(that: Source[Long]): Source[Int] = x.composite(that).fun(_ compare _)
 }
 
-implicit class OrderedSourceFloatOps(x: Source[Float]) extends OrderedSourceOps[Float] {
+implicit class OrderedSourceLongOps(x: Source[Long]) extends OrderedSourceLongShadow(x) {
+}
+
+class OrderedSourceFloatShadow(x: Source[Float]) extends OrderedSourceOps[Float] {
   override def compare(that: Source[Float]): Source[Int] = x.composite(that).fun(_ compare _)
 }
 
-implicit class OrderedSourceDoubleOps(x: Source[Double]) extends OrderedSourceOps[Double] {
+implicit class OrderedSourceFloatOps(x: Source[Float]) extends OrderedSourceFloatShadow(x) {
+}
+
+class OrderedSourceDoubleShadow(x: Source[Double]) extends OrderedSourceOps[Double] {
   override def compare(that: Source[Double]): Source[Int] = x.composite(that).fun(_ compare _)
 }
 
-implicit class OrderedSourceBigIntOps(x: Source[BigInt]) extends OrderedSourceOps[BigInt] {
+implicit class OrderedSourceDoubleOps(x: Source[Double]) extends OrderedSourceDoubleShadow(x) {
+}
+
+class OrderedSourceBigIntShadow(x: Source[BigInt]) extends OrderedSourceOps[BigInt] {
   override def compare(that: Source[BigInt]): Source[Int] = x.composite(that).fun(_ compare _)
 }
 
-implicit class OrderedSourceBigDecimalOps(x: Source[BigDecimal]) extends OrderedSourceOps[BigDecimal] {
+implicit class OrderedSourceBigIntOps(x: Source[BigInt]) extends OrderedSourceBigIntShadow(x) {
+}
+
+class OrderedSourceBigDecimalShadow(x: Source[BigDecimal]) extends OrderedSourceOps[BigDecimal] {
   override def compare(that: Source[BigDecimal]): Source[Int] = x.composite(that).fun(_ compare _)
+}
+
+implicit class OrderedSourceBigDecimalOps(x: Source[BigDecimal]) extends BigDecimalSourceShadow(x) {
 }
