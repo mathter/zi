@@ -6,6 +6,8 @@ import io.github.mathter.zi.dsl.base.eval.{BaseContext, Evaluator}
 import org.apache.commons.lang3.RandomStringUtils
 import org.junit.jupiter.api.{Assertions, Test}
 
+import java.time.Instant
+
 class DslTest {
   @Test
   def testResult(): Unit = {
@@ -254,5 +256,16 @@ class DslTest {
       .If(dsl.fls).Then(dsl.literal("Then2")).Else(dsl.literal("Else2"))
 
     Assertions.assertEquals("Else2", Evaluator.evalSource(s).get)
+  }
+
+  @Test
+  def testPure(): Unit = {
+    implicit val context: BaseContext = new BaseContext(PathMap.empty)
+    implicit val dsl: Dsl = BaseDsl()
+    val value = Instant.now()
+    val s = dsl.literal(() => value).pure(true)
+
+    Assertions.assertNotNull(s)
+    Assertions.assertEquals(value, Evaluator.evalSource(s).get)
   }
 }

@@ -8,7 +8,6 @@ class CalculatedLiteralEval[T](val f: () => T)(implicit dsl: Dsl, tracer: Tracer
 
   override def evalI(using context: Context): Opt[T] = {
     val value: T = this.f()
-
     Opt(value)
   }
 }

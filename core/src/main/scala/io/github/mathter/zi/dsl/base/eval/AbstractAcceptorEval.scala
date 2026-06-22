@@ -4,7 +4,7 @@ import io.github.mathter.zi.data.Opt
 import io.github.mathter.zi.dsl.{Acceptor, Dsl, Source}
 import io.github.mathter.zi.eval.{Context, Eval, Terminal, Tracer}
 
-abstract class AbstractAcceptorEval[T](val acceptor: (Opt[T], Context) => Opt[T])(implicit dsl: Dsl, tracer: Tracer)
+abstract class AbstractAcceptorEval[T](val acceptor: Accept[T])(implicit dsl: Dsl, tracer: Tracer)
   extends AbstractEval[T] with Acceptor[T] {
 
   override def from(source: Source[T]): Source[T] & Terminal = {

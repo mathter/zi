@@ -2,9 +2,9 @@ package io.github.mathter.zi.dsl.base.eval
 
 import io.github.mathter.zi.data.Opt
 import io.github.mathter.zi.dsl.{Composite, Dsl, Source}
-import io.github.mathter.zi.eval.{Context, Eval, Tracer}
+import io.github.mathter.zi.eval.{Context, Eval, EvalException, Tracer}
 
-import scala.reflect.{ClassTag, classTag}
+import scala.reflect.ClassTag
 
 abstract class AbstractEval[T](implicit val dsl: Dsl, tracer: Tracer) extends Eval[T] with Source[T] {
   override def map[D](implicit classTagD: ClassTag[D]): Source[D] = new MapType[T, D](this)
@@ -28,19 +28,28 @@ abstract class AbstractEval[T](implicit val dsl: Dsl, tracer: Tracer) extends Ev
   }
 
   override def eval(implicit context: Context): Opt[T] = {
-    //    this.getCache(context.asInstanceOf[BaseContext])
-    //      .getOrElse({
-    //        val option = this.evalI(context)
-    //        this.putCache(option, context.asInstanceOf[BaseContext])
-    //        option
-    //      })
-    this.evalI(context)
+    if (this.pure) {
+      this.cacheGetOrElseUpdate(
+        {
+          try {
+            this.evalI(context)
+          } catch {
+            case e: EvalException => throw e
+            case e: Exception => throw EvalException(this.tracer, e)
+          }
+        },
+        context
+      )
+    } else {
+      try {
+        this.evalI(context)
+      } catch {
+        case e: EvalException => throw e
+        case e: Exception => throw EvalException(this.tracer, e)
+      }
+    }
   }
 
-  def evalI(context: Context): Opt[T]
-}
-
-object AbstractEval {
   def cachePut[T](opt: Opt[T], context: Context): Unit = {
     context.asInstanceOf[BaseContext].cache.put(this, opt)
   }
@@ -49,6 +58,13 @@ object AbstractEval {
     context.asInstanceOf[BaseContext].cache.get(this).map(e => Opt(e.asInstanceOf[T])).getOrElse(Opt.empty)
   }
 
-  def cacheGetOrElseUpdate[T](opt: Opt[T], context: Context): Opt[T] =
+  def cacheGetOrElseUpdate[T](opt: Opt[T], context: Context): Opt[T] = {
     context.asInstanceOf[BaseContext].cache.getOrElseUpdate(this, opt).asInstanceOf[Opt[T]]
+  }
+
+  override def pure: Boolean = false
+
+  override def pure(pure: Boolean): Source[T] = this
+
+  def evalI(context: Context): Opt[T]
 }

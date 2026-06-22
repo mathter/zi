@@ -6,7 +6,14 @@ class Tracer(private val parent: Tracer,
              private val stackTraceElement: StackTraceElement,
              private val level: Int
             ) {
+  override def toString: String = {
+    val sb = new StringBuilder()
+    sb.append("\tparent=").append(this.parent).append("\n")
+    sb.append("\tstacktrace=").append(this.stackTraceElement).append("\n")
+    sb.append("\tlevel=").append(this.level).append("\n")
 
+    sb.toString()
+  }
 }
 
 object Tracer {
