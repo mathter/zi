@@ -26,7 +26,6 @@ object LoadAndTransformTest {
       override def apply(pathMap: PathMap): Unit = {
         implicit val context = new BaseContext(pathMap)
         terms.foreach(e => Evaluator.eval(e))
-        terms
       }
     }
     t.addListener(listener)

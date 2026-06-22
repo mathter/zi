@@ -3,7 +3,7 @@ package io.github.mathter.zi.dsl.base
 import io.github.mathter.zi.conversions.{Conversions, DefaultConversions}
 import io.github.mathter.zi.data.{Opt, PathMap}
 import io.github.mathter.zi.dsl.base.BaseDsl.DEFAULT_DESTINATION_TAG
-import io.github.mathter.zi.dsl.base.eval.*
+import io.github.mathter.zi.dsl.base.eval.{AbstractEval, AsListSourceEval, ByEval, CalculatedLiteralEval, DistinctEval, FilterEval, GroupEval, IfEval, ListElementByIndexEval, MapElemEval, NothingEval, OriginSourceEval, PathMapAcceptor, PathMapByPathAcceptor, ResultEval}
 import io.github.mathter.zi.dsl.{Acceptor, Dsl, Group, If, NumericSourceOps, Source}
 import io.github.mathter.zi.eval.{Context, Eval}
 import io.github.mathter.zi.path.Path
@@ -17,7 +17,7 @@ class BaseDsl(val conversions: Conversions = DefaultConversions.default) extends
 
   override def result[T](tag: Source[Any]): Acceptor[T] = new ResultEval[T](tag.asInstanceOf[Eval[Any]])
 
-  override def obj: Acceptor[PathMap] = new PathMapAcceptor
+  override def obj: Acceptor[PathMap] = new PathMapAcceptor()
 
   override def literal[T](x: T): Source[T] =
     new CalculatedLiteralEval[T](() => x)

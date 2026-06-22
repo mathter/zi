@@ -7,7 +7,7 @@ import io.github.mathter.zi.path.Path
 import org.junit.jupiter.api.{Assertions, Test}
 
 import java.io.{ByteArrayInputStream, ByteArrayOutputStream, OutputStreamWriter, Writer}
-import scala.xml.*
+import scala.xml.{InputSource, XML}
 
 class SaxParserTest {
   @Test

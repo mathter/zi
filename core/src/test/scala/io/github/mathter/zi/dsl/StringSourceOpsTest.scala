@@ -1,7 +1,6 @@
 package io.github.mathter.zi.dsl
 
 import io.github.mathter.zi.data.PathMap
-import io.github.mathter.zi.dsl.*
 import io.github.mathter.zi.dsl.base.BaseDsl
 import io.github.mathter.zi.dsl.base.eval.{BaseContext, Evaluator}
 import org.apache.commons.lang3.RandomStringUtils
