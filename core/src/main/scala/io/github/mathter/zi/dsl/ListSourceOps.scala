@@ -9,7 +9,9 @@ implicit class ListSourceOps[T](val x: Source[List[T]]) {
 
   inline def index(source: Source[Int]): Source[T] = x.dsl.index(x, source)
 
-  inline def mapElem[D](f: Source[T] => Source[D]): Source[List[D]] = x.dsl.mapElem(x, f)
+  inline def mapElem[D](f: T => D): Source[List[D]] = x.dsl.mapElem(x, f)
+
+  inline def mapsElem[D](f: Source[T] => Source[D]): Source[List[D]] = x.dsl.mapsElem(x, f)
 
   inline def group[K](key: Source[T] => Source[K]): Group[K, T] = x.dsl.group(x, key)
 

@@ -39,7 +39,16 @@ class ListSourceOpsTest {
   def testMapElem(): Unit = {
     implicit val context: BaseContext = new BaseContext(PathMap.empty)
     val dsl: Dsl = BaseDsl()
-    val s = dsl.literal(List(1, 2, 3)).mapElem(e => e + dsl.literal(1))
+    val s = dsl.literal(List(1, 2, 3)).mapElem(_ + 1)
+
+    Assertions.assertEquals(List(2, 3, 4), Evaluator.evalSource(s).get)
+  }
+
+  @Test
+  def testMapsElem(): Unit = {
+    implicit val context: BaseContext = new BaseContext(PathMap.empty)
+    val dsl: Dsl = BaseDsl()
+    val s = dsl.literal(List(1, 2, 3)).mapsElem(e => e + dsl.literal(1))
 
     Assertions.assertEquals(List(2, 3, 4), Evaluator.evalSource(s).get)
   }
