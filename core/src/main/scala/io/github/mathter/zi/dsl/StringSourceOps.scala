@@ -2,7 +2,7 @@ package io.github.mathter.zi.dsl
 
 import io.github.mathter.zi.dsl.Source
 
-implicit class StringSourceOps(private val x: Source[String]) extends AnyVal {
+class StringSourceShadow(private val x: Source[String]) {
   def toUpperCase: Source[String] = x.custom(s => s.toUpperCase)
 
   def toLowerCase: Source[String] = x.custom(s => s.toLowerCase)
@@ -17,4 +17,7 @@ implicit class StringSourceOps(private val x: Source[String]) extends AnyVal {
   def matches(regexpr: String): Source[Boolean] = x.custom(_.matches(regexpr))
 
   def trim: Source[String] = x.custom(_.trim)
+}
+
+implicit class StringSourceOps(private val x: Source[String]) extends StringSourceShadow(x) {
 }

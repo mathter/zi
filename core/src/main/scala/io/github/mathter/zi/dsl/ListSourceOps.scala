@@ -2,7 +2,7 @@ package io.github.mathter.zi.dsl
 
 import io.github.mathter.zi.dsl.Source
 
-implicit class ListSourceOps[T](val x: Source[List[T]]) {
+class ListSourceShadow[T](val x: Source[List[T]]) {
   inline def first: Source[T] = x.dsl.first(x)
 
   inline def last: Source[T] = x.dsl.last(x)
@@ -20,4 +20,7 @@ implicit class ListSourceOps[T](val x: Source[List[T]]) {
   inline def distinct: Source[List[T]] = this.distinctBy(e => e)
 
   inline def distinctBy[K](key: Source[T] => Source[K]): Source[List[T]] = x.dsl.distinctBy(x, key)
+}
+
+implicit class ListSourceOps[T](x: Source[List[T]]) extends ListSourceShadow(x) {
 }
