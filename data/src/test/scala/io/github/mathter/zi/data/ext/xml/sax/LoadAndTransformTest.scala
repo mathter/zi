@@ -1,5 +1,6 @@
 package io.github.mathter.zi.data.ext.xml.sax
 
+import io.github.mathter.zi.conv.DateTimeConv
 import io.github.mathter.zi.data.PathMap
 import io.github.mathter.zi.data.ext.AbstractListener
 import io.github.mathter.zi.data.json.JsonSerializer
@@ -49,7 +50,10 @@ object LoadAndTransformTest {
 
     Set(
       result.by("chapter/title").from(dsl.origin.by("chapter/title")),
-      result.by("chapter/date").from(dsl.origin.by("chapter/date").map[LocalDate]),
+      result.by("chapter/date").from(
+        dsl.origin.by("chapter/date")
+          .map(DateTimeConv.string2localDate)
+      ),
       result.by("chapter/pageInfo/pageNumber").from(dsl.origin.by("chapter/page/number")),
       result.by("chapter/pageInfo/pageCount").from(dsl.origin.by("chapter/page/count")),
       result.by("chapter/val").from(dsl.origin.by("chapter/vol")),
@@ -57,7 +61,7 @@ object LoadAndTransformTest {
         dsl.origin
           .by("chapter/content/item/title")
           .as[List[String]]
-          .mapElem(e => e.toLowerCase)
+          .mapsElem(e => e.toLowerCase)
       ),
       dsl.result.from(result)
     )

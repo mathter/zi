@@ -1,12 +1,9 @@
 package io.github.mathter.zi.dsl
 
-import io.github.mathter.zi.conversions.Conversions
 import io.github.mathter.zi.data.PathMap
 import io.github.mathter.zi.path.Path
 
 trait Dsl {
-  def conversions: Conversions
-
   def origin: Source[PathMap]
 
   def result[T]: Acceptor[T]
@@ -41,7 +38,9 @@ trait Dsl {
 
   def by[T](source: Acceptor[PathMap], path: Path): Acceptor[T]
 
-  def mapElem[T, D](source: Source[List[T]], f: Source[T] => Source[D]): Source[List[D]]
+  def mapElem[T, D](source: Source[List[T]], f: T => D): Source[List[D]]
+
+  def mapsElem[T, D](source: Source[List[T]], f: Source[T] => Source[D]): Source[List[D]]
 
   def If[T](condition: Source[Boolean]): If[T]
 
