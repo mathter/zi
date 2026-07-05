@@ -1,6 +1,6 @@
 package io.github.mathter.zi.dsl
 
-class BooleanShadow(x: Source[Boolean]) {
+implicit class BooleanOps(x: Source[Boolean]) {
   infix inline def and(y: Source[Boolean]): Source[Boolean] = x.composite(y).fun((x, y) => x && y)
 
   infix inline def or(y: Source[Boolean]): Source[Boolean] = x.composite(y).fun((x, y) => x || y)
@@ -16,7 +16,4 @@ class BooleanShadow(x: Source[Boolean]) {
   infix inline def unary_! : Source[Boolean] = this.not
 
   infix inline def ^(y: Source[Boolean]): Source[Boolean] = this.xor(y)
-}
-
-implicit class BooleanOps(x: Source[Boolean]) extends BooleanShadow(x) {
 }

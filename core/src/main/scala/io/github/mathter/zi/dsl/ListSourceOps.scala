@@ -7,19 +7,19 @@ class ListSourceShadow[T](val x: Source[List[T]]) {
 
   inline def last: Source[T] = x.dsl.last(x)
 
-  inline def index(source: Source[Int]): Source[T] = x.dsl.index(x, source)
+  infix inline def index(source: Source[Int]): Source[T] = x.dsl.index(x, source)
 
-  inline def mapElem[D](f: T => D): Source[List[D]] = x.dsl.mapElem(x, f)
+  infix inline def mapElem[D](f: T => D): Source[List[D]] = x.dsl.mapElem(x, f)
 
-  inline def mapsElem[D](f: Source[T] => Source[D]): Source[List[D]] = x.dsl.mapsElem(x, f)
+  infix inline def mapsElem[D](f: Source[T] => Source[D]): Source[List[D]] = x.dsl.mapsElem(x, f)
 
-  inline def group[K](key: Source[T] => Source[K]): Group[K, T] = x.dsl.group(x, key)
+  infix inline def group[K](key: Source[T] => Source[K]): Group[K, T] = x.dsl.group(x, key)
 
-  inline def filter(p: Source[T] => Source[Boolean]): Source[List[T]] = x.dsl.filter(x, p)
+  infix inline def filter(p: Source[T] => Source[Boolean]): Source[List[T]] = x.dsl.filter(x, p)
 
   inline def distinct: Source[List[T]] = this.distinctBy(e => e)
 
-  inline def distinctBy[K](key: Source[T] => Source[K]): Source[List[T]] = x.dsl.distinctBy(x, key)
+  infix inline def distinctBy[K](key: Source[T] => Source[K]): Source[List[T]] = x.dsl.distinctBy(x, key)
 }
 
 implicit class ListSourceOps[T](x: Source[List[T]]) extends ListSourceShadow(x) {
