@@ -1,13 +1,27 @@
 package io.github.mathter.zi.dsl
 
-trait NumericSourceOps[T] {
-  infix def +(y: Source[T]): Source[T]
+import scala.reflect.ClassTag
 
-  infix def -(y: Source[T]): Source[T]
+implicit class NumericSourceOps[T](x: Source[T])(using num: Integral[T], classTag: ClassTag[T]) {
+  import scala.math.Integral.Implicits.infixIntegralOps
 
-  infix def *(y: Source[T]): Source[T]
+  def +(y: Source[T]): Source[T] = {
+    x.composite(y).fun((left, right) => left + right)
+  }
 
-  infix def /(y: Source[T]): Source[T]
+  def -(y: Source[T]): Source[T] = {
+    x.composite(y).fun((left, right) => left - right)
+  }
 
-  infix def %(y: Source[T]): Source[T]
+  def *(y: Source[T]): Source[T] = {
+    x.composite(y).fun((left, right) => left * right)
+  }
+
+  def /(y: Source[T]): Source[T] = {
+    x.composite(y).fun((left, right) => left / right)
+  }
+
+  def %(y: Source[T]): Source[T] = {
+    x.composite(y).fun((left, right) => left % right)
+  }
 }
