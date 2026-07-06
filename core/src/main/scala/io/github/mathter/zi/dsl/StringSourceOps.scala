@@ -2,22 +2,20 @@ package io.github.mathter.zi.dsl
 
 import io.github.mathter.zi.dsl.Source
 
-class StringSourceShadow(private val x: Source[String]) {
+implicit class StringSourceOps(private val x: Source[String]) {
   def toUpperCase: Source[String] = x.custom(s => s.toUpperCase)
 
-  def toLowerCase: Source[String] = x.custom(s => s.toLowerCase)
+  inline def toLowerCase: Source[String] = x.custom(s => s.toLowerCase)
 
-  def replace(regexpr: String, replacement: String): Source[String] =
-    x.custom(s => s.replaceAll(regexpr, replacement))
+  inline def replace(regexpr: String, replacement: String): Source[String] = x.custom(s => s.replaceAll(regexpr, replacement))
 
-  def length: Source[Int] = x.custom(_.length)
+  inline def length: Source[Int] = x.custom(_.length)
 
-  def isEmpty: Source[Boolean] = x.custom(_.isEmpty)
+  inline def isEmpty: Source[Boolean] = x.custom(_.isEmpty)
 
-  def matches(regexpr: String): Source[Boolean] = x.custom(_.matches(regexpr))
+  inline def isNotEmpty: Source[Boolean] = !this.isEmpty
 
-  def trim: Source[String] = x.custom(_.trim)
-}
+  inline def matches(regexpr: String): Source[Boolean] = x.custom(_.matches(regexpr))
 
-implicit class StringSourceOps(private val x: Source[String]) extends StringSourceShadow(x) {
+  inline def trim: Source[String] = x.custom(_.trim)
 }

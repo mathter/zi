@@ -3,7 +3,7 @@ package io.github.mathter.zi.dsl.base
 import io.github.mathter.zi.data.{Opt, PathMap}
 import io.github.mathter.zi.dsl.base.BaseDsl.DEFAULT_DESTINATION_TAG
 import io.github.mathter.zi.dsl.base.eval.{AbstractEval, AsListSourceEval, ByEval, CalculatedLiteralEval, DistinctEval, FilterEval, GroupEval, IfEval, ListElementByIndexEval, MapElemEval, MapsElemEval, NothingEval, OriginSourceEval, PathMapAcceptor, PathMapByPathAcceptor, ResultEval}
-import io.github.mathter.zi.dsl.{Acceptor, Dsl, Group, If, NumericSourceOps, Source}
+import io.github.mathter.zi.dsl.{Acceptor, Dsl, Group, If, Source}
 import io.github.mathter.zi.eval.{Context, Eval, Tracer}
 import io.github.mathter.zi.path.Path
 
@@ -94,7 +94,7 @@ class BaseDsl extends Dsl {
 
   override def mapElem[T, D](source: Source[List[T]], f: T => D): Source[List[D]] = {
     implicit val tracer = Tracer.trace3()
-    new MapElemEval[T,D](source.asInstanceOf[Eval[List[T]]],f)
+    new MapElemEval[T, D](source.asInstanceOf[Eval[List[T]]], f)
   }
 
   override def mapsElem[T, D](source: Source[List[T]], f: Source[T] => Source[D]): Source[List[D]] = {
@@ -120,41 +120,6 @@ class BaseDsl extends Dsl {
   override def distinctBy[K, T](source: Source[List[T]], key: Source[T] => Source[K]): Source[List[T]] = {
     implicit val tracer = Tracer.trace3()
     new DistinctEval[K, T](source.asInstanceOf[Eval[List[T]]], key)
-  }
-
-  override def shortSourceOps(x: Source[Short]): NumericSourceOps[Short] = {
-    implicit val tracer = Tracer.trace3()
-    new ShortSourceOps(x)
-  }
-
-  override def intSourceOps(x: Source[Int]): NumericSourceOps[Int] = {
-    implicit val tracer = Tracer.trace3()
-    new IntSourceOps(x)
-  }
-
-  override def longSourceOps(x: Source[Long]): NumericSourceOps[Long] = {
-    implicit val tracer = Tracer.trace3()
-    new LongSourceOps(x)
-  }
-
-  def floatSourceOps(x: Source[Float]): NumericSourceOps[Float] = {
-    implicit val tracer = Tracer.trace3()
-    new FloatSourceOps(x)
-  }
-
-  override def doubleSourceOps(x: Source[Double]): NumericSourceOps[Double] = {
-    implicit val tracer = Tracer.trace3()
-    new DoubleSourceOps(x)
-  }
-
-  override def bigIntSourceOps(x: Source[BigInt]): NumericSourceOps[BigInt] = {
-    implicit val tracer = Tracer.trace3()
-    new BigIntSourceOps(x)
-  }
-
-  override def bigDecimalSourceOps(x: Source[BigDecimal]): NumericSourceOps[BigDecimal] = {
-    implicit val tracer = Tracer.trace3()
-    new BigDecimalSourceOps(x)
   }
 }
 

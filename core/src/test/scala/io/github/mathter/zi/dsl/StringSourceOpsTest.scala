@@ -72,6 +72,17 @@ class StringSourceOpsTest {
   }
 
   @Test
+  def testIsNotEmpty(): Unit = {
+    implicit val context: BaseContext = new BaseContext(PathMap.empty)
+    implicit val dsl: Dsl = BaseDsl()
+    val origin = RandomStringUtils.insecure().nextAlphabetic(10)
+    val s = dsl.literal(origin).isNotEmpty
+
+    Assertions.assertNotNull(s)
+    Assertions.assertTrue(Evaluator.evalSource(s).get)
+  }
+
+  @Test
   def testMatches(): Unit = {
     implicit val context: BaseContext = new BaseContext(PathMap.empty)
     implicit val dsl: Dsl = BaseDsl()
