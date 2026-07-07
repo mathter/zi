@@ -10,7 +10,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>core</module>
-        <module>data</module>
+        <module>processing</module>
     </modules>
 
     <properties>
