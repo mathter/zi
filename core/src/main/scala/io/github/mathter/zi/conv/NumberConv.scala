@@ -3,6 +3,7 @@ package io.github.mathter.zi.conv
 import java.lang
 
 object NumberConv {
+
   def string2byte(x: String): Byte | Null = if (x != null) lang.Byte.parseByte(x) else null
 
   def byte2string(x: Byte | Null): String = if (x != null) x.toString else null
