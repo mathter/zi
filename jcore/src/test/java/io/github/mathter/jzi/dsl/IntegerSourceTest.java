@@ -1,0 +1,151 @@
+package io.github.mathter.jzi.dsl;
+
+import io.github.mathter.jzi.dsl.base.BaseDsl;
+import io.github.mathter.zi.data.PathMap;
+import io.github.mathter.zi.dsl.base.eval.BaseContext;
+import io.github.mathter.zi.dsl.base.eval.Evaluator;
+import io.github.mathter.zi.eval.Context;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+public class IntegerSourceTest {
+    @Test
+    public void testIntegerPlus() {
+        final Dsl dsl = new BaseDsl();
+        final Context context = new BaseContext(PathMap.empty());
+
+        final NumberSource<Integer> l = dsl.literal(10);
+        Assertions.assertNotNull(l);
+        final NumberSource<Integer> r = dsl.literal(20);
+        Assertions.assertNotNull(r);
+        final NumberSource<Integer> s = l.plus(r);
+        Assertions.assertNotNull(s);
+
+        Assertions.assertEquals(30, Evaluator.evalSource(s, context).get());
+    }
+
+    @Test
+    public void testIntegerMinus() {
+        final Dsl dsl = new BaseDsl();
+        final Context context = new BaseContext(PathMap.empty());
+
+        final NumberSource<Integer> l = dsl.literal(10);
+        Assertions.assertNotNull(l);
+        final NumberSource<Integer> r = dsl.literal(20);
+        Assertions.assertNotNull(r);
+        final NumberSource<Integer> s = l.minus(r);
+        Assertions.assertNotNull(s);
+
+        Assertions.assertEquals(-10, Evaluator.evalSource(s, context).get());
+    }
+
+    @Test
+    public void testIntegerMultiply() {
+        final Dsl dsl = new BaseDsl();
+        final Context context = new BaseContext(PathMap.empty());
+
+        final NumberSource<Integer> l = dsl.literal(10);
+        Assertions.assertNotNull(l);
+        final NumberSource<Integer> r = dsl.literal(20);
+        Assertions.assertNotNull(r);
+        final NumberSource<Integer> s = l.multiply(r);
+        Assertions.assertNotNull(s);
+
+        Assertions.assertEquals(200, Evaluator.evalSource(s, context).get());
+    }
+
+    @Test
+    public void testIntegerDivide() {
+        final Dsl dsl = new BaseDsl();
+        final Context context = new BaseContext(PathMap.empty());
+
+        final NumberSource<Integer> l = dsl.literal(30);
+        Assertions.assertNotNull(l);
+        final NumberSource<Integer> r = dsl.literal(20);
+        Assertions.assertNotNull(r);
+        final NumberSource<Integer> s = l.divide(r);
+        Assertions.assertNotNull(s);
+
+        Assertions.assertEquals(1, Evaluator.evalSource(s, context).get());
+    }
+
+    @Test
+    public void testIntegerRem() {
+        final Dsl dsl = new BaseDsl();
+        final Context context = new BaseContext(PathMap.empty());
+
+        final NumberSource<Integer> l = dsl.literal(30);
+        Assertions.assertNotNull(l);
+        final NumberSource<Integer> r = dsl.literal(20);
+        Assertions.assertNotNull(r);
+        final NumberSource<Integer> s = l.rem(r);
+        Assertions.assertNotNull(s);
+
+        Assertions.assertEquals(10, Evaluator.evalSource(s, context).get());
+    }
+
+    @Test
+    public void testIntegerAbs() {
+        final Dsl dsl = new BaseDsl();
+        final Context context = new BaseContext(PathMap.empty());
+
+        final NumberSource<Integer> l = dsl.literal(-30);
+        Assertions.assertNotNull(l);
+        final NumberSource<Integer> s = l.abs();
+        Assertions.assertNotNull(s);
+
+        Assertions.assertEquals(30, Evaluator.evalSource(s, context).get());
+    }
+
+    @Test
+    public void testIntegerNegate() {
+        final Dsl dsl = new BaseDsl();
+        final Context context = new BaseContext(PathMap.empty());
+
+        final NumberSource<Integer> l = dsl.literal(-30);
+        Assertions.assertNotNull(l);
+        final NumberSource<Integer> s = l.abs();
+        Assertions.assertNotNull(s);
+
+        Assertions.assertEquals(30, Evaluator.evalSource(s, context).get());
+    }
+
+    @Test
+    public void testIntegerSignLeft() {
+        final Dsl dsl = new BaseDsl();
+        final Context context = new BaseContext(PathMap.empty());
+
+        final NumberSource<Integer> l = dsl.literal(-30);
+        Assertions.assertNotNull(l);
+        final NumberSource<Integer> s = l.sign();
+        Assertions.assertNotNull(s);
+
+        Assertions.assertEquals(-1, Evaluator.evalSource(s, context).get());
+    }
+
+    @Test
+    public void testIntegerSignZero() {
+        final Dsl dsl = new BaseDsl();
+        final Context context = new BaseContext(PathMap.empty());
+
+        final NumberSource<Integer> l = dsl.literal(0);
+        Assertions.assertNotNull(l);
+        final NumberSource<Integer> s = l.sign();
+        Assertions.assertNotNull(s);
+
+        Assertions.assertEquals(0, Evaluator.evalSource(s, context).get());
+    }
+
+    @Test
+    public void testIntegerSignRight() {
+        final Dsl dsl = new BaseDsl();
+        final Context context = new BaseContext(PathMap.empty());
+
+        final NumberSource<Integer> l = dsl.literal(10);
+        Assertions.assertNotNull(l);
+        final NumberSource<Integer> s = l.sign();
+        Assertions.assertNotNull(s);
+
+        Assertions.assertEquals(1, Evaluator.evalSource(s, context).get());
+    }
+}
