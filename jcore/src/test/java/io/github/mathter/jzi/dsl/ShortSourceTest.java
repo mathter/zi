@@ -29,9 +29,9 @@ public class ShortSourceTest {
         final Dsl dsl = new BaseDsl();
         final Context context = new BaseContext(PathMap.empty());
 
-        final NumberSource<Short> l = dsl.literal(() -> (short) 10);
+        final NumberSource<Short> l = dsl.numberLiteral(() -> (short) 10);
         Assertions.assertNotNull(l);
-        final NumberSource<Short> r = dsl.literal(() -> (short) 20);
+        final NumberSource<Short> r = dsl.numberLiteral(() -> (short) 20);
         Assertions.assertNotNull(r);
         final NumberSource<Short> s = l.plus(r);
         Assertions.assertNotNull(s);

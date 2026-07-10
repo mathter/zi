@@ -4,7 +4,13 @@ import io.github.mathter.zi.data.PathMap
 import io.github.mathter.zi.dsl.base.BaseDsl
 import io.github.mathter.zi.dsl.base.eval.{BaseContext, Evaluator}
 import org.apache.commons.lang3.RandomStringUtils
+import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.api.{Assertions, Test}
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.{Arguments, ArgumentsProvider, ArgumentsSource, MethodSource}
+import org.junit.jupiter.params.support.ParameterDeclarations
+
+import java.util.stream.Stream
 
 class StringSourceOpsTest {
   @Test
@@ -26,10 +32,10 @@ class StringSourceOpsTest {
   }
 
   @Test
-  def testReplace(): Unit = {
+  def testReplaceAll(): Unit = {
     implicit val context: BaseContext = new BaseContext(PathMap.empty)
     val dsl: Dsl = BaseDsl()
-    val s = dsl.literal("Hello").replace("^.*(ll).*$", "$1")
+    val s = dsl.literal("Hello").replaceAll("^.*(ll).*$", "$1")
 
     Assertions.assertEquals("ll", Evaluator.evalSource(s).get)
 
@@ -50,36 +56,26 @@ class StringSourceOpsTest {
     Assertions.assertEquals(origin.length, Evaluator.evalSource(s).get)
   }
 
-  @Test
-  def testIsEmpty(): Unit = {
+  @ParameterizedTest
+  @ArgumentsSource(classOf[StringSourceOpsTest.TestIsEmpty])
+  def testIsEmpty(origin: String, expected: Boolean): Unit = {
     implicit val context: BaseContext = new BaseContext(PathMap.empty)
     implicit val dsl: Dsl = BaseDsl()
-    val origin = RandomStringUtils.insecure().nextAlphabetic(10)
     val s = dsl.literal(origin).isEmpty
 
     Assertions.assertNotNull(s)
-    Assertions.assertFalse(Evaluator.evalSource(s).get)
+    Assertions.assertEquals(expected, Evaluator.evalSource(s).get)
   }
 
-  @Test
-  def testIsEmpty1(): Unit = {
+  @ParameterizedTest
+  @ArgumentsSource(classOf[StringSourceOpsTest.TestNotEmpty])
+  def testIsNonEmpty(origin: String, expected: Boolean): Unit = {
     implicit val context: BaseContext = new BaseContext(PathMap.empty)
     implicit val dsl: Dsl = BaseDsl()
-    val s = dsl.nothing[String].isEmpty
+    val s = dsl.literal(origin).isNonEmpty
 
     Assertions.assertNotNull(s)
-    Assertions.assertTrue(Evaluator.evalSource(s).isEmpty)
-  }
-
-  @Test
-  def testIsNotEmpty(): Unit = {
-    implicit val context: BaseContext = new BaseContext(PathMap.empty)
-    implicit val dsl: Dsl = BaseDsl()
-    val origin = RandomStringUtils.insecure().nextAlphabetic(10)
-    val s = dsl.literal(origin).isNotEmpty
-
-    Assertions.assertNotNull(s)
-    Assertions.assertTrue(Evaluator.evalSource(s).get)
+    Assertions.assertEquals(expected, Evaluator.evalSource(s).get)
   }
 
   @Test
@@ -101,5 +97,25 @@ class StringSourceOpsTest {
 
     Assertions.assertNotNull(s)
     Assertions.assertTrue(Evaluator.evalSource(s).isEmpty)
+  }
+}
+
+object StringSourceOpsTest {
+  class TestIsEmpty extends ArgumentsProvider {
+    override def provideArguments(parameters: ParameterDeclarations, context: ExtensionContext): Stream[_ <: Arguments] =
+      Stream.of(
+        Arguments.of(RandomStringUtils.insecure().nextAlphabetic(10), false),
+        Arguments.of("", true),
+        Arguments.of(null, true),
+      )
+  }
+
+  class TestNotEmpty extends ArgumentsProvider {
+    override def provideArguments(parameters: ParameterDeclarations, context: ExtensionContext): Stream[_ <: Arguments] =
+      Stream.of(
+        Arguments.of(RandomStringUtils.insecure().nextAlphabetic(10), true),
+        Arguments.of("", false),
+        Arguments.of(null, false),
+      )
   }
 }

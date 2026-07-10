@@ -1,0 +1,23 @@
+package io.github.mathter.jzi.dsl;
+
+import io.github.mathter.zi.dsl.Source;
+
+public interface StringSource extends Source<String> {
+    public StringSource toUpperCase();
+
+    public StringSource toLowerCase();
+
+    public StringSource replaceAll(String regexpr, String replacement);
+
+    public NumberSource<Integer> length();
+
+    public StringSource trim();
+
+    public BooleanSource isEmpty();
+
+    public BooleanSource isNotEmpty();
+
+    public BooleanSource isBlank();
+
+    public BooleanSource isNotBlank();
+}

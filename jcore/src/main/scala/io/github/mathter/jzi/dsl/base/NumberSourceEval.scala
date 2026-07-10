@@ -10,7 +10,7 @@ import scala.math.Integral.Implicits.infixIntegralOps
 
 
 class NumberSourceEval[T <: Number]
-(val eval: Eval[T])(using dsl: Dsl, tracer: Tracer = Tracer.trace5(), numeric: Integral[T])
+(protected val eval: Eval[T])(using dsl: Dsl, tracer: Tracer = Tracer.trace5(), numeric: Integral[T])
   extends AbstractEval[T]
     with NumberSource[T] {
   override def evalI(using context: Context): Opt[T] = eval.eval

@@ -29,9 +29,9 @@ public class DoubleSourceTest {
         final Dsl dsl = new BaseDsl();
         final Context context = new BaseContext(PathMap.empty());
 
-        final NumberSource<Double> l = dsl.literal(() -> 10d);
+        final NumberSource<Double> l = dsl.numberLiteral(() -> 10d);
         Assertions.assertNotNull(l);
-        final NumberSource<Double> r = dsl.literal(() -> 20d);
+        final NumberSource<Double> r = dsl.numberLiteral(() -> 20d);
         Assertions.assertNotNull(r);
         final NumberSource<Double> s = l.plus(r);
         Assertions.assertNotNull(s);

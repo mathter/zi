@@ -31,9 +31,9 @@ public class BigDecimalSourceTest {
         final Dsl dsl = new BaseDsl();
         final Context context = new BaseContext(PathMap.empty());
 
-        final NumberSource<BigDecimal> l = dsl.literal(() -> BigDecimal.valueOf(10));
+        final NumberSource<BigDecimal> l = dsl.numberLiteral(() -> BigDecimal.valueOf(10));
         Assertions.assertNotNull(l);
-        final NumberSource<BigDecimal> r = dsl.literal(() -> BigDecimal.valueOf(20));
+        final NumberSource<BigDecimal> r = dsl.numberLiteral(() -> BigDecimal.valueOf(20));
         Assertions.assertNotNull(r);
         final NumberSource<BigDecimal> s = l.plus(r);
         Assertions.assertNotNull(s);

@@ -29,9 +29,9 @@ public class ByteSourceTest {
         final Dsl dsl = new BaseDsl();
         final Context context = new BaseContext(PathMap.empty());
 
-        final NumberSource<Byte> l = dsl.literal(() -> (byte) 10);
+        final NumberSource<Byte> l = dsl.numberLiteral(() -> (byte) 10);
         Assertions.assertNotNull(l);
-        final NumberSource<Byte> r = dsl.literal(() -> (byte) 20);
+        final NumberSource<Byte> r = dsl.numberLiteral(() -> (byte) 20);
         Assertions.assertNotNull(r);
         final NumberSource<Byte> s = l.plus(r);
         Assertions.assertNotNull(s);

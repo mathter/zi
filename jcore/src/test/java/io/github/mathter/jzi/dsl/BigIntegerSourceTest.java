@@ -31,9 +31,9 @@ public class BigIntegerSourceTest {
         final Dsl dsl = new BaseDsl();
         final Context context = new BaseContext(PathMap.empty());
 
-        final NumberSource<BigInteger> l = dsl.literal(() -> BigInteger.valueOf(10));
+        final NumberSource<BigInteger> l = dsl.numberLiteral(() -> BigInteger.valueOf(10));
         Assertions.assertNotNull(l);
-        final NumberSource<BigInteger> r = dsl.literal(() -> BigInteger.valueOf(20));
+        final NumberSource<BigInteger> r = dsl.numberLiteral(() -> BigInteger.valueOf(20));
         Assertions.assertNotNull(r);
         final NumberSource<BigInteger> s = l.plus(r);
         Assertions.assertNotNull(s);

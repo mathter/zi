@@ -29,9 +29,9 @@ public class FloatSourceTest {
         final Dsl dsl = new BaseDsl();
         final Context context = new BaseContext(PathMap.empty());
 
-        final NumberSource<Float> l = dsl.literal(() -> 10f);
+        final NumberSource<Float> l = dsl.numberLiteral(() -> 10f);
         Assertions.assertNotNull(l);
-        final NumberSource<Float> r = dsl.literal(() -> 20f);
+        final NumberSource<Float> r = dsl.numberLiteral(() -> 20f);
         Assertions.assertNotNull(r);
         final NumberSource<Float> s = l.plus(r);
         Assertions.assertNotNull(s);

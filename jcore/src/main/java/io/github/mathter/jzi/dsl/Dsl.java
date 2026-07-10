@@ -1,10 +1,36 @@
 package io.github.mathter.jzi.dsl;
 
+import io.github.mathter.zi.dsl.LiteralDsl;
+import io.github.mathter.zi.dsl.OriginDsl;
+import io.github.mathter.zi.dsl.ResultDsl;
+import io.github.mathter.zi.dsl.Source;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.function.Supplier;
 
-public interface Dsl extends io.github.mathter.zi.dsl.Dsl {
+public interface Dsl extends
+        LiteralDsl,
+        OriginDsl,
+        ResultDsl {
+    public StringSource asStringSource(Source<String> source);
+
+    public NumberSource<Byte> asByteSource(Source<Byte> source);
+
+    public NumberSource<Short> asShortSource(Source<Short> source);
+
+    public NumberSource<Integer> asIntSource(Source<Integer> source);
+
+    public NumberSource<Long> asLongSource(Source<Long> source);
+
+    public NumberSource<Float> asFloatSource(Source<Float> source);
+
+    public NumberSource<Double> asDoubleSource(Source<Double> source);
+
+    public NumberSource<BigInteger> asBigIntegerSource(Source<BigInteger> source);
+
+    public NumberSource<BigDecimal> asBigDecimalSource(Source<BigDecimal> source);
+
     public NumberSource<Byte> literal(Byte value);
 
     public NumberSource<Short> literal(Short value);
@@ -21,5 +47,13 @@ public interface Dsl extends io.github.mathter.zi.dsl.Dsl {
 
     public NumberSource<BigDecimal> literal(BigDecimal value);
 
-    public <T extends Number> NumberSource<T> literal(Supplier<T> supplier);
+    public <T extends Number> NumberSource<T> numberLiteral(Supplier<T> supplier);
+
+    public StringSource literal(String value);
+
+    public StringSource stringLiteral(Supplier<String> supplier);
+
+    public BooleanSource literal(Boolean literal);
+
+    public BooleanSource booleanLiteral(Supplier<Boolean> supplier);
 }

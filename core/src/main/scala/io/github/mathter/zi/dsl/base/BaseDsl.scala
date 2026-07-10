@@ -102,7 +102,7 @@ class BaseDsl extends Dsl {
     new MapsElemEval[T, D](source.asInstanceOf[Eval[List[T]]], f)
   }
 
-  override def If[T](condition: Source[Boolean]): If[T] = {
+  override def `if`[T](condition: Source[Boolean]): If[T] = {
     implicit val tracer = Tracer.trace3()
     new IfEval[T](condition.asInstanceOf[Eval[Boolean]])
   }
