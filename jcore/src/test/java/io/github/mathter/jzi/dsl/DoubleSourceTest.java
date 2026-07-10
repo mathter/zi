@@ -25,6 +25,21 @@ public class DoubleSourceTest {
     }
 
     @Test
+    public void testSupplierPlus() {
+        final Dsl dsl = new BaseDsl();
+        final Context context = new BaseContext(PathMap.empty());
+
+        final NumberSource<Double> l = dsl.literal(() -> 10d);
+        Assertions.assertNotNull(l);
+        final NumberSource<Double> r = dsl.literal(() -> 20d);
+        Assertions.assertNotNull(r);
+        final NumberSource<Double> s = l.plus(r);
+        Assertions.assertNotNull(s);
+
+        Assertions.assertEquals(30d, Evaluator.evalSource(s, context).get());
+    }
+
+    @Test
     public void testMinus() {
         final Dsl dsl = new BaseDsl();
         final Context context = new BaseContext(PathMap.empty());

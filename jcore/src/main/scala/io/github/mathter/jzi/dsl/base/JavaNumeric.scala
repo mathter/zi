@@ -2,6 +2,8 @@ package io.github.mathter.jzi.dsl.base
 
 import java.lang
 import java.lang.Short
+import java.math.BigInteger
+import java.math.BigDecimal
 
 object JavaNumeric {
   implicit object ByteNumeric extends Integral[lang.Byte] {
@@ -170,5 +172,61 @@ object JavaNumeric {
     override def toDouble(x: lang.Double): Double = x.toDouble
 
     override def compare(x: lang.Double, y: lang.Double): Int = x.compareTo(y.doubleValue())
+  }
+
+  implicit object BigIntegerNumeric extends Integral[BigInteger] {
+    override def quot(x: BigInteger, y: BigInteger): BigInteger = x.divide(y)
+
+    override def rem(x: BigInteger, y: BigInteger): BigInteger = x.remainder(y)
+
+    override def plus(x: BigInteger, y: BigInteger): BigInteger = x.add(y)
+
+    override def minus(x: BigInteger, y: BigInteger): BigInteger = x.subtract(y)
+
+    override def times(x: BigInteger, y: BigInteger): BigInteger = x.multiply(y)
+
+    override def negate(x: BigInteger): BigInteger = x.negate()
+
+    override def fromInt(x: Int): BigInteger = BigInteger.valueOf(x)
+
+    override def parseString(str: String): Option[BigInteger] = Option(new BigInteger(str))
+
+    override def toInt(x: BigInteger): Int = x.toInt
+
+    override def toLong(x: BigInteger): Long = x.toLong
+
+    override def toFloat(x: BigInteger): Float = x.toFloat
+
+    override def toDouble(x: BigInteger): Double = x.toDouble
+
+    override def compare(x: BigInteger, y: BigInteger): Int = x.compareTo(y)
+  }
+
+  implicit object BigDecimalNumeric extends Integral[BigDecimal] {
+    override def quot(x: BigDecimal, y: BigDecimal): BigDecimal = x.divide(y)
+
+    override def rem(x: BigDecimal, y: BigDecimal): BigDecimal = x.remainder(y)
+
+    override def plus(x: BigDecimal, y: BigDecimal): BigDecimal = x.add(y)
+
+    override def minus(x: BigDecimal, y: BigDecimal): BigDecimal = x.subtract(y)
+
+    override def times(x: BigDecimal, y: BigDecimal): BigDecimal = x.multiply(y)
+
+    override def negate(x: BigDecimal): BigDecimal = x.negate()
+
+    override def fromInt(x: Int): BigDecimal = BigDecimal.valueOf(x)
+
+    override def parseString(str: String): Option[BigDecimal] = Option(new BigDecimal(str))
+
+    override def toInt(x: BigDecimal): Int = x.toInt
+
+    override def toLong(x: BigDecimal): Long = x.toLong
+
+    override def toFloat(x: BigDecimal): Float = x.toFloat
+
+    override def toDouble(x: BigDecimal): Double = x.toDouble
+
+    override def compare(x: BigDecimal, y: BigDecimal): Int = x.compareTo(y)
   }
 }

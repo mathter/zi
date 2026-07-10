@@ -25,6 +25,21 @@ public class LongSourceTest {
     }
 
     @Test
+    public void testLongIntegerPlus() {
+        final Dsl dsl = new BaseDsl();
+        final Context context = new BaseContext(PathMap.empty());
+
+        final NumberSource<Long> l = dsl.literal(() -> 10L);
+        Assertions.assertNotNull(l);
+        final NumberSource<Long> r = dsl.literal(() -> 20L);
+        Assertions.assertNotNull(r);
+        final NumberSource<Long> s = l.plus(r);
+        Assertions.assertNotNull(s);
+
+        Assertions.assertEquals(30L, Evaluator.evalSource(s, context).get());
+    }
+
+    @Test
     public void testLongMinus() {
         final Dsl dsl = new BaseDsl();
         final Context context = new BaseContext(PathMap.empty());

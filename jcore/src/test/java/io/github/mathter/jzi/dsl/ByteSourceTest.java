@@ -25,6 +25,21 @@ public class ByteSourceTest {
     }
 
     @Test
+    public void testSupplierPlus() {
+        final Dsl dsl = new BaseDsl();
+        final Context context = new BaseContext(PathMap.empty());
+
+        final NumberSource<Byte> l = dsl.literal(() -> (byte) 10);
+        Assertions.assertNotNull(l);
+        final NumberSource<Byte> r = dsl.literal(() -> (byte) 20);
+        Assertions.assertNotNull(r);
+        final NumberSource<Byte> s = l.plus(r);
+        Assertions.assertNotNull(s);
+
+        Assertions.assertEquals((byte) 30, Evaluator.evalSource(s, context).get());
+    }
+
+    @Test
     public void testMinus() {
         final Dsl dsl = new BaseDsl();
         final Context context = new BaseContext(PathMap.empty());

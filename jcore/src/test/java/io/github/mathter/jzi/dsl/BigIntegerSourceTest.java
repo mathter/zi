@@ -8,20 +8,22 @@ import io.github.mathter.zi.eval.Context;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class FloatSourceTest {
+import java.math.BigInteger;
+
+public class BigIntegerSourceTest {
     @Test
     public void testPlus() {
         final Dsl dsl = new BaseDsl();
         final Context context = new BaseContext(PathMap.empty());
 
-        final NumberSource<Float> l = dsl.literal(10f);
+        final NumberSource<BigInteger> l = dsl.literal(BigInteger.valueOf(10));
         Assertions.assertNotNull(l);
-        final NumberSource<Float> r = dsl.literal(20f);
+        final NumberSource<BigInteger> r = dsl.literal(BigInteger.valueOf(20));
         Assertions.assertNotNull(r);
-        final NumberSource<Float> s = l.plus(r);
+        final NumberSource<BigInteger> s = l.plus(r);
         Assertions.assertNotNull(s);
 
-        Assertions.assertEquals(30f, Evaluator.evalSource(s, context).get());
+        Assertions.assertEquals(BigInteger.valueOf(30), Evaluator.evalSource(s, context).get());
     }
 
     @Test
@@ -29,14 +31,14 @@ public class FloatSourceTest {
         final Dsl dsl = new BaseDsl();
         final Context context = new BaseContext(PathMap.empty());
 
-        final NumberSource<Float> l = dsl.literal(() -> 10f);
+        final NumberSource<BigInteger> l = dsl.literal(() -> BigInteger.valueOf(10));
         Assertions.assertNotNull(l);
-        final NumberSource<Float> r = dsl.literal(() -> 20f);
+        final NumberSource<BigInteger> r = dsl.literal(() -> BigInteger.valueOf(20));
         Assertions.assertNotNull(r);
-        final NumberSource<Float> s = l.plus(r);
+        final NumberSource<BigInteger> s = l.plus(r);
         Assertions.assertNotNull(s);
 
-        Assertions.assertEquals(30f, Evaluator.evalSource(s, context).get());
+        Assertions.assertEquals(BigInteger.valueOf(30), Evaluator.evalSource(s, context).get());
     }
 
     @Test
@@ -44,14 +46,14 @@ public class FloatSourceTest {
         final Dsl dsl = new BaseDsl();
         final Context context = new BaseContext(PathMap.empty());
 
-        final NumberSource<Float> l = dsl.literal(10f);
+        final NumberSource<BigInteger> l = dsl.literal(BigInteger.valueOf(10));
         Assertions.assertNotNull(l);
-        final NumberSource<Float> r = dsl.literal(20f);
+        final NumberSource<BigInteger> r = dsl.literal(BigInteger.valueOf(20));
         Assertions.assertNotNull(r);
-        final NumberSource<Float> s = l.minus(r);
+        final NumberSource<BigInteger> s = l.minus(r);
         Assertions.assertNotNull(s);
 
-        Assertions.assertEquals(-10f, Evaluator.evalSource(s, context).get());
+        Assertions.assertEquals(BigInteger.valueOf(-10), Evaluator.evalSource(s, context).get());
     }
 
     @Test
@@ -59,14 +61,14 @@ public class FloatSourceTest {
         final Dsl dsl = new BaseDsl();
         final Context context = new BaseContext(PathMap.empty());
 
-        final NumberSource<Float> l = dsl.literal(10f);
+        final NumberSource<BigInteger> l = dsl.literal(BigInteger.valueOf(10));
         Assertions.assertNotNull(l);
-        final NumberSource<Float> r = dsl.literal(20f);
+        final NumberSource<BigInteger> r = dsl.literal(BigInteger.valueOf(20));
         Assertions.assertNotNull(r);
-        final NumberSource<Float> s = l.multiply(r);
+        final NumberSource<BigInteger> s = l.multiply(r);
         Assertions.assertNotNull(s);
 
-        Assertions.assertEquals(200f, Evaluator.evalSource(s, context).get());
+        Assertions.assertEquals(BigInteger.valueOf(200), Evaluator.evalSource(s, context).get());
     }
 
     @Test
@@ -74,14 +76,14 @@ public class FloatSourceTest {
         final Dsl dsl = new BaseDsl();
         final Context context = new BaseContext(PathMap.empty());
 
-        final NumberSource<Float> l = dsl.literal(30f);
+        final NumberSource<BigInteger> l = dsl.literal(BigInteger.valueOf(30));
         Assertions.assertNotNull(l);
-        final NumberSource<Float> r = dsl.literal(20f);
+        final NumberSource<BigInteger> r = dsl.literal(BigInteger.valueOf(20));
         Assertions.assertNotNull(r);
-        final NumberSource<Float> s = l.divide(r);
+        final NumberSource<BigInteger> s = l.divide(r);
         Assertions.assertNotNull(s);
 
-        Assertions.assertEquals(1.5f, Evaluator.evalSource(s, context).get());
+        Assertions.assertEquals(BigInteger.ONE, Evaluator.evalSource(s, context).get());
     }
 
     @Test
@@ -89,14 +91,14 @@ public class FloatSourceTest {
         final Dsl dsl = new BaseDsl();
         final Context context = new BaseContext(PathMap.empty());
 
-        final NumberSource<Float> l = dsl.literal(30f);
+        final NumberSource<BigInteger> l = dsl.literal(BigInteger.valueOf(30));
         Assertions.assertNotNull(l);
-        final NumberSource<Float> r = dsl.literal(20f);
+        final NumberSource<BigInteger> r = dsl.literal(BigInteger.valueOf(20));
         Assertions.assertNotNull(r);
-        final NumberSource<Float> s = l.rem(r);
+        final NumberSource<BigInteger> s = l.rem(r);
         Assertions.assertNotNull(s);
 
-        Assertions.assertEquals(10f, Evaluator.evalSource(s, context).get());
+        Assertions.assertEquals(BigInteger.valueOf(10), Evaluator.evalSource(s, context).get());
     }
 
     @Test
@@ -104,12 +106,12 @@ public class FloatSourceTest {
         final Dsl dsl = new BaseDsl();
         final Context context = new BaseContext(PathMap.empty());
 
-        final NumberSource<Float> l = dsl.literal(-30f);
+        final NumberSource<BigInteger> l = dsl.literal(BigInteger.valueOf(-30));
         Assertions.assertNotNull(l);
-        final NumberSource<Float> s = l.abs();
+        final NumberSource<BigInteger> s = l.abs();
         Assertions.assertNotNull(s);
 
-        Assertions.assertEquals(30f, Evaluator.evalSource(s, context).get());
+        Assertions.assertEquals(BigInteger.valueOf(30), Evaluator.evalSource(s, context).get());
     }
 
     @Test
@@ -117,12 +119,12 @@ public class FloatSourceTest {
         final Dsl dsl = new BaseDsl();
         final Context context = new BaseContext(PathMap.empty());
 
-        final NumberSource<Float> l = dsl.literal(-30f);
+        final NumberSource<BigInteger> l = dsl.literal(BigInteger.valueOf(-30));
         Assertions.assertNotNull(l);
-        final NumberSource<Float> s = l.abs();
+        final NumberSource<BigInteger> s = l.abs();
         Assertions.assertNotNull(s);
 
-        Assertions.assertEquals(30f, Evaluator.evalSource(s, context).get());
+        Assertions.assertEquals(BigInteger.valueOf(30), Evaluator.evalSource(s, context).get());
     }
 
     @Test
@@ -130,12 +132,12 @@ public class FloatSourceTest {
         final Dsl dsl = new BaseDsl();
         final Context context = new BaseContext(PathMap.empty());
 
-        final NumberSource<Float> l = dsl.literal(-30f);
+        final NumberSource<BigInteger> l = dsl.literal(BigInteger.valueOf(-30));
         Assertions.assertNotNull(l);
-        final NumberSource<Float> s = l.sign();
+        final NumberSource<BigInteger> s = l.sign();
         Assertions.assertNotNull(s);
 
-        Assertions.assertEquals(-1f, Evaluator.evalSource(s, context).get());
+        Assertions.assertEquals(BigInteger.valueOf(-1), Evaluator.evalSource(s, context).get());
     }
 
     @Test
@@ -143,12 +145,12 @@ public class FloatSourceTest {
         final Dsl dsl = new BaseDsl();
         final Context context = new BaseContext(PathMap.empty());
 
-        final NumberSource<Float> l = dsl.literal(0f);
+        final NumberSource<BigInteger> l = dsl.literal(BigInteger.ZERO);
         Assertions.assertNotNull(l);
-        final NumberSource<Float> s = l.sign();
+        final NumberSource<BigInteger> s = l.sign();
         Assertions.assertNotNull(s);
 
-        Assertions.assertEquals(0f, Evaluator.evalSource(s, context).get());
+        Assertions.assertEquals(BigInteger.ZERO, Evaluator.evalSource(s, context).get());
     }
 
     @Test
@@ -156,11 +158,11 @@ public class FloatSourceTest {
         final Dsl dsl = new BaseDsl();
         final Context context = new BaseContext(PathMap.empty());
 
-        final NumberSource<Float> l = dsl.literal(10f);
+        final NumberSource<BigInteger> l = dsl.literal(BigInteger.valueOf(10));
         Assertions.assertNotNull(l);
-        final NumberSource<Float> s = l.sign();
+        final NumberSource<BigInteger> s = l.sign();
         Assertions.assertNotNull(s);
 
-        Assertions.assertEquals(1f, Evaluator.evalSource(s, context).get());
+        Assertions.assertEquals(BigInteger.ONE, Evaluator.evalSource(s, context).get());
     }
 }

@@ -25,6 +25,21 @@ public class ShortSourceTest {
     }
 
     @Test
+    public void testSupplierPlus() {
+        final Dsl dsl = new BaseDsl();
+        final Context context = new BaseContext(PathMap.empty());
+
+        final NumberSource<Short> l = dsl.literal(() -> (short) 10);
+        Assertions.assertNotNull(l);
+        final NumberSource<Short> r = dsl.literal(() -> (short) 20);
+        Assertions.assertNotNull(r);
+        final NumberSource<Short> s = l.plus(r);
+        Assertions.assertNotNull(s);
+
+        Assertions.assertEquals((short) 30, Evaluator.evalSource(s, context).get());
+    }
+
+    @Test
     public void testMinus() {
         final Dsl dsl = new BaseDsl();
         final Context context = new BaseContext(PathMap.empty());

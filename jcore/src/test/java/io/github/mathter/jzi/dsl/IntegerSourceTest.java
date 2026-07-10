@@ -25,6 +25,21 @@ public class IntegerSourceTest {
     }
 
     @Test
+    public void testIntegerSupplierPlus() {
+        final Dsl dsl = new BaseDsl();
+        final Context context = new BaseContext(PathMap.empty());
+
+        final NumberSource<Integer> l = dsl.literal(() -> 10);
+        Assertions.assertNotNull(l);
+        final NumberSource<Integer> r = dsl.literal(() -> 20);
+        Assertions.assertNotNull(r);
+        final NumberSource<Integer> s = l.plus(r);
+        Assertions.assertNotNull(s);
+
+        Assertions.assertEquals(30, Evaluator.evalSource(s, context).get());
+    }
+
+    @Test
     public void testIntegerMinus() {
         final Dsl dsl = new BaseDsl();
         final Context context = new BaseContext(PathMap.empty());
