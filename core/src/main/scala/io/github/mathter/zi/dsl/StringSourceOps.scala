@@ -13,11 +13,11 @@ implicit class StringSourceOps(private val x: Source[String]) {
 
   inline def isEmpty: Source[Boolean] = x.custom(e => e == null || e.isEmpty)
 
-  inline def isNonEmpty: Source[Boolean] = x.custom(e => e != null && e.nonEmpty)
+  inline def nonEmpty: Source[Boolean] = x.custom(e => e != null && e.nonEmpty)
 
   inline def isBlank: Source[Boolean] = x.custom(e => e == null || e.isBlank)
 
-  inline def isNonBlank: Source[Boolean] = x.custom(e => e != null && !e.isBlank)
+  inline def nonBlank: Source[Boolean] = x.custom(e => e != null && !e.isBlank)
 
   inline def matches(regexpr: String): Source[Boolean] = x.custom(e => e != null && e.matches(regexpr))
 

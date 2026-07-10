@@ -69,10 +69,10 @@ class StringSourceOpsTest {
 
   @ParameterizedTest
   @ArgumentsSource(classOf[StringSourceOpsTest.TestNotEmpty])
-  def testIsNonEmpty(origin: String, expected: Boolean): Unit = {
+  def testNonEmpty(origin: String, expected: Boolean): Unit = {
     implicit val context: BaseContext = new BaseContext(PathMap.empty)
     implicit val dsl: Dsl = BaseDsl()
-    val s = dsl.literal(origin).isNonEmpty
+    val s = dsl.literal(origin).nonEmpty
 
     Assertions.assertNotNull(s)
     Assertions.assertEquals(expected, Evaluator.evalSource(s).get)

@@ -5,8 +5,14 @@ import io.github.mathter.zi.data.PathMap;
 import io.github.mathter.zi.dsl.base.eval.BaseContext;
 import io.github.mathter.zi.dsl.base.eval.Evaluator;
 import io.github.mathter.zi.eval.Context;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
 
 public class StringSourceTest {
     @Test
@@ -81,31 +87,91 @@ public class StringSourceTest {
         Assertions.assertEquals(origin.trim(), Evaluator.evalSource(r, context).get());
     }
 
-    @Test
-    public void testIsEmpty() {
+    @ParameterizedTest
+    @MethodSource
+    public void testIsEmpty(String origin, boolean expected) {
         final Dsl dsl = new BaseDsl();
         final Context context = new BaseContext(PathMap.empty());
-        final String origin = " for trim ";
 
         final StringSource s = dsl.literal(origin);
         Assertions.assertNotNull(s);
 
         final BooleanSource r = s.isEmpty();
         Assertions.assertNotNull(r);
-        Assertions.assertFalse(Evaluator.evalSource(r, context).get());
+        Assertions.assertEquals(expected, Evaluator.evalSource(r, context).get());
     }
 
-    @Test
-    public void testIsNonEmpty() {
+    public static Stream<Arguments> testIsEmpty() {
+        return Stream.of(
+                Arguments.of(RandomStringUtils.insecure().nextAlphabetic(10), false),
+                Arguments.of("", true),
+                Arguments.of(null, true)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource
+    public void testIsNonEmpty(String origin, boolean expected) {
         final Dsl dsl = new BaseDsl();
         final Context context = new BaseContext(PathMap.empty());
-        final String origin = " for trim ";
 
         final StringSource s = dsl.literal(origin);
         Assertions.assertNotNull(s);
 
-        final BooleanSource r = s.isNotEmpty();
+        final BooleanSource r = s.notEmpty();
         Assertions.assertNotNull(r);
-        Assertions.assertTrue(Evaluator.evalSource(r, context).get());
+        Assertions.assertEquals(expected, Evaluator.evalSource(r, context).get());
+    }
+
+    public static Stream<Arguments> testIsNonEmpty() {
+        return Stream.of(
+                Arguments.of(RandomStringUtils.insecure().nextAlphabetic(10), true),
+                Arguments.of("", false),
+                Arguments.of(null, false)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource
+    public void testIsBlank(String origin, boolean expected) {
+        final Dsl dsl = new BaseDsl();
+        final Context context = new BaseContext(PathMap.empty());
+
+        final StringSource s = dsl.literal(origin);
+        Assertions.assertNotNull(s);
+
+        final BooleanSource r = s.isBlank();
+        Assertions.assertNotNull(r);
+        Assertions.assertEquals(expected, Evaluator.evalSource(r, context).get());
+    }
+
+    public static Stream<Arguments> testIsBlank() {
+        return Stream.of(
+                Arguments.of(RandomStringUtils.insecure().nextAlphabetic(10), false),
+                Arguments.of(" ", true),
+                Arguments.of(null, true)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource
+    public void testNonEmpty(String origin, boolean expected) {
+        final Dsl dsl = new BaseDsl();
+        final Context context = new BaseContext(PathMap.empty());
+
+        final StringSource s = dsl.literal(origin);
+        Assertions.assertNotNull(s);
+
+        final BooleanSource r = s.notBlank();
+        Assertions.assertNotNull(r);
+        Assertions.assertEquals(expected, Evaluator.evalSource(r, context).get());
+    }
+
+    public static Stream<Arguments> testNonEmpty() {
+        return Stream.of(
+                Arguments.of(RandomStringUtils.insecure().nextAlphabetic(10), true),
+                Arguments.of("", false),
+                Arguments.of(null, false)
+        );
     }
 }
