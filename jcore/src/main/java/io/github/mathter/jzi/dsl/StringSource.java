@@ -15,9 +15,9 @@ public interface StringSource extends Source<String> {
 
     public BooleanSource isEmpty();
 
-    public BooleanSource isNotEmpty();
+    public BooleanSource notEmpty();
 
     public BooleanSource isBlank();
 
-    public BooleanSource isNotBlank();
+    public BooleanSource notBlank();
 }

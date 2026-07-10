@@ -48,7 +48,7 @@ class StringSourceEval(private val eval: Eval[String])(implicit dsl: Dsl, tracer
         StringSourceEval.this.eval.eval.map(e => e == null || e.isEmpty)
     }
 
-  override def isNotEmpty: BooleanSource =
+  override def notEmpty: BooleanSource =
     new BooleanSourceEval(null) {
       override def evalI(using context: Context): Opt[lang.Boolean] =
         StringSourceEval.this.eval.eval.map(e => e != null && e.nonEmpty)
@@ -60,9 +60,9 @@ class StringSourceEval(private val eval: Eval[String])(implicit dsl: Dsl, tracer
         StringSourceEval.this.eval.eval.map(e => e == null || e.isBlank)
     }
 
-  override def isNotBlank: BooleanSource =
+  override def notBlank: BooleanSource =
     new BooleanSourceEval(null) {
       override def evalI(using context: Context): Opt[lang.Boolean] =
-        StringSourceEval.this.eval.eval.map(e => e == null || !e.isBlank)
+        StringSourceEval.this.eval.eval.map(e => e != null && !e.isBlank)
     }
 }
