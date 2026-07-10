@@ -7,15 +7,19 @@ implicit class StringSourceOps(private val x: Source[String]) {
 
   inline def toLowerCase: Source[String] = x.custom(s => s.toLowerCase)
 
-  inline def replace(regexpr: String, replacement: String): Source[String] = x.custom(s => s.replaceAll(regexpr, replacement))
+  inline def replaceAll(regexpr: String, replacement: String): Source[String] = x.custom(s => s.replaceAll(regexpr, replacement))
 
-  inline def length: Source[Int] = x.custom(_.length)
+  inline def length: Source[Int] = x.custom(e => if (e != null) e.length else 0)
 
-  inline def isEmpty: Source[Boolean] = x.custom(_.isEmpty)
+  inline def isEmpty: Source[Boolean] = x.custom(e => e == null || e.isEmpty)
 
-  inline def isNotEmpty: Source[Boolean] = !this.isEmpty
+  inline def isNonEmpty: Source[Boolean] = x.custom(e => e != null && e.nonEmpty)
 
-  inline def matches(regexpr: String): Source[Boolean] = x.custom(_.matches(regexpr))
+  inline def isBlank: Source[Boolean] = x.custom(e => e == null || e.isBlank)
+
+  inline def isNonBlank: Source[Boolean] = x.custom(e => e != null && !e.isBlank)
+
+  inline def matches(regexpr: String): Source[Boolean] = x.custom(e => e != null && e.matches(regexpr))
 
   inline def trim: Source[String] = x.custom(_.trim)
 }

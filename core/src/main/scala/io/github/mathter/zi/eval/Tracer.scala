@@ -46,7 +46,7 @@ object Tracer {
       prev = if (stack.isEmpty) null else stack.top
     }
 
-    val tracer = new Tracer(prev, stackTrace(5), stackTrace.length)
+    val tracer = new Tracer(prev, stackTrace(4), stackTrace.length)
     stack.push(tracer)
     tracer
   }

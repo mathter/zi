@@ -11,6 +11,7 @@
     <modules>
         <module>core</module>
         <module>processing</module>
+        <module>jcore</module>
     </modules>
 
     <properties>

@@ -30,6 +30,8 @@ implicit class NumericSourceOps[T](x: Source[T])(using num: Integral[T], classTa
 
   def negate: Source[T] = x.custom(-_)
 
+  def sign: Source[T] = x.custom(_.sign)
+
   def /%(y: Source[T]): Source[(T, T)] =
     x.composite(y).fun((left, right) => (left / right, left % right))
 }
