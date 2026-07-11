@@ -2,9 +2,6 @@ package io.github.mathter.zi.dsl
 
 import io.github.mathter.zi.data.Opt
 
-import javax.lang.model.SourceVersion
-import scala.reflect.ClassTag
-
 trait Source[T] {
   def dsl: Dsl
 

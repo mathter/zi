@@ -19,6 +19,8 @@ sealed abstract class Opt[+A] extends IterableOnce[A] with Product with Serializ
 
   inline final def isDefined: Boolean = !isEmpty
 
+  final def isPresent(): Boolean = !isEmpty
+
   infix inline final def contains[A1 >: A](elem: A1): Boolean = isDefined && this.get == elem
 
   inline final def exists(p: A => Boolean): Boolean = isDefined && p(this.get)

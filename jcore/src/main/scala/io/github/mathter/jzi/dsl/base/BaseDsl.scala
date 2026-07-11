@@ -1,15 +1,17 @@
 package io.github.mathter.jzi.dsl.base
 
 import io.github.mathter.jzi.dsl.base.JavaNumeric.*
-import io.github.mathter.jzi.dsl.{BooleanSource, Dsl, NumberSource, StringSource}
+import io.github.mathter.zi.dsl.base.given
+import io.github.mathter.jzi.dsl.{BooleanSource, Dsl, ListSource, NumberSource, StringSource}
 import io.github.mathter.zi.data.Opt
-import io.github.mathter.zi.dsl.Source
+import io.github.mathter.zi.dsl.{Source, Dsl as zDsl}
+import io.github.mathter.zi.dsl.base.eval.AbstractEval
 import io.github.mathter.zi.eval.{Context, Eval, Tracer}
 
-import java.lang
-import java.math.BigInteger
-import java.math.BigDecimal
+import java.math.{BigDecimal, BigInteger}
 import java.util.function.Supplier
+import java.{lang, util}
+import scala.jdk.CollectionConverters
 
 class BaseDsl extends io.github.mathter.zi.dsl.base.BaseDsl with Dsl {
   override def asStringSource(source: Source[String]): StringSource = {
@@ -233,5 +235,55 @@ class BaseDsl extends io.github.mathter.zi.dsl.base.BaseDsl with Dsl {
     given dsl: BaseDsl = this
 
     new BooleanSourceEval(context => Opt(supplier.get()))
+  }
+
+  override def literal[T](literal: util.List[T]): ListSource[T] = {
+    given tracer: Tracer = Tracer.trace3()
+
+    given dsl: BaseDsl = this
+
+    new ListSourceEval[T](dsl.asInstanceOf[zDsl].literal(literal))
+  }
+
+  override def first[T](source: Source[util.List[T]]): T = ???
+}
+
+object BaseDsl {
+  def javaListSource2ListSource[T](x: Source[util.List[T]]): Source[List[T]] = {
+    given dsl: zDsl = x.dsl
+
+    new AbstractEval[List[T]] {
+      override def evalI(using context: Context): Opt[List[T]] = {
+        import scala.jdk.CollectionConverters.given
+
+        x.asInstanceOf[Eval[util.List[T]]].eval.map(e =>
+          if (e != null) e.asScala.toList else List()
+        )
+      }
+    }
+  }
+
+  def listSource2JavaListSource[T](x: Source[List[T]]): ListSource[T] = {
+    given dsl: zDsl = x.dsl
+
+    new ListSourceEval[T](null) {
+      override def evalI(using context: Context): Opt[util.List[T]] = {
+        import scala.jdk.CollectionConverters.given
+
+        x.eval.map(e =>
+          if (e != null) e.asJava else util.List.of()
+        )
+      }
+    }
+  }
+
+  given integer2int: Conversion[Source[Integer], Source[Int]] with {
+    override def apply(x: Source[Integer]): Source[Int] = {
+      given dsl: zDsl = x.dsl
+
+      new AbstractEval[Int]() {
+        override def evalI(using context: Context): Opt[Int] = x.eval.map(_.toInt)
+      }
+    }
   }
 }

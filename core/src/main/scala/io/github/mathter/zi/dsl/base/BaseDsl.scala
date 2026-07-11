@@ -128,3 +128,7 @@ object BaseDsl {
 
   implicit def baseDsl: BaseDsl = new BaseDsl
 }
+
+given [T]: Conversion[Source[T], Eval[T]] with {
+  override def apply(x: Source[T]): Eval[T] = x.asInstanceOf[Eval[T]]
+}
