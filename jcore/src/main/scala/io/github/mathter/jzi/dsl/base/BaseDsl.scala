@@ -1,11 +1,11 @@
 package io.github.mathter.jzi.dsl.base
 
 import io.github.mathter.jzi.dsl.base.JavaNumeric.*
-import io.github.mathter.zi.dsl.base.given
 import io.github.mathter.jzi.dsl.{BooleanSource, Dsl, ListSource, NumberSource, StringSource}
 import io.github.mathter.zi.data.Opt
-import io.github.mathter.zi.dsl.{Source, Dsl as zDsl}
 import io.github.mathter.zi.dsl.base.eval.AbstractEval
+import io.github.mathter.zi.dsl.base.given
+import io.github.mathter.zi.dsl.{Source, Dsl as zDsl}
 import io.github.mathter.zi.eval.{Context, Eval, Tracer}
 
 import java.math.{BigDecimal, BigInteger}

@@ -2,8 +2,8 @@ package io.github.mathter.jzi.dsl.base
 
 import io.github.mathter.jzi.dsl.BooleanSource
 import io.github.mathter.zi.data.Opt
-import io.github.mathter.zi.dsl.{Dsl, Source, Then}
 import io.github.mathter.zi.dsl.base.eval.AbstractEval
+import io.github.mathter.zi.dsl.{Dsl, Source, Then}
 import io.github.mathter.zi.eval.{Context, Eval, Tracer}
 
 import java.lang.Boolean

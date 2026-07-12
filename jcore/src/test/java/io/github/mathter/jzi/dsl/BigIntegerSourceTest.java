@@ -9,7 +9,6 @@ import io.github.mathter.zi.eval.Context;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 
 public class BigIntegerSourceTest {

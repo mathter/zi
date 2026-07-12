@@ -2,8 +2,7 @@ package io.github.mathter.jzi.dsl.base
 
 import java.lang
 import java.lang.Short
-import java.math.BigInteger
-import java.math.BigDecimal
+import java.math.{BigDecimal, BigInteger}
 
 object JavaNumeric {
   implicit object ByteNumeric extends Integral[lang.Byte] {

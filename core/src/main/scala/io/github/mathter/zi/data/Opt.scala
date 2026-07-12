@@ -3,7 +3,7 @@ package io.github.mathter.zi.data
 
 sealed abstract class Opt[+A] extends IterableOnce[A] with Product with Serializable {
 
-  import Opt.{Some, None}
+  import Opt.{None, Some}
 
   def get: A
 
