@@ -7,6 +7,7 @@ import io.github.mathter.zi.dsl.Source;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.List;
 import java.util.function.Supplier;
 
 public interface Dsl extends
@@ -30,6 +31,10 @@ public interface Dsl extends
     public NumberSource<BigInteger> asBigIntegerSource(Source<BigInteger> source);
 
     public NumberSource<BigDecimal> asBigDecimalSource(Source<BigDecimal> source);
+
+    public <T> ListSource<T> asListSource(Source<List<T>> source);
+
+    public BooleanSource asBooleanSource(Source<Boolean> source);
 
     public NumberSource<Byte> literal(Byte value);
 
@@ -56,4 +61,8 @@ public interface Dsl extends
     public BooleanSource literal(Boolean literal);
 
     public BooleanSource booleanLiteral(Supplier<Boolean> supplier);
+
+    public <T> ListSource<T> literal(List<T> literal);
+
+    public <T> T first(Source<List<T>> source);
 }

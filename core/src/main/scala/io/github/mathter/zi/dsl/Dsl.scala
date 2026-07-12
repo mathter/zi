@@ -18,7 +18,3 @@ trait Dsl
 given [T](using dsl: Dsl): Conversion[T, Source[T]] with {
   override def apply(x: T): Source[T] = dsl.literal(x)
 }
-
-implicit class ListOps[T](x: Source[T]) {
-  def list: Source[List[T]] = x.dsl.list(x)
-}

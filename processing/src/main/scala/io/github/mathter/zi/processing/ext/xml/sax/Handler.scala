@@ -1,9 +1,9 @@
 package io.github.mathter.zi.processing.ext.xml.sax
 
 import io.github.mathter.zi.data.PathMap
-import Loading.{NONE, RELATED, ROOT}
 import io.github.mathter.zi.path.Path
 import io.github.mathter.zi.processing.ext.Listener
+import io.github.mathter.zi.processing.ext.xml.sax.Loading.{NONE, RELATED, ROOT}
 import org.xml.sax.Attributes
 
 import scala.collection.mutable

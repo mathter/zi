@@ -3,7 +3,7 @@ package io.github.mathter.zi.data
 
 sealed abstract class Opt[+A] extends IterableOnce[A] with Product with Serializable {
 
-  import Opt.{Some, None}
+  import Opt.{None, Some}
 
   def get: A
 
@@ -18,6 +18,8 @@ sealed abstract class Opt[+A] extends IterableOnce[A] with Product with Serializ
   inline final def notEmpty: Boolean = isDefined
 
   inline final def isDefined: Boolean = !isEmpty
+
+  final def isPresent(): Boolean = !isEmpty
 
   infix inline final def contains[A1 >: A](elem: A1): Boolean = isDefined && this.get == elem
 

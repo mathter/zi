@@ -1,8 +1,6 @@
 package io.github.mathter.zi.dsl
 
 trait ListDsl {
-  def list[T](source: Source[T]): Source[List[T]]
-  
   def first[T](source: Source[List[T]]): Source[T]
 
   def last[T](source: Source[List[T]]): Source[T]

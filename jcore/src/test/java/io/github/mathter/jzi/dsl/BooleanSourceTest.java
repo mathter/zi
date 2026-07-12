@@ -3,6 +3,7 @@ package io.github.mathter.jzi.dsl;
 import io.github.mathter.jzi.dsl.base.BaseDsl;
 import io.github.mathter.zi.data.PathMap;
 import io.github.mathter.zi.dsl.Else;
+import io.github.mathter.zi.dsl.Source;
 import io.github.mathter.zi.dsl.base.eval.BaseContext;
 import io.github.mathter.zi.dsl.base.eval.Evaluator;
 import io.github.mathter.zi.eval.Context;
@@ -11,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.stream.Stream;
 
@@ -126,5 +126,30 @@ public class BooleanSourceTest {
                 Arguments.of(true, false),
                 Arguments.of(false, true)
         );
+    }
+
+    @Test
+    public void testAsBooleanSourceAsIs() {
+        final Dsl dsl = new BaseDsl();
+        final boolean origin = true;
+        final BooleanSource s = dsl.literal(origin);
+        Assertions.assertNotNull(s);
+
+        final BooleanSource r = dsl.asBooleanSource(s);
+        Assertions.assertNotNull(r);
+        Assertions.assertEquals(s, r);
+    }
+
+    @Test
+    public void testAsBooleanSource() {
+        final Dsl dsl = new BaseDsl();
+        final Context context = new BaseContext(PathMap.empty());
+        final boolean origin = true;
+        final Source<Boolean> s = dsl.literal(origin).as();
+        Assertions.assertNotNull(s);
+
+        final BooleanSource r = dsl.asBooleanSource(s);
+        Assertions.assertNotNull(r);
+        Assertions.assertEquals(origin, Evaluator.evalSource(s, context).get());
     }
 }

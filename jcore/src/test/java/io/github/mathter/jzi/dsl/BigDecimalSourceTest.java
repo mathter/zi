@@ -2,6 +2,7 @@ package io.github.mathter.jzi.dsl;
 
 import io.github.mathter.jzi.dsl.base.BaseDsl;
 import io.github.mathter.zi.data.PathMap;
+import io.github.mathter.zi.dsl.Source;
 import io.github.mathter.zi.dsl.base.eval.BaseContext;
 import io.github.mathter.zi.dsl.base.eval.Evaluator;
 import io.github.mathter.zi.eval.Context;
@@ -164,5 +165,30 @@ public class BigDecimalSourceTest {
         Assertions.assertNotNull(s);
 
         Assertions.assertEquals(BigDecimal.ONE, Evaluator.evalSource(s, context).get());
+    }
+
+    @Test
+    public void testAsBigDecimalSourceAsIs() {
+        final Dsl dsl = new BaseDsl();
+        final BigDecimal origin = new BigDecimal(10);
+        final NumberSource<BigDecimal> s = dsl.literal(origin);
+        Assertions.assertNotNull(s);
+
+        final NumberSource<BigDecimal> r = dsl.asBigDecimalSource(s);
+        Assertions.assertNotNull(r);
+        Assertions.assertEquals(s, r);
+    }
+
+    @Test
+    public void testAsBigDecimalSource() {
+        final Dsl dsl = new BaseDsl();
+        final Context context = new BaseContext(PathMap.empty());
+        final BigDecimal origin = new BigDecimal(10);
+        final Source<BigDecimal> s = dsl.literal(origin).as();
+        Assertions.assertNotNull(s);
+
+        final NumberSource<BigDecimal> r = dsl.asBigDecimalSource(s);
+        Assertions.assertNotNull(r);
+        Assertions.assertEquals(origin, Evaluator.evalSource(s, context).get());
     }
 }

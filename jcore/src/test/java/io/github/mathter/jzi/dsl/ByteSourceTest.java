@@ -2,6 +2,7 @@ package io.github.mathter.jzi.dsl;
 
 import io.github.mathter.jzi.dsl.base.BaseDsl;
 import io.github.mathter.zi.data.PathMap;
+import io.github.mathter.zi.dsl.Source;
 import io.github.mathter.zi.dsl.base.eval.BaseContext;
 import io.github.mathter.zi.dsl.base.eval.Evaluator;
 import io.github.mathter.zi.eval.Context;
@@ -162,5 +163,30 @@ public class ByteSourceTest {
         Assertions.assertNotNull(s);
 
         Assertions.assertEquals((byte) 1, Evaluator.evalSource(s, context).get());
+    }
+
+    @Test
+    public void testAsByteSourceAsIs() {
+        final Dsl dsl = new BaseDsl();
+        final Byte origin = 10;
+        final NumberSource<Byte> s = dsl.literal(origin);
+        Assertions.assertNotNull(s);
+
+        final NumberSource<Byte> r = dsl.asByteSource(s);
+        Assertions.assertNotNull(r);
+        Assertions.assertEquals(s, r);
+    }
+
+    @Test
+    public void testAsByteSource() {
+        final Dsl dsl = new BaseDsl();
+        final Context context = new BaseContext(PathMap.empty());
+        final Byte origin = 10;
+        final Source<Byte> s = dsl.literal(origin).as();
+        Assertions.assertNotNull(s);
+
+        final NumberSource<Byte> r = dsl.asByteSource(s);
+        Assertions.assertNotNull(r);
+        Assertions.assertEquals(origin, Evaluator.evalSource(s, context).get());
     }
 }
