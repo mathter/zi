@@ -8,9 +8,12 @@ class Tracer(private val parent: Tracer,
             ) {
   override def toString: String = {
     val sb = new StringBuilder()
-    sb.append("\tparent=").append(this.parent).append("\n")
-    sb.append("\tstacktrace=").append(this.stackTraceElement).append("\n")
-    sb.append("\tlevel=").append(this.level).append("\n")
+    sb.append("\tlevel: ").append(this.level).append('\n')
+    sb.append("\tstacktrace: ").append(this.stackTraceElement).append('\n')
+
+    if (this.parent != null) {
+      sb.append("\tprev: ").append('\n').append(this.parent).append('\n')
+    }
 
     sb.toString()
   }
