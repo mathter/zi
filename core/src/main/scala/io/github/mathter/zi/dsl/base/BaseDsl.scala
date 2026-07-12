@@ -77,11 +77,6 @@ class BaseDsl extends Dsl {
     new ListElementByIndexEval[T](source.asInstanceOf[Eval[List[T]]], index.asInstanceOf[Eval[Int]])
   }
 
-  override def list[T](source: Source[T]): Source[List[T]] = {
-    implicit val tracer = Tracer.trace3()
-    new AsListSourceEval[T](source.asInstanceOf[Eval[T]])
-  }
-
   override def by[T](source: Source[PathMap], path: Path): Source[T] = {
     implicit val tracer = Tracer.trace3()
     new ByEval[T](source.asInstanceOf[Eval[PathMap]], path)

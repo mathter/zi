@@ -2,6 +2,7 @@ package io.github.mathter.jzi.dsl;
 
 import io.github.mathter.jzi.dsl.base.BaseDsl;
 import io.github.mathter.zi.data.PathMap;
+import io.github.mathter.zi.dsl.Source;
 import io.github.mathter.zi.dsl.base.eval.BaseContext;
 import io.github.mathter.zi.dsl.base.eval.Evaluator;
 import io.github.mathter.zi.eval.Context;
@@ -173,5 +174,30 @@ public class StringSourceTest {
                 Arguments.of("", false),
                 Arguments.of(null, false)
         );
+    }
+
+    @Test
+    public void testAsStringSourceAsIs() {
+        final Dsl dsl = new BaseDsl();
+        final String origin = "This is a test";
+        final StringSource s = dsl.literal(origin);
+        Assertions.assertNotNull(s);
+
+        final StringSource r = dsl.asStringSource(s);
+        Assertions.assertNotNull(r);
+        Assertions.assertEquals(s, r);
+    }
+
+    @Test
+    public void testAsStringSource() {
+        final Dsl dsl = new BaseDsl();
+        final Context context = new BaseContext(PathMap.empty());
+        final String origin = "This is a test";
+        final Source<String> s = dsl.literal(origin).as();
+        Assertions.assertNotNull(s);
+
+        final StringSource r = dsl.asStringSource(s);
+        Assertions.assertNotNull(r);
+        Assertions.assertEquals(origin, Evaluator.evalSource(s, context).get());
     }
 }

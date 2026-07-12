@@ -112,4 +112,48 @@ public class ListSourceTest {
         Assertions.assertEquals(1, result.get().get(1).getLeft());
         Assertions.assertEquals(List.of(1, 3, 5, 7), result.get().get(1).getRight());
     }
+
+    @Test
+    public void testApplyGroup() {
+        final Dsl dsl = new BaseDsl();
+        final Context context = new BaseContext(PathMap.empty());
+
+        final ListSource<Integer> s = dsl.literal(List.of(0, 1, 2, 3, 4, 5, 6, 7))
+                .group(e -> e.map(ee -> ee % 2))
+                .mapElem(Pair::getRight)
+                .mapElem(e -> e.stream().mapToInt(i -> i).sum());
+        Assertions.assertNotNull(s);
+
+        final Opt<List<Integer>> result = Evaluator.evalSource(s, context);
+        Assertions.assertNotNull(result);
+        Assertions.assertTrue(result.isPresent());
+        Assertions.assertEquals(2, result.get().size());
+        Assertions.assertEquals(12, result.get().get(0));
+        Assertions.assertEquals(16, result.get().get(1));
+    }
+
+    @Test
+    public void testAsListSourceAsIs() {
+        final Dsl dsl = new BaseDsl();
+        final List<Integer> origin = List.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+        final ListSource<Integer> s = dsl.literal(origin);
+        Assertions.assertNotNull(s);
+
+        final ListSource<Integer> r = dsl.asListSource(s);
+        Assertions.assertNotNull(r);
+        Assertions.assertEquals(s, r);
+    }
+
+    @Test
+    public void testAsListSource() {
+        final Dsl dsl = new BaseDsl();
+        final Context context = new BaseContext(PathMap.empty());
+        final List<Integer> origin = List.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+        final Source<List<Integer>> s = dsl.literal(origin).as();
+        Assertions.assertNotNull(s);
+
+        final ListSource<Integer> r = dsl.asListSource(s);
+        Assertions.assertNotNull(r);
+        Assertions.assertEquals(origin, Evaluator.evalSource(s, context).get());
+    }
 }

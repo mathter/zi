@@ -32,6 +32,10 @@ public interface Dsl extends
 
     public NumberSource<BigDecimal> asBigDecimalSource(Source<BigDecimal> source);
 
+    public <T> ListSource<T> asListSource(Source<List<T>> source);
+
+    public BooleanSource asBooleanSource(Source<Boolean> source);
+
     public NumberSource<Byte> literal(Byte value);
 
     public NumberSource<Short> literal(Short value);

@@ -174,17 +174,6 @@ class DslTest {
   }
 
   @Test
-  def testList(): Unit = {
-    implicit val context: BaseContext = new BaseContext(PathMap.empty)
-    val dsl: Dsl = BaseDsl()
-    val s = dsl.literal(10).list
-    val result = Evaluator.evalSource(s)
-
-    Assertions.assertEquals(1, result.get.size)
-    Assertions.assertEquals(10, result.get.head)
-  }
-
-  @Test
   def testFalse(): Unit = {
     implicit val context: BaseContext = new BaseContext(PathMap.empty)
     val dsl: Dsl = BaseDsl()
@@ -206,7 +195,7 @@ class DslTest {
   def testAs(): Unit = {
     implicit val context: BaseContext = new BaseContext(PathMap.empty)
     val dsl: Dsl = BaseDsl()
-    val s = dsl.literal(10).as[AnyVal]
+    val s = dsl.literal(10).as[BigInt]
 
     Assertions.assertEquals(10, Evaluator.evalSource(s).get)
   }
